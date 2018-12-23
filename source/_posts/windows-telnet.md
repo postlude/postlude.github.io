@@ -20,10 +20,10 @@ updated:
 
 2. 제일 아래쪽에 텔넷 클라이언트
 
-![windows-telnet-2](/img/windows-telnet-2.jpg)
+![windows-telnet-2](/img/windows-telnet-2.JPG)
 
 3. cmd 창에서 telnet 명령어 사용 가능
 
-![windows-telnet-3](/img/windows-telnet-3.jpg)
+![windows-telnet-3](/img/windows-telnet-3.JPG)
 
-![windows-telnet-4](/img/windows-telnet-4.jpg)
+![windows-telnet-4](/img/windows-telnet-4.JPG)
