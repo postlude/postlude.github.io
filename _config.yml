@@ -81,3 +81,12 @@ deploy:
   type: git
   repo: https://postlude@github.com/postlude/postlude.github.io
   branch: master
+
+sitemap:
+    path: sitemap.xml
+
+feed:
+  type: atom
+  path: feed.xml
+  limit: 0
+  hub:
