@@ -1,6 +1,6 @@
 ---
 categories:
-  - 기타
+  - Hexo
 tags:
   - hexo
 date: 2018-12-24 22:39:42

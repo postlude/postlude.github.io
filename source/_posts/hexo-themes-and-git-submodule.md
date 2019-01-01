@@ -1,6 +1,6 @@
 ---
 categories:
-  - hexo
+  - Hexo
 tags:
   - hexo
   - git
