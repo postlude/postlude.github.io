@@ -105,7 +105,13 @@ themes 디렉토리 하위에 hueman 이라는 디렉토리가 생기면서 해�
 
 해결 방법을 찾던 도중 git에 submodule이라는 것이 있다는 것을 알게 되었다.
 
-(자세한 내용은 추후 다른 포스트 추가 예정)
+> {% post_link git-submodule %}
+
+submodule을 사용하면 부모 repo와 자식 repo가 연결된다는 장점이 있다.
+
+또한 github에서 부모 repo에서 바로 자식 repo의 내용을 확인할 수 있다.
+
+단점은 자식 repo 내용을 수정하고자 할 때 단순 clone과 달리 <code>git checkout</code> 으로 브랜치를 만들어줘야 한다.
 
 ## 4. 결론
 
