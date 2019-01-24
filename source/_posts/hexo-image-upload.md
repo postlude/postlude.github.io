@@ -14,19 +14,19 @@ updated:
 
 1. 이미지를 업로드 하기 위해 <code>source/img</code> 디렉토리를 생성하고 그 디렉토리에 이미지 파일을 넣었다.
 
-![](/img/hexo-image-upload-1.JPG)
+{% asset_img hexo-image-upload-1.JPG %}
 
 2. 그리고 다음과 같이 포스트를 작성했다.
 
 > 일부러 오류가 났던 내용 그대로 올린 것입니다.
 
-![](/img/hexo-image-upload-2.JPG)
+{% asset_img hexo-image-upload-2.JPG %}
 
 3. 로컬에서는 멀쩡하게 이미지가 잘 나온다.
 
 그런데 배포를 하면 다음과 같이 첫 번째 이미지만 정상적으로 나오고 나머지 이미지가 나오지 않는다.
 
-![](/img/hexo-image-upload-3.JPG)
+{% asset_img hexo-image-upload-3.JPG %}
 
 <br>
 로컬에서는 정상적으로 나왔기 때문에 원인을 찾기까지 조금 헤맸다.  

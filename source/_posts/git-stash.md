@@ -18,11 +18,11 @@ updated:
 
 ## 0. 기본 상태
 
-![](/img/git-stash-1.JPG)
+{% asset_img git-stash-1.JPG %}
 
 이 상태에서 stash를 여러 파일 상태에 적용해보기 위해 다음과 같은 상태로 만들었다.
 
-![](/img/git-stash-2.JPG)
+{% asset_img git-stash-2.JPG %}
 
 * 기존 파일 수정(file1)
 * 새 파일(file2, file3) 추가
@@ -32,7 +32,7 @@ updated:
 
 기본적으로는 <code>git stash</code> 명령어만으로도 작성중이던 내용을 저장할 수 있다.
 
-![](/img/git-stash-3.JPG)
+{% asset_img git-stash-3.JPG %}
 
 그러면 위와 같이 `git stash list`로 저장된 내용을 확인할 수 있다.
 
@@ -42,7 +42,7 @@ updated:
 
 `git stash apply [stash 번호]`로 stash에 있는 내용을 적용할 수 있다.
 
-![](/img/git-stash-4.JPG)
+{% asset_img git-stash-4.JPG %}
 
 그러면 처음 상태로 파일을 되돌릴 수 있다.
 
@@ -66,7 +66,7 @@ file2는 **git add 명령어를 통해 staging area에 있었기 때문에** sta
   git stash -u
 {% endcodeblock %}
 
-![](/img/git-stash-5.JPG)
+{% asset_img git-stash-5.JPG %}
 
 untracked file인 file3까지 저장되었다.
 
@@ -76,7 +76,7 @@ untracked file인 file3까지 저장되었다.
 
 위 상태에서 `git stash list`로 저장된 목록을 보면 다음과 같다.
 
-![](/img/git-stash-6.JPG)
+{% asset_img git-stash-6.JPG %}
 
 맨 처음에 stash로 저장한 내용을 삭제하지 않았기 때문에 저장한 목록이 2개다. 그런데 0번과 1번중 어떤게 먼저 저장한 것이고 어떤 게 나중에 저장한 것일까?
 
@@ -94,7 +94,7 @@ untracked file인 file3까지 저장되었다.
 
 일단 `apply`로 원복시킨 다음에 `save`했다.
 
-![](/img/git-stash-7.JPG)
+{% asset_img git-stash-7.JPG %}
 
 `save` 명령어도 마찬가지로 `-u` 옵션을 주어야 untracked file도 저장된다.
 
@@ -109,7 +109,7 @@ untracked file인 file3까지 저장되었다.
 
 역시 기본 상태로 돌려놓고 명령어를 실행했다.
 
-![](/img/git-stash-8.JPG)
+{% asset_img git-stash-8.JPG %}
 
 ## 5. save vs. push
 
@@ -135,8 +135,8 @@ stash를 공부하던 도중 다음과 같은 자료를 발견했다.
 
 마찬가지로 기본 상태에서 명령어를 실행했다.
 
-![](/img/git-stash-9.JPG)
-![](/img/git-stash-10.JPG)
+{% asset_img git-stash-9.JPG %}
+{% asset_img git-stash-10.JPG %}
 
 ## 6. 요약
 
@@ -158,7 +158,7 @@ stash가 기본적으로 git이 tracking하는 파일만 적용하기 때문에 
 
 **만약 add 한 파일을 다시 원복시킨 후에는 stash 명령어로 저장이 될까?**
 
-![](/img/git-stash-11.JPG)
-![](/img/git-stash-12.JPG)
+{% asset_img git-stash-11.JPG %}
+{% asset_img git-stash-12.JPG %}
 
 혹시나 했지만 역시나 되지 않는다.

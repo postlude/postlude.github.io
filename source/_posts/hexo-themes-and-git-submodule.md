@@ -19,19 +19,19 @@ themes 디렉토리 하위에 hueman 이라는 디렉토리가 생기면서 해�
 
 즉, 아래와 같이 기본적인 설정과 포스트를 작성하는 전체 git repo 안에 다른 repo가 들어간 모양새가 된다.
 
-![](/img/hexo-themes-and-git-submodule-1.JPG)
+{% asset_img hexo-themes-and-git-submodule-1.JPG %}
 
 상위 git repo만 github에 올려 관리를 하던 도중 평소 작업을 하던 곳이 아닌 다른 pc에서 작업을 하기 위해 이 블로그 repo를 clone 받았다.
 
 그런데 이게 왠걸 themes/hueman 디렉토리에 있는 내용은 전혀 받아지지 않았다.
 
-![](/img/hexo-themes-and-git-submodule-2.JPG)
+{% asset_img hexo-themes-and-git-submodule-2.JPG %}
 
 > 이 상태에선 <code>npm i</code> 후에 <code>hexo server</code>를 실행해도 **WARN  No layout: index.html** 과 같은 메시지가 나오면서 아무 페이지도 뜨지 않습니다.
 
 혹시나 싶어 github에 들어가보니 다음과 같이 아예 선택이 불가능한 상태로 되어 있었다.
 
-![](/img/hexo-themes-and-git-submodule-3.JPG)
+{% asset_img hexo-themes-and-git-submodule-3.JPG %}
 
 그제야 커밋을 하고 푸쉬를 할 때 뭔가 평소와 달랐던 것이 생각났다.
 
@@ -89,7 +89,7 @@ themes 디렉토리 하위에 hueman 이라는 디렉토리가 생기면서 해�
 
 그냥 clone을 받게 되면 github repo 명으로 clone을 받게 된다.
 
-![](/img/hexo-themes-and-git-submodule-4.JPG)
+{% asset_img hexo-themes-and-git-submodule-4.JPG %}
 
 내가 원하는 것은 hueman 디렉토리 하위에 바로 clone 받는 것이므로 다음과 같이 명령어를 실행했다.
 
@@ -99,7 +99,7 @@ themes 디렉토리 하위에 hueman 이라는 디렉토리가 생기면서 해�
 
 이렇게 하면 다음과 같이 깔끔하게 clone 받을 수 있게 된다.
 
-![](/img/hexo-themes-and-git-submodule-5.JPG)
+{% asset_img hexo-themes-and-git-submodule-5.JPG %}
 
 ## 3. 해결 방법 (2) - git submodule 이용
 

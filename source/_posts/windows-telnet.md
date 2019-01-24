@@ -16,14 +16,14 @@ updated:
 <hr/>
 1. 설정 - Windows 기능 켜기/끄기
 
-![windows-telnet-1](/img/windows-telnet-1.jpg)
+{% asset_img windows-telnet-1.jpg %}
 
 2. 제일 아래쪽에 텔넷 클라이언트
 
-![windows-telnet-2](/img/windows-telnet-2.JPG)
+{% asset_img windows-telnet-2.JPG %}
 
 3. cmd 창에서 telnet 명령어 사용 가능
 
-![windows-telnet-3](/img/windows-telnet-3.JPG)
+{% asset_img windows-telnet-3.JPG %}
 
-![windows-telnet-4](/img/windows-telnet-4.JPG)
+{% asset_img windows-telnet-4.JPG %}

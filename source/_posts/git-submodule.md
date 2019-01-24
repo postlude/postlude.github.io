@@ -14,7 +14,7 @@ updated:
 
 ## 0. 기본 상태
 
-![](/img/git-submodule-1.JPG)
+{% asset_img git-submodule-1.JPG %}
 
 ## 1. Submodule로 사용할 디렉토리 추가 및 push
 
@@ -37,7 +37,7 @@ repository를 따로 사용할 수 도 있지만 같은 repository에서 브랜�
   git push -u origin submodule
 {% endcodeblock %}
 
-![](/img/git-submodule-3.JPG)
+{% asset_img git-submodule-3.JPG %}
 
 해당 프로젝트의 동일한 repo의 <code>submodule</code>이라는 브랜치에 해당 내용이 올라간 것을 확인할 수 있다.
 
@@ -60,18 +60,18 @@ repository를 따로 사용할 수 도 있지만 같은 repository에서 브랜�
 그러면 <code>.gitmodules</code> 이라는 파일이 생성된 것을 확인할 수 있다.
 .gitmodule의 내용을 보면 다음과 같다.
 
-![](/img/git-submodule-4.JPG)
+{% asset_img git-submodule-4.JPG %}
 
 ## 3. Project commit
 
 이제 부모 프로젝트에서 해당 내용들을 반영해보자.
 
-![](/img/git-submodule-5.JPG)
+{% asset_img git-submodule-5.JPG %}
 
 이 내용을 github에서 확인해보면 다음과 같다.
 
-![](/img/git-submodule-6.JPG)
-![](/img/git-submodule-7.JPG)
+{% asset_img git-submodule-6.JPG %}
+{% asset_img git-submodule-7.JPG %}
 
 단순히 repo 자체를 넣었을 때와는 다르게 자식 repo의 내용을 github에서 확인할 수 있다.
 
@@ -80,30 +80,30 @@ repository를 따로 사용할 수 도 있지만 같은 repository에서 브랜�
 submodule 디렉토리 하위에 test2.txt라는 파일을 만들었다.
 부모 repo에서 `git add .` 후에 다시 status를 봐도 색깔이 변하지 않았다.
 
-![](/img/git-submodule-2.JPG)
+{% asset_img git-submodule-2.JPG %}
 
 즉, **자식 repo에서 commit한 내용만 부모에서 반영할 수 있다.**
 
-![](/img/git-submodule-8.JPG)
-![](/img/git-submodule-9.JPG)
+{% asset_img git-submodule-8.JPG %}
+{% asset_img git-submodule-9.JPG %}
 
 정상적으로 커밋되었다.
 이제 이 내용을 push하고 확인해보자.
 
-![](/img/git-submodule-10.JPG)
-![](/img/git-submodule-11.JPG)
+{% asset_img git-submodule-10.JPG %}
+{% asset_img git-submodule-11.JPG %}
 
 커밋 내용을 보면 정상적으로 올라간 것 같은데 subdmodule 내용이 보이지 않는다.
 당연하다. **submodule을 push하지 않았기 때문이다.**
 submodule 디렉토리로 이동해 push하고 확인하면 정상적으로 내용을 확인할 수 있다.
 
-![](/img/git-submodule-12.JPG)
+{% asset_img git-submodule-12.JPG %}
 
 ## 5. Submodule이 포함된 repo clone 하기
 
 submodule이 포함된 디렉토리를 clone 받으면 submodule에는 아무런 내용도 들어있지 않다.
 
-![](/img/git-submodule-13.JPG)
+{% asset_img git-submodule-13.JPG %}
 
 명령어를 통해 submodule을 clone 받는다.
 
@@ -112,7 +112,7 @@ submodule이 포함된 디렉토리를 clone 받으면 submodule에는 아무런
   git submodule update
 {% endcodeblock %}
 
-![](/img/git-submodule-14.JPG)
+{% asset_img git-submodule-14.JPG %}
 
 > git submodule update 를 하면 위와 같이 clone을 받는다.
 <br>
@@ -121,7 +121,7 @@ submodule이 포함된 디렉토리를 clone 받으면 submodule에는 아무런
 
 git submodule update 한 후에 submodule 디렉토리에 들어가면 다음과 같이 되어 있다.
 
-![](/img/git-submodule-15.JPG)
+{% asset_img git-submodule-15.JPG %}
 
 정상적인 작업 브랜치로 보이지 않는다. 찾아보니 다음과 같이 설명되어 있다.
 

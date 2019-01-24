@@ -22,7 +22,7 @@ updated:
 
 글을 읽고 아차 싶어 배포한 github repo에 들어가보니 다음과 같이 되어 있었다.
 
-{% img /img/hexo-category-not-found-1.jpg %}
+{% asset_img hexo-category-not-found-1.jpg %}
 
 처음에 카테고리가 Hexo인 글을 쓸 때 'h'exo로 만들고 이후에 대문자로 수정했는데 github에서는 동일한 것으로 판단하여 수정되지 않은 것 같았다.
 
@@ -82,6 +82,6 @@ updated:
 
 이렇게 진행했다.
 
-{% img /img/hexo-category-not-found-2.JPG %}
+{% asset_img hexo-category-not-found-2.JPG %}
 
 깔끔하게 해결.
