@@ -1,10 +1,10 @@
 ---
 categories:
-  - null
+  - 기타
 tags:
-  - null
+  - linux
 date: 2019-01-25 11:01:20
-title:
+title: Windows에서 리눅스(ubuntu) 사용하기
 updated:
 ---
 
