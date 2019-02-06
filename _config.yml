@@ -86,8 +86,8 @@ sitemap:
     path: sitemap.xml
 
 feed:
-  type: atom
-  path: feed.xml
+  type: rss2
+  path: rss2.xml
   limit: 0
   hub:
 
