@@ -90,3 +90,9 @@ feed:
   path: feed.xml
   limit: 0
   hub:
+
+robotstxt:
+  useragent: "*"
+  allow: 
+    - /
+  sitemap: https://postlude.github.io/sitemap.xml
