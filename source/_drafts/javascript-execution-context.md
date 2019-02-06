@@ -1,0 +1,41 @@
+---
+categories:
+  - null
+tags:
+  - null
+date: 2019-02-06 23:40:47
+title: javascript-execution-context
+updated:
+---
+
+{% blockquote ECMAScript® 2015 Language Specification http://www.ecma-international.org/ecma-262/6.0/#sec-execution-contexts Execution Contexts %}
+  An execution context is a specification device that is used to track the runtime evaluation of code by an ECMAScript implementation. At any point in time, there is at most one execution context that is actually executing code. This is known as the running execution context. A stack is used to track execution contexts. The running execution context is always the top element of this stack. A new execution context is created whenever control is transferred from the executable code associated with the currently running execution context to executable code that is not associated with that execution context. The newly created execution context is pushed onto the stack and becomes the running execution context.
+{% endblockquote %}
+
+
+{% blockquote ECMAScript® 2015 Language Specification http://www.ecma-international.org/ecma-262/6.0/#sec-execution-contexts Execution Contexts %}
+  An execution context contains whatever implementation specific state is necessary to track the execution progress of its associated code. Each execution context has at least the state components listed in Table 22.
+
+  Table 22 —State Components for All Execution Contexts
+
+  | Component | Purpose |
+  |:-:|:-:|
+  | code evaluation state | Any state needed to perform, suspend, and resume evaluation of the code associated with this execution context. |
+  | Function | If this execution context is evaluating the code of a function object, then the value of this component is that function object. If the context is evaluating the code of a Script or Module, the value is null. |
+  | Realm | The Realm from which associated code accesses ECMAScript resources. |
+{% endblockquote %}
+
+
+{% blockquote ECMAScript® 2015 Language Specification http://www.ecma-international.org/ecma-262/6.0/#sec-execution-contexts Execution Contexts %}
+  Execution contexts for ECMAScript code have the additional state components listed in Table 23.
+
+  Table 23 — Additional State Components for ECMAScript Code Execution Contexts
+
+  | Component | Purpose |
+  |:-:|:-:|
+  | LexicalEnvironment | Identifies the Lexical Environment used to resolve identifier references made by code within this execution context. |
+  | VariableEnvironment | Identifies the Lexical Environment whose EnvironmentRecord holds bindings created by VariableStatements within this execution context. |
+
+  The LexicalEnvironment and VariableEnvironment components of an execution context are always Lexical Environments. When an execution context is created its LexicalEnvironment and VariableEnvironment components initially have the same value.
+{% endblockquote %}
+
