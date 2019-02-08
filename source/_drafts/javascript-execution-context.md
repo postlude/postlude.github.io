@@ -17,6 +17,18 @@ updated:
 
 
 
+{% blockquote ECMAScript® 2015 Language Specification http://www.ecma-international.org/ecma-262/6.0/#sec-types-of-source-code Types of Source Code %}
+    Global code is source text that is treated as an ECMAScript Script. The global code of a particular Script does not include any source text that is parsed as part of a FunctionDeclaration, FunctionExpression, GeneratorDeclaration, GeneratorExpression, MethodDefinition, ArrowFunction, ClassDeclaration, or ClassExpression.
+
+    Eval code is the source text supplied to the built-in eval function. More precisely, if the parameter to the built-in eval function is a String, it is treated as an ECMAScript Script. The eval code for a particular invocation of eval is the global code portion of that Script.
+
+    Function code is source text that is parsed to supply the value of the [[ECMAScriptCode]] and [[FormalParameters]] internal slots (see 9.2) of an ECMAScript function object. The function code of a particular ECMAScript function does not include any source text that is parsed as the function code of a nested FunctionDeclaration, FunctionExpression, GeneratorDeclaration, GeneratorExpression, MethodDefinition, ArrowFunction, ClassDeclaration, or ClassExpression.
+
+    Module code is source text that is code that is provided as a ModuleBody. It is the code that is directly evaluated when a module is initialized. The module code of a particular module does not include any source text that is parsed as part of a nested FunctionDeclaration, FunctionExpression, GeneratorDeclaration, GeneratorExpression, MethodDefinition, ArrowFunction, ClassDeclaration, or ClassExpression.
+{% endblockquote %}
+
+
+
 {% blockquote ECMAScript® 2015 Language Specification http://www.ecma-international.org/ecma-262/6.0/#sec-execution-contexts Execution Contexts %}
   An execution context contains whatever implementation specific state is necessary to track the execution progress of its associated code. Each execution context has at least the state components listed in Table 22.
 
@@ -28,6 +40,8 @@ updated:
   | Function | If this execution context is evaluating the code of a function object, then the value of this component is that function object. If the context is evaluating the code of a Script or Module, the value is null. |
   | Realm | The Realm from which associated code accesses ECMAScript resources. |
 {% endblockquote %}
+
+
 
 
 {% blockquote ECMAScript® 2015 Language Specification http://www.ecma-international.org/ecma-262/6.0/#sec-execution-contexts Execution Contexts %}
@@ -43,12 +57,4 @@ updated:
   The LexicalEnvironment and VariableEnvironment components of an execution context are always Lexical Environments. When an execution context is created its LexicalEnvironment and VariableEnvironment components initially have the same value.
 {% endblockquote %}
 
-{% blockquote ECMAScript® 2015 Language Specification http://www.ecma-international.org/ecma-262/6.0/#sec-types-of-source-code Types of Source Code %}
-    Global code is source text that is treated as an ECMAScript Script. The global code of a particular Script does not include any source text that is parsed as part of a FunctionDeclaration, FunctionExpression, GeneratorDeclaration, GeneratorExpression, MethodDefinition, ArrowFunction, ClassDeclaration, or ClassExpression.
 
-    Eval code is the source text supplied to the built-in eval function. More precisely, if the parameter to the built-in eval function is a String, it is treated as an ECMAScript Script. The eval code for a particular invocation of eval is the global code portion of that Script.
-
-    Function code is source text that is parsed to supply the value of the [[ECMAScriptCode]] and [[FormalParameters]] internal slots (see 9.2) of an ECMAScript function object. The function code of a particular ECMAScript function does not include any source text that is parsed as the function code of a nested FunctionDeclaration, FunctionExpression, GeneratorDeclaration, GeneratorExpression, MethodDefinition, ArrowFunction, ClassDeclaration, or ClassExpression.
-
-    Module code is source text that is code that is provided as a ModuleBody. It is the code that is directly evaluated when a module is initialized. The module code of a particular module does not include any source text that is parsed as part of a nested FunctionDeclaration, FunctionExpression, GeneratorDeclaration, GeneratorExpression, MethodDefinition, ArrowFunction, ClassDeclaration, or ClassExpression.
-{% endblockquote %}
