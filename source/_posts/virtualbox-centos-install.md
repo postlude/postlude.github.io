@@ -122,15 +122,28 @@ SOFTWARE SELECTION 입니다. **Server with GUI를 선택**하셔야 합니다. 
 
 {% asset_img 19.JPG %}
 
-네트워크 세팅은 캡쳐를 깜빡했네요;;
-크게 할 것은 없고 화면 우측에 현재 네트워크의 토글 버튼이 있을텐데 활성화 해주시면 됩니다. 활성화할 경우 가상 머신이 부팅될 때 자동으로 네트워크에 연결됩니다.
+네트워크 세팅은 화면 우측에 현재 네트워크의 토글 버튼이 있을텐데 활성화 해주시면 됩니다. 활성화할 경우 가상 머신이 부팅될 때 자동으로 네트워크에 연결됩니다.
 사실 설치 이후에 설정도 가능한 부분이라 크게 중요하진 않습니다.
+
+{% asset_img 27.JPG %}
+
+INSTALLATION DESTINATION은 파티션 분할을 하는 내용입니다. 저는 크게 관여하지 않을 것이라 이미 선택된 Autometic partitioning으로 두겠습니다.
+Done 을 눌러주시면됩니다.
+
+{% asset_img 29.JPG %}
+{% asset_img 30.JPG %}
+
 
 설정을 마쳤으니 Begin Installation 을 선택하시면 됩니다.
 
 {% asset_img 20.JPG %}
 
 설치가 되는 동안 root 계정에 대한 패스워드와 사용자 계정을 생성할 수 있습니다.
+사용자 계정을 생성하지 않아도 부팅시에 자동으로 하나의 계정을 생성하게 되므로 여기서 생성하도록 하겠습니다.
+**Make this user administrator**를 선택하게 되면 해당 유저가 sudo 권한을 가지게 됩니다.
+
+{% asset_img 28.JPG %}
+
 설치가 완료되면 Reboot을 선택합니다.
 
 {% asset_img 21.JPG %}
