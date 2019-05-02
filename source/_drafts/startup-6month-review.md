@@ -11,6 +11,7 @@ updated:
 1. git
 
 2. 평일에도 힘들지만 공부해야
+- 왜냐하면 언제 바빠질지 모르기 때문에!!
 
 3. 무조건은 없다
 (workbench autocommit)
