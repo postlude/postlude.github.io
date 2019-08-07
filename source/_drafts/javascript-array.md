@@ -8,7 +8,7 @@ title: Javascript의 Array 함수들
 updated:
 ---
 
-일을 하던 도중 javascript의 배열 관련 함수를 자주 봤었다.
+일을 하던 도중 JavaScript의 배열 관련 함수를 자주 봤었다.
 정확한 기능을 모르는 것도 있어서 구글링을 하곤 했는데 이게 반복되니 한 번 정리를 해야겠다 싶었다.
 
 ## 1. Array.length
@@ -300,6 +300,188 @@ every는 호출한 배열을 변형하지 않습니다.
 주어진 함수를 배열 요소 각각에 대해 실행합니다.
 forEach()는 배열을 변형하지 않습니다. 그러나 callback이 변형할 수는 있습니다.
 예외를 던지지 않고는 forEach()를 중간에 멈출 수 없습니다.
+
+## 15. Array.prototype.includes()
+
+includes() 메서드는 배열이 특정 요소를 포함하고 있는지 판별합니다.
+
+{% blockquote %}
+    arr.includes(valueToFind[, fromIndex])
+{% endblockquote %}
+
+valueToFind
+- 탐색할 요소. 문자나 문자열을 비교할 때, includes()는 대소문자를 구분합니다.
+
+fromIndex (Optional)
+- 이 배열에서 searchElement 검색을 시작할 위치입니다. 음의 값은 array.length + fromIndex의 인덱스를 asc로 검색합니다. 기본값은 0입니다.
+
+{% codeblock Array.prototype.includes() lang:JavaScript  %}
+    // array length is 3
+    // fromIndex is -1
+    // computed index is 3 + (-1) = 2
+
+    var arr = ['a', 'b', 'c'];
+
+    arr.includes('a', -1); // false
+    arr.includes('a', -2); // false
+    arr.includes('a', -3); // true
+
+    var ary = [
+        { a: 'a', b: 'b'},
+        { a: 'aa', b: 'bb'}
+    ];
+    ary.includes({ a: 'a', b: 'b'}); // false. 객체는 확인 불가
+{% endcodeblock %}
+
+## 16. Array.prototype.indexOf()
+
+indexOf() 메서드는 배열에서 지정된 요소를 찾을 수있는 첫 번째 인덱스를 반환하고 존재하지 않으면 -1을 반환합니다.
+
+{% blockquote %}
+    arr.indexOf(searchElement[, fromIndex])
+{% endblockquote %}
+
+searchElement
+- 배열에서 찾을 요소입니다.
+
+fromIndex (Optional)
+- 검색을 시작할 색인입니다. 인덱스가 배열의 길이보다 크거나 같은 경우 -1이 반환되므로 배열이 검색되지 않습니다. 제공된 색인 값이 음수이면 배열 끝에서부터의 오프셋 값으로 사용됩니다.
+- 제공된 색인이 음수이면 배열은 여전히 앞에서 뒤로 검색됩니다. 계산 된 인덱스가 0보다 작 으면 전체 배열이 검색됩니다. 기본값 : 0 (전체 배열 검색).
+
+{% codeblock Array.prototype.indexOf() lang:JavaScript  %}
+    var array = [2, 9, 9];
+    array.indexOf(2);     // 0
+    array.indexOf(7);     // -1
+    array.indexOf(9, 2);  // 2
+    array.indexOf(2, -1); // -1
+    array.indexOf(2, -3); // 0
+
+    var ary = [
+        { a: 'a', b: 'b'},
+        { a: 'aa', b: 'bb'}
+    ];
+    ary.indexOf({ a: 'a', b: 'b'}); // -1. 객체는 확인 불가
+{% endcodeblock %}
+
+## 17. Array.prototype.join()
+
+join() 메서드는 배열의 모든 요소를 연결해 하나의 문자열로 만듭니다.
+
+{% codeblock Array.prototype.join() lang:JavaScript  %}
+    var elements = ['Fire', 'Air', 'Water'];
+
+    console.log(elements.join());
+    // expected output: "Fire,Air,Water"
+
+    console.log(elements.join(''));
+    // expected output: "FireAirWater"
+
+    console.log(elements.join('-'));
+    // expected output: "Fire-Air-Water"
+{% endcodeblock %}
+
+## 18. Array.prototype.keys()
+
+keys() 메서드는 배열의 각 인덱스를 키 값으로 가지는 새로운 Array Iterator 객체를 반환합니다.
+
+{% codeblock Array.prototype.keys() lang:JavaScript  %}
+    var array1 = ['a', 'b', 'c'];
+    var iterator = array1.keys(); 
+    
+    for (let key of iterator) {
+    console.log(key); // expected output: 0 1 2
+    }
+{% endcodeblock %}
+
+## 19. Array.prototype.keys()
+
+keys() 메서드는 배열의 각 인덱스를 키 값으로 가지는 새로운 Array Iterator 객체를 반환합니다.
+
+{% codeblock Array.prototype.keys() lang:JavaScript  %}
+    var array1 = ['a', 'b', 'c'];
+    var iterator = array1.keys(); 
+    
+    for (let key of iterator) {
+        console.log(key); // expected output: 0 1 2
+    }
+
+    var arr = ['a', , 'c'];
+    var sparseKeys = Object.keys(arr);
+    var denseKeys = [...arr.keys()];
+    console.log(sparseKeys); // ['0', '2']
+    console.log(denseKeys);  // [0, 1, 2] 빈 값을 무시하지 않음
+{% endcodeblock %}
+
+## 20. Array.prototype.lastIndexOf()
+
+lastIndexOf() 메서드는 지정된 요소가 배열에서 발견 될 수있는 마지막 인덱스를 반환하고, 존재하지 않으면 -1을 반환합니다. 배열은 fromIndex에서 시작하여 뒤로 검색됩니다.
+
+## 21. Array.prototype.map()
+
+map() 메서드는 배열 내의 모든 요소 각각에 대하여 주어진 함수를 호출한 결과를 모아 새로운 배열을 반환합니다.
+map이 처리할 요소의 범위는 첫 callback을 호출하기 전에 정해집니다. map이 시작한 이후 배열에 추가되는 요소들은 callback을 호출하지 않습니다.
+
+{% codeblock Array.prototype.map() lang:JavaScript  %}
+    var array1 = [1, 4, 9, 16];
+
+    // pass a function to map
+    const map1 = array1.map(x => x * 2);
+
+    console.log(map1); // expected output: Array [2, 8, 18, 32]
+    console.log(array1); // Array [1, 4, 9, 16] 원본 유지
+
+    // 아래 라인을 보시면...
+    ['1', '2', '3'].map(parseInt);
+    // 결과를 [1, 2, 3] 으로 기대할 수 있습니다.
+    // 그러나 실제 결과는 [1, NaN, NaN] 입니다.
+
+    // parseInt 함수는 보통 하나의 인자만 사용하지만, 두 개를 받을 수 있습니다.
+    // 첫 번째 인자는 변환하고자 하는 표현이고 두 번째는 숫자로 변환할 때 사용할 진법입니다.
+    // Array.prototype.map은 콜백에 세 가지 인자를 전달합니다.
+    // 배열의 값, 값의 인덱스, 그리고 배열
+    // 세 번째 인자는 parseInt가 무시하지만 두 번째 인자는 아닙니다.
+{% endcodeblock %}
+
+## 22. Array.prototype.pop()
+
+pop() 메서드는 배열에서 마지막 요소를 제거하고 그 요소를 반환합니다.
+
+## 23. Array.prototype.push()
+
+push() 메서드는 배열의 끝에 하나 이상의 요소를 추가하고, 배열의 새로운 길이를 반환합니다.
+
+## 24. Array.prototype.reduce()
+
+reduce() 메서드는 배열의 각 요소에 대해 주어진 리듀서(reducer) 함수를 실행하고, 하나의 결과값을 반환합니다.
+
+{% codeblock Array.prototype.reduce() lang:JavaScript  %}
+    [0, 1, 2, 3, 4].reduce(function(accumulator, currentValue, currentIndex, array) {
+        return accumulator + currentValue;
+    });
+{% endcodeblock %}
+
+| callback | accumulator | currentValue | currentIndex | array | 반환 값 |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| 1번째 호출 | 0 | 1 | 1 | [0, 1, 2, 3, 4] | 1 |
+| 2번째 호출 | 1 | 2 | 2 | [0, 1, 2, 3, 4] | 3 |
+| 3번째 호출 | 3 | 3 | 3 | [0, 1, 2, 3, 4] | 6 |
+| 4번째 호출 | 6 | 4 | 4 | [0, 1, 2, 3, 4] | 10 |
+
+{% codeblock Array.prototype.reduce() lang:JavaScript  %}
+    [0, 1, 2, 3, 4].reduce(function(accumulator, currentValue, currentIndex, array) {
+        return accumulator + currentValue;
+    }, 10);
+{% endcodeblock %}
+
+| callback | accumulator | currentValue | currentIndex | array | 반환 값 |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| 1번째 호출 | 10 | 0 | 0 | [0, 1, 2, 3, 4] | 10 |
+| 2번째 호출 | 10 | 1 | 1 | [0, 1, 2, 3, 4] | 11 |
+| 3번째 호출 | 11 | 2 | 2 | [0, 1, 2, 3, 4] | 13 |
+| 4번째 호출 | 13 | 3 | 3 | [0, 1, 2, 3, 4] | 16 |
+| 5번째 호출 | 16 | 4 | 4 | [0, 1, 2, 3, 4] | 20 |
+
+
 
 
 
