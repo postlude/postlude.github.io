@@ -1,12 +1,13 @@
 ---
 categories:
-  - null
+  - JavaScript
 tags:
-  - null
+  - javascript
 date: 2019-07-16 23:29:08
 title: Javascript의 Array 함수들
 updated:
 ---
+
 
 일을 하던 도중 JavaScript의 배열 관련 함수를 자주 봤었다.
 정확한 기능을 모르는 것도 있어서 구글링을 하곤 했는데 이게 반복되니 한 번 정리를 해야겠다 싶었다.
@@ -481,7 +482,184 @@ reduce() 메서드는 배열의 각 요소에 대해 주어진 리듀서(reducer
 | 4번째 호출 | 13 | 3 | 3 | [0, 1, 2, 3, 4] | 16 |
 | 5번째 호출 | 16 | 4 | 4 | [0, 1, 2, 3, 4] | 20 |
 
+## 25. Array.prototype.reduceRight()
+
+reduceRight() 메서드는 누적기에 대해 함수를 적용하고 배열의 각 값 (오른쪽에서 왼쪽으로)은 값을 단일 값으로 줄여야합니다.
+reduce와 동일하되 오른쪽에서 왼쪽으로 reducer 함수 호출.
+
+## 26. Array.prototype.reverse()
+
+배열의 순서를 반전합니다.
+
+## 27. Array.prototype.shift()
+
+shift() 메서드는 배열에서 첫 번째 요소를 제거하고, 제거된 요소를 반환합니다. 이 메서드는 배열의 길이를 변하게 합니다.
+
+## 28. Array.prototype.slice()
+
+slice() 메서드는 어떤 배열의 begin부터 end까지(end 미포함)에 대한 얕은 복사본을 새로운 배열 객체로 반환합니다. 원본 배열은 수정되지 않습니다.
+
+{% codeblock Array.prototype.slice() lang:JavaScript  %}
+    var animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+
+    const ary1 = animals.slice(2);
+    const ary2 = animals.slice(2, 4)
+
+    console.log(animals);
+    console.log(ary1);
+    console.log(ary2);
+
+    animals[0] = 'aaaaa';
+    console.log(animals);
+    console.log(ary1);
+
+    // Array ["ant", "bison", "camel", "duck", "elephant"]
+    // Array ["camel", "duck", "elephant"]
+    // Array ["camel", "duck"]
+    // Array ["aaaaa", "bison", "camel", "duck", "elephant"]
+    // Array ["camel", "duck", "elephant"]
+{% endcodeblock %}
+
+## 29. Array.prototype.some()
+
+some() 메서드는 배열 안의 어떤 요소라도 주어진 판별 함수를 통과하는지 테스트합니다.
+빈 배열에서 호출하면 무조건 false를 반환합니다.
+
+{% codeblock Array.prototype.some() lang:JavaScript  %}
+    var array = [1, 2, 3, 4, 5];
+    var array2 = [1, 2, 3, 3, 5];
+
+    var even = function(element) {
+        // checks whether an element is even
+        return element % 2 === 0;
+    };
+
+    console.log(array.some(even));
+    // expected output: true
+
+    console.log(array2.some(even));
+    // expected output: true
+{% endcodeblock %}
+
+## 30. Array.prototype.sort()
+
+sort() 메서드는 배열의 요소를 적절한 위치에 정렬한 후 그 배열을 반환합니다. 정렬은 stable sort가 아닐 수 있습니다.
+기본 정렬 순서는 문자열의 유니코드 코드 포인트를 따릅니다.(오름차순)
+
+{% blockquote %}
+    stable sort : 졍렬시 같은 값에 대하여 원본 순서가 유지되는 정렬
+    unstable sort : 졍렬시 같은 값에 대하여 원본 순서가 유지되지 않는 정렬
+{% endblockquote %}
+
+## 31. Array.prototype.splice()
+
+splice() 메서드는 배열의 기존 요소를 삭제 또는 교체하거나 새 요소를 추가하여 배열의 내용을 변경합니다.
+만약 제거할 요소의 수와 추가할 요소의 수가 다른 경우 배열의 길이는 달라집니다.
+
+{% blockquote %}
+    array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
+{% endblockquote %}
+
+start
+- 배열의 변경을 시작할 인덱스입니다. 배열의 길이보다 큰 값이라면 실제 시작 인덱스는 배열의 길이로 설정됩니다.
+음수인 경우 배열의 끝에서부터 요소를 세어나갑니다(원점 -1, 즉 -n이면 요소 끝의 n번째 요소를 가리키며 array.length - n번째 인덱스와 같음).
+값의 절대값이 배열의 길이 보다 큰 경우 0으로 설정됩니다.
+
+deleteCount (Optional)
+- 배열에서 제거할 요소의 수입니다.
+deleteCount를 생략하거나 값이 array.length - start보다 크면 start부터의 모든 요소를 제거합니다.
+deleteCount가 0 이하라면 어떤 요소도 제거하지 않습니다. 이 때는 최소한 하나의 새로운 요소를 지정해야 합니다.
+
+item1, item2, ... (Optional)
+- 배열에 추가할 요소입니다. 아무 요소도 지정하지 않으면 splice()는 요소를 제거하기만 합니다.
+
+{% codeblock Array.prototype.splice() lang:JavaScript  %}
+    var months = ['Jan', 'March', 'April', 'June'];
+    months.splice(1, 0, 'Feb');
+    // inserts at index 1
+    console.log(months);
+    // expected output: Array ['Jan', 'Feb', 'March', 'April', 'June']
+
+    months.splice(4, 1, 'May');
+    // replaces 1 element at index 4
+    console.log(months);
+    // expected output: Array ['Jan', 'Feb', 'March', 'April', 'May']
+
+    months.splice(1, 2, 'May');
+    console.log(months);
+    // expected output: Array ["Jan", "May", "April", "May"]
+{% endcodeblock %}
+
+## 32. Array.prototype.toLocaleString()
+
+toLocaleString() 메서드는 배열의 요소를 나타내는 문자열을 반환합니다.
+요소는 toLocaleString 메서드를 사용하여 문자열로 변환되고 이 문자열은 locale 고유 문자열(가령 쉼표 “,”)에 의해 분리됩니다.
+
+{% codeblock Array.prototype.toLocaleString() lang:JavaScript  %}
+    var array1 = [1, 'a', new Date('21 Dec 1997 14:12:00 UTC')];
+    var localeString = array1.toLocaleString('en', {timeZone: "UTC"});
+
+    console.log(localeString);
+    // expected output: "1,a,12/21/1997, 2:12:00 PM",
+    // This assumes "en" locale and UTC timezone - your results may vary
+{% endcodeblock %}
+
+## 33. Array.prototype.toString()
+
+toString() 메서드는 지정된 배열 및 그 요소를 나타내는 문자열을 반환합니다.
+
+{% codeblock Array.prototype.splice() lang:JavaScript  %}
+    var array1 = [1, 2, 'a', '1a'];
+
+    console.log(array1.toString());
+    // expected output: "1,2,a,1a"
+{% endcodeblock %}
+
+## 34. Array.prototype.unshift()
+
+unshift() 메서드는 새로운 요소를 배열의 맨 앞쪽에 추가하고, 새로운 길이를 반환합니다.
+
+{% codeblock Array.prototype.unshift() lang:JavaScript  %}
+    var array1 = [1, 2, 3];
+
+    console.log(array1.unshift(4, 5));
+    // expected output: 5
+
+    console.log(array1);
+    // expected output: Array [4, 5, 1, 2, 3]
 
 
+    var arr = [1, 2];
 
+    arr.unshift(0); // result of call is 3, the new array length
+    // arr is [0, 1, 2]
+
+    arr.unshift(-2, -1); // = 5
+    // arr is [-2, -1, 0, 1, 2]
+
+    arr.unshift([-3]);
+    // arr is [[-3], -2, -1, 0, 1, 2]
+{% endcodeblock %}
+
+## 35. Array.prototype.values()
+
+values() 메서드는 배열의 각 인덱스에 대한 값을 가지는 새로운 Array Iterator 객체를 반환합니다.
+
+{% codeblock Array.prototype.values() lang:JavaScript  %}
+    const array1 = ['a', 'b', 'c'];
+    const iterator = array1.values();
+
+    for (const value of iterator) {
+        console.log(value); // expected output: "a" "b" "c"
+    }
+
+
+    var arr = ['w', 'y', 'k', 'o', 'p'];
+    var eArr = arr.values();
+    console.log(eArr.next().value); // w
+    console.log(eArr.next().value); // y
+    console.log(eArr.next().value); // k
+    console.log(eArr.next().value); // o
+    console.log(eArr.next().value); // p
+{% endcodeblock %}
 
