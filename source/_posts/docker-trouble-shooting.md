@@ -1,10 +1,10 @@
 ---
 categories:
-  - null
+  - Docker
 tags:
-  - null
+  - docker
 date: 2020-02-12 23:44:57
-title:
+title: 도커 버전 업그레이드 후 Trouble Shooting
 updated:
 ---
 
