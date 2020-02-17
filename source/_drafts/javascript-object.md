@@ -8,7 +8,7 @@ title: title
 updated:
 ---
 
-한 번쯤 정리할 필요가 있어서 정리하고자 합니다.
+한 번쯤 정리할 필요가 있어서 정리하고자 한다.
 
 ## 1.Window
 
@@ -20,11 +20,11 @@ updated:
     즉, 몇몇 properties와 함수는 전체 window에 대해 적용된다.
 {% endblockquote %}
 
-MDN에 나와 있는 대략적인 설명은 위와 같습니다.
+MDN에 나와 있는 대략적인 설명은 위와 같다.
 
 property와 method, event가 너무 많아서.. 더 이상 사용하지 않거나 표준이 아니라고 하는 등의 표시가 있는 것들은 제외하고
 
-나머지만 간략하게만 정리하도록 하겠습니다.
+나머지만 간략하게만 정리.
 
 ### 1.1. Properties
 
@@ -60,7 +60,7 @@ CustomElementRegistry.define() 함수를 통해 새로운 custom element 등록.
 또 다른 해석은, 하나의 CSS 픽셀을 그릴 때 사용해야 하는 장치 픽셀의 수라고 할 수 있습니다.
 
 #### 1.1.6. document
-하단에 따로 설명
+다른 문서에서 따로 설명
 
 #### 1.1.7. event
 현재 처리 중인 이벤트 반환. 이벤트 핸들러 밖에서는 undefined.
@@ -77,7 +77,7 @@ window 자기 자신을 반환하되 array처럼 [i] 형태로 i번째 frame에 
 - window.frames[0] === document.getElementsByTagName("iframe")[0].contentWindow : true
 
 #### 1.1.10. history
-하단에 따로 설명
+다른 문서에서 따로 설명
 
 #### 1.1.11. indexedDB / localStorage / sessionStorage
 다른 문서에서 따로 설명
@@ -91,9 +91,75 @@ read only property 로 window 높이(너비) 값을 반환. 수평(수직) 스�
 frame(혹은 iframe)의 개수 반환.
 
 #### 1.1.14. location
-하단에 따로 설명
+다른 문서에서 따로 설명
 
-#### 1.1.15. 
+#### 1.1.15. name
+Gets/sets the name of the window.
+
+#### 1.1.16. navigator
+다른 문서에서 따로 설명
+
+#### 1.1.17. opener
+window.open() 이나 link의 target attribute를 이용해 현재 window를 오픈한 window를 가리킴.
+없으면 null.
+
+#### 1.1.18. outerHeight / outerWidth
+브라우저 바깥쪽(전체) window 가로/세로 길이.
+
+#### 1.1.19. scrollX / scrollY / pageXOffset / pageYOffset
+pageXOffset : scrollX의 alias
+pageYOffset : scrollY의 alias
+스크롤의 수평/수직 위치를 나타내는 값.
+크로스 브라우징을 위해서는 pageXOffset/pageYOffset 을 사용.
+
+#### 1.1.20. parent
+현재 window 또는 subframe(iframe, object, 또는 frame)의 부모를 가리킴. parent가 없으면 자기 자신.
+
+#### 1.1.21. performance
+현재 document로부터 수집된 performance 정보를 가진 객체를 리턴.
+(Performance Timeline, High Resolution Time, Navigation Timing, User Timing, Resource Timing)
+
+#### 1.1.22. screen
+다른 문서에서 따로 설명
+
+#### 1.1.23. screenX / screenY / screenLeft / screenTop
+screenLeft : alias of the older Window.screenX property
+screenTop : alias of the older Window.screenY property
+screenTop, screenLeft 는 IE만 support.
+화면 상의 좌상단으로부터 수평 / 수직으로 얼마나 떨어져 있는지를 나타내는 값.
+
+#### 1.1.24. scrollbars
+scrollbars 객체 반환.
+
+#### 1.1.25. self
+window 자기 자신을 가리킴.
+(worker : background task that can be created via script, which can send messages back to its creator)
+
+{% codeblock window.self lang:JavaScript %}
+    var w1 = window;
+    var w2 = self;
+    var w3 = window.window;
+    var w4 = window.self;
+    // w1, w2, w3, w4 all strictly equal, but only w2 will function in workers
+{% endcodeblock %}
+
+#### 1.1.26. status
+원래는 하단 상태 바에 텍스트를 출력하는 용도로 사용했으나 현재는 아무 효과 없음.
+
+#### 1.1.27. statusbar
+statusbar 객체 반환.
+
+#### 1.1.28. toolbar
+toolbar 객체 반환.
+
+#### 1.1.29. top
+window 계층 구조에서 가장 최상위 window를 반환.
+
+#### 1.1.30. window
+자기 자신 window를 가리킴.
+
+### 1.2. Methods
+
 
 
 ## 2. Document
