@@ -1,0 +1,4 @@
+[submodule "themes/hueman"]
+	path = themes/hueman
+	url = https://github.com/postlude/postlude.github.io.git
+	branch = themes/hueman
