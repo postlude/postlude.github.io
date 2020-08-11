@@ -23,6 +23,9 @@ develop 브랜치에서 실행
 ## 로컬에서 구동
 <pre><code> npx hexo server --draft</code></pre>
 
+## Draft를 Post로 publish
+<pre><code> npx hexo publish [draft]</code></pre>
+
 ## 배포
 develop 브랜치에서 실행
 <pre><code> npx hexo g -d</code></pre>
