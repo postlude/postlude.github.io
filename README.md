@@ -17,7 +17,11 @@ git checkout -b themes/hueman
 </code></pre>
 
 ## 작성
+develop 브랜치에서 실행
 <pre><code> npx hexo new [post/draft] 'post_name'</code></pre>
+
+## 로컬에서 구동
+<pre><code> npx hexo server --draft</code></pre>
 
 ## 배포
 develop 브랜치에서 실행
