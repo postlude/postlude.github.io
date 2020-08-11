@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+
+    
+
+    
+    <title>VirtualBox에 CentOS 7 minimal로 설치하기 | Postlude&#39;s IT Blog</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="linux">
+    
+    <meta name="description" content="예전 포스트에서 virtualbox에 CentOS7을 설치하는 것을 포스팅한 적이 있습니다.  솔직히 말하자면 해당 포스트에서 CentOS에 gui를 설치한 것은 다음과 같은 이유였습니다.  MobaXterm을 알기 전이라 포트 포워딩으로 사용할만한 적절한 툴을 알지 못했습니다. minimal로 설치했을 때 공유 디렉토리를 사용하기 위한 설정이 자꾸 실패했">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VirtualBox에 CentOS 7 minimal로 설치하기">
+<meta property="og:url" content="https://postlude.github.io/2020/03/09/virtualbox-centos-minimal/index.html">
+<meta property="og:site_name" content="Postlude&#39;s IT Blog">
+<meta property="og:description" content="예전 포스트에서 virtualbox에 CentOS7을 설치하는 것을 포스팅한 적이 있습니다.  솔직히 말하자면 해당 포스트에서 CentOS에 gui를 설치한 것은 다음과 같은 이유였습니다.  MobaXterm을 알기 전이라 포트 포워딩으로 사용할만한 적절한 툴을 알지 못했습니다. minimal로 설치했을 때 공유 디렉토리를 사용하기 위한 설정이 자꾸 실패했">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://postlude.github.io/2020/03/09/virtualbox-centos-minimal/1.JPG">
+<meta property="og:updated_time" content="2020-04-01T16:18:45.112Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="VirtualBox에 CentOS 7 minimal로 설치하기">
+<meta name="twitter:description" content="예전 포스트에서 virtualbox에 CentOS7을 설치하는 것을 포스팅한 적이 있습니다.  솔직히 말하자면 해당 포스트에서 CentOS에 gui를 설치한 것은 다음과 같은 이유였습니다.  MobaXterm을 알기 전이라 포트 포워딩으로 사용할만한 적절한 툴을 알지 못했습니다. minimal로 설치했을 때 공유 디렉토리를 사용하기 위한 설정이 자꾸 실패했">
+<meta name="twitter:image" content="https://postlude.github.io/2020/03/09/virtualbox-centos-minimal/1.JPG">
+    
+    <link rel="canonical" href="https://postlude.github.io/2020/03/09/virtualbox-centos-minimal/">
+
+    
+
+    
+        <link rel="icon" href="/assets/favicon.ico">
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <script src="/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-131293106-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR">
+</head>
+</html>
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">개발 블로그</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/css/">CSS</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/hexo/">Hexo</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/java/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/javascript/">JavaScript</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/기타/">기타</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/기타/">기타</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                            <article id="post-virtualbox-centos-minimal" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        VirtualBox에 CentOS 7 minimal로 설치하기
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2020/03/09/virtualbox-centos-minimal/" class="article-date">
+            <time datetime="2020-03-09T14:08:45.000Z" itemprop="datePublished">2020-03-09</time>
+        </a>
+    </div>
+
+		
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/linux/">linux</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <a href="/2019/02/19/virtualbox-centos-install/" title="예전 포스트">예전 포스트</a>에서 virtualbox에 CentOS7을 설치하는 것을 포스팅한 적이 있습니다.
+
+<p>솔직히 말하자면 해당 포스트에서 CentOS에 gui를 설치한 것은 다음과 같은 이유였습니다.</p>
+<ol>
+<li>MobaXterm을 알기 전이라 포트 포워딩으로 사용할만한 적절한 툴을 알지 못했습니다.</li>
+<li>minimal로 설치했을 때 공유 디렉토리를 사용하기 위한 설정이 자꾸 실패했습니다.</li>
+</ol>
+<p>테스트를 하던 도중 드디어 CentOS minimal에 공유 폴더 설정(VBox 게스트 확장 설치)에 성공했습니다.</p>
+<p>조금 더 정리된 VBox CentOS 7 설치 포스트라고 봐주시면 될 것 같습니다.</p>
+<blockquote><p>포스트 내용은 제가 오류를 범한 프로세스를 그대로 따라 갑니다.<br>한 번에 하시고 싶으신 분들은 맨 마지막 정리 부분만 읽어주시면 됩니다.</p>
+</blockquote>
+
+<h1 id="1-CentOS-설치"><a href="#1-CentOS-설치" class="headerlink" title="1. CentOS 설치"></a>1. CentOS 설치</h1><p>이 부분은 이전과 거의 동일합니다. <a href="/2019/02/19/virtualbox-centos-install/" title="이전 포스트">이전 포스트</a>를 참고하시면 됩니다.<br>다른 부분은 다음과 같습니다.</p>
+<ol>
+<li><p>Extension Pack은 필요하지 않습니다.<br>어차피 포트 포워딩 후 MobaXterm을 사용할 예정이므로 창 크기 조절에 신경쓸 필요가 없습니다.</p>
+</li>
+<li><p>SOFTWARE SELECTION에서 Minimal Install로 선택 후 설치하시면 됩니다.</p>
+</li>
+</ol>
+<img src="/2020/03/09/virtualbox-centos-minimal/1.JPG">
+
+<h1 id="2-기본-설정"><a href="#2-기본-설정" class="headerlink" title="2. 기본 설정"></a>2. 기본 설정</h1><p>설정은 이전과 크게 다르지 않습니다. 다만, MobaXterm을 사용하기 위해 포트포워딩 설정을 해주도록 합니다.</p>
+<p>호스트 포트는 1023 이하가 아니라면 크게 중요하지 않습니다. ssh로 접속해야 하므로 게스트 포트는 22번으로 설정합니다.</p>
+<img src="/2020/03/09/virtualbox-centos-minimal/2.JPG">
+
+<img src="/2020/03/09/virtualbox-centos-minimal/3.JPG">
+
+<p>여기까지만 설정하면 사용하는데 큰 지장이 없습니다. 딱 한 가지, 공유 폴더를 제외하면 말이죠.</p>
+<p>일단, 이전에 했던데로 VBox에서 공유 폴더 설정도 미리 해주도록 하겠습니다.</p>
+<img src="/2020/03/09/virtualbox-centos-minimal/4.JPG">
+
+<h1 id="3-VirtualBox-게스트-확장-설치"><a href="#3-VirtualBox-게스트-확장-설치" class="headerlink" title="3. VirtualBox 게스트 확장 설치"></a>3. VirtualBox 게스트 확장 설치</h1><h2 id="3-1-마운트"><a href="#3-1-마운트" class="headerlink" title="3.1 마운트"></a>3.1 마운트</h2><p>GUI 설치 버전에서 했던 것과 동일하게 설치를 시도하겠습니다.</p>
+<p>장치 - 게스트 확장 CD 이미지 삽입</p>
+<img src="/2020/03/09/virtualbox-centos-minimal/5.jpg">
+
+<p>이전에는 CD 삽입만 해도 설치 화면이 나왔지만 minimal 설치에서는 아무런 반응이 없습니다.</p>
+<p>직접 마운트를 시킨 후에 설치를 해야합니다.</p>
+<p>우선 마운트시킬 디렉토리를 <code>/mnt</code> 하위에 <code>cdrom</code> 이라는 이름으로 생성 후 <code>/dev/cdrom</code>을 마운트 했습니다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /mnt/cdrom</span><br><span class="line">mount /dev/cdrom /mnt/cdrom</span><br></pre></td></tr></table></figure>
+
+<p>그러면 아래와 같이 exe 파일과 sh 파일이 보이게 됩니다.</p>
+<img src="/2020/03/09/virtualbox-centos-minimal/6.JPG">
+
+<h2 id="3-2-패키지-설치"><a href="#3-2-패키지-설치" class="headerlink" title="3.2 패키지 설치"></a>3.2 패키지 설치</h2><p>여기서 우리가 실행해야할 것은 VBoxLinuxAdditions.run 입니다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./VBoxLinuxAdditions.run</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/03/09/virtualbox-centos-minimal/7.JPG">
+
+<p>bzip2 이라는 패키지가 없다고 나오네요. yum으로 설치하도록 하겠습니다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y bzip2</span><br></pre></td></tr></table></figure>
+
+<p>설치 후 다시 VBoxLinuxAdditions.run 을 실행합니다.</p>
+<img src="/2020/03/09/virtualbox-centos-minimal/8.JPG">
+
+<p>이번에는 조금 더 실행이 됐지만 fail이 났습니다.</p>
+<p>메시지를 보면 이유를 알 수 있는데, target kernel 버전 3.10.0-1062.el7.x86_64에 맞는 kernel header가 없다고 합니다.</p>
+<img src="/2020/03/09/virtualbox-centos-minimal/9.JPG">
+
+<p>위에서 보이는 것과 같이 kernel-headers라는 패키지가 설치되어 있지 않습니다. 설치하도록 하겠습니다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y kernel-headers</span><br></pre></td></tr></table></figure>
+
+<p>다시 VBoxLinuxAdditions.run 을 실행하도록 하겠습니다.</p>
+<img src="/2020/03/09/virtualbox-centos-minimal/10.JPG">
+
+<p>그런데 또 다시 동일한 에러가 납니다. 확인해보겠습니다.</p>
+<img src="/2020/03/09/virtualbox-centos-minimal/11.JPG">
+
+<p>설치된 kernel(3.10.0-1062.el7) 버전과 kernel-headers(3.10.0-1062.18.1.el7) 버전이 다릅니다.</p>
+<p>이 버전을 맞춰줘야 합니다.</p>
+<p>kernel을 업데이트 하고 완료되면 재부팅하도록 합니다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum update -y kernel</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/03/09/virtualbox-centos-minimal/12.JPG">
+
+<p>재부팅을 하면 선택화면에서 기존에는 2개였던 것이 3개로 선택지가 늘어난 것을 알 수 있습니다.</p>
+<p>자세히 보면 하나는 이전 버전의 커널이고, 다른 하나는 업데이트 후 설치된 버전의 커널입니다.</p>
+<p><strong>신규 버전</strong>으로 부팅합니다.</p>
+<p>아래의 명령어를 통해서도 현재 커널 버전을 알 수 있습니다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -r</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/03/09/virtualbox-centos-minimal/13.JPG">
+
+<p>신규 버전으로 잘 부팅되었습니다. 이제 다시 VBoxLinuxAdditions.run 을 실행해야 하는데 재부팅했으므로 다시 마운트를 시켜야 합니다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /mnt</span><br><span class="line">mount /dev/cdrom ./cdrom</span><br><span class="line">cd cdrom</span><br><span class="line">./VBoxLinuxAdditions.run</span><br></pre></td></tr></table></figure>
+
+<p>다시 실행했는데도 이게 왠걸, 동일한 에러가 납니다. 구글링을 해봤더니 아래와 같은 내용이 나옵니다.</p>
+<blockquote><p>I suspect the version of kernel-devel does not match the version of your running kernel</p>
+<footer><strong>https://forums.virtualbox.org/viewtopic.php?f=3&t=91563</strong></footer></blockquote>
+
+<p>kernel-devel을 설치하도록 하겠습니다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y kernel-devel</span><br></pre></td></tr></table></figure>
+
+<p>VBoxLinuxAdditions.run 을 다시 실행합니다.</p>
+<img src="/2020/03/09/virtualbox-centos-minimal/14.JPG">
+
+<p>이번엔 에러 메시지가 조금 달라졌습니다. 몇 가지 필요한 패키지들이 없다고 하네요. 설치하겠습니다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y gcc make perl</span><br></pre></td></tr></table></figure>
+
+<p>VBoxLinuxAdditions.run 을 다시 실행하면</p>
+<img src="/2020/03/09/virtualbox-centos-minimal/15.JPG">
+
+<p>드디어! 정상적으로 설치된 것을 볼 수 있습니다.</p>
+<p>게스트 확장 설치가 완료되었기 때문에 <code>/media</code> 경로로 가면 이전에 설정한 공유 폴더가 보이게 됩니다.</p>
+<img src="/2020/03/09/virtualbox-centos-minimal/16.JPG">
+
+<h2 id="3-3-이전-버전-커널-삭제"><a href="#3-3-이전-버전-커널-삭제" class="headerlink" title="3.3 이전 버전 커널 삭제"></a>3.3 이전 버전 커널 삭제</h2><p>이제부터는 새롭게 업데이트한 버전의 커널을 사용할 것이므로 이전 버전은 필요하지 않습니다.</p>
+<p>따라서 <strong>yum remove</strong> 나 <strong>package-cleanup</strong> 명령어를 통해 이전 버전 커널을 삭제하도록 하겠습니다.<br>(단, package-cleanup 명령어를 사용하기 위해서는 yum-utils 패키지가 설치되어 있어야 합니다.)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum remove kernel.x86_64-3.10.0-1062.el7</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install -y yum-utils</span><br><span class="line">package-cleanup --oldkernels --count=1</span><br></pre></td></tr></table></figure>
+
+<a href="https://linuxconfig.org/how-to-remove-old-unused-kernels-on-centos-linux" target="_blank" rel="noopener">참고</a>
+
+<h1 id="4-정리"><a href="#4-정리" class="headerlink" title="4. 정리"></a>4. 정리</h1><p>정리하자면 아래의 프로세스로 진행됩니다.</p>
+<ol>
+<li><p>CentOS 7 minimal 설치</p>
+</li>
+<li><p>패키지 설치</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y bzip2 kernel-headers kernel-devel gcc make perl</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>커널 업데이트 후 재부팅 - 재부팅시 업데이트한 버전의 커널 선택<br>(보통 제일 위에 것일 겁니다.)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum update -y kernel</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>장치 - 게스트 확장 CD 이미지 삽입</p>
+</li>
+<li><p>마운트 후 VBoxLinuxAdditions.run 실행</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir /mnt/cdrom</span><br><span class="line">cd /mnt</span><br><span class="line">mount /dev/cdrom ./cdrom</span><br><span class="line">cd cdrom</span><br><span class="line">./VBoxLinuxAdditions.run</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>이전 버전 커널 삭제</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install -y yum-utils</span><br><span class="line">package-cleanup --oldkernels --count=1</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+        </div>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://postlude.github.io/2020/03/09/virtualbox-centos-minimal/" data-id="ckdq188k2001adwvyq4e9r1ew" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/postlude" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2020/08/11/git-checkout-permission-denied/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            git checkout 에러 - cannot create directory Permission denied
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2020/02/16/javascript-object/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">window와 BOM, DOM</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/git/">Git</a></p>
+                            <p class="item-title"><a href="/2020/08/11/git-checkout-permission-denied/" class="title">git checkout 에러 - cannot create directory Permission denied</a></p>
+                            <p class="item-date"><time datetime="2020-08-11T13:50:27.000Z" itemprop="datePublished">2020-08-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/기타/">기타</a></p>
+                            <p class="item-title"><a href="/2020/03/09/virtualbox-centos-minimal/" class="title">VirtualBox에 CentOS 7 minimal로 설치하기</a></p>
+                            <p class="item-date"><time datetime="2020-03-09T14:08:45.000Z" itemprop="datePublished">2020-03-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">JavaScript</a></p>
+                            <p class="item-title"><a href="/2020/02/16/javascript-object/" class="title">window와 BOM, DOM</a></p>
+                            <p class="item-date"><time datetime="2020-02-16T13:43:36.000Z" itemprop="datePublished">2020-02-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/docker/">Docker</a></p>
+                            <p class="item-title"><a href="/2020/02/12/docker-trouble-shooting/" class="title">도커 버전 업그레이드 후 Trouble Shooting</a></p>
+                            <p class="item-date"><time datetime="2020-02-12T14:44:57.000Z" itemprop="datePublished">2020-02-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/java/">JAVA</a></p>
+                            <p class="item-title"><a href="/2019/08/26/openjdk/" class="title">Windows에 OpenJDK 설치하기</a></p>
+                            <p class="item-date"><time datetime="2019-08-26T14:03:22.000Z" itemprop="datePublished">2019-08-26</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/css/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">Hexo</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">JAVA</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/기타/">기타</a><span class="category-list-count">9</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/job/">job</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/">tool</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 HSD</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_shortname = 'postlude';
+    
+    
+    var disqus_url = 'https://postlude.github.io/2020/03/09/virtualbox-centos-minimal/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

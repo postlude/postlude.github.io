@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+
+    
+
+    
+    <title>JavaScript의 Property Descriptor | Postlude&#39;s IT Blog</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="javascript">
+    
+    <meta name="description" content="JavaScript의 Property Descriptor에 대해 정리해보겠습니다.Property Descriptor란 말 그대로 Property를 설명해주는 객체를 말합니다.Property Descriptor는 Object.getOwnPropertyDescriptor() 함수를 통해 가져올 수 있습니다. 123456var person = &amp;#123;">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript의 Property Descriptor">
+<meta property="og:url" content="https://postlude.github.io/2019/02/04/javascript-property-descriptor/index.html">
+<meta property="og:site_name" content="Postlude&#39;s IT Blog">
+<meta property="og:description" content="JavaScript의 Property Descriptor에 대해 정리해보겠습니다.Property Descriptor란 말 그대로 Property를 설명해주는 객체를 말합니다.Property Descriptor는 Object.getOwnPropertyDescriptor() 함수를 통해 가져올 수 있습니다. 123456var person = &amp;#123;">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-07-29T14:15:31.855Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript의 Property Descriptor">
+<meta name="twitter:description" content="JavaScript의 Property Descriptor에 대해 정리해보겠습니다.Property Descriptor란 말 그대로 Property를 설명해주는 객체를 말합니다.Property Descriptor는 Object.getOwnPropertyDescriptor() 함수를 통해 가져올 수 있습니다. 123456var person = &amp;#123;">
+    
+    <link rel="canonical" href="https://postlude.github.io/2019/02/04/javascript-property-descriptor/">
+
+    
+
+    
+        <link rel="icon" href="/assets/favicon.ico">
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <script src="/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-131293106-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR">
+</head>
+</html>
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">개발 블로그</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/css/">CSS</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/hexo/">Hexo</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/java/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/javascript/">JavaScript</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/기타/">기타</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/javascript/">JavaScript</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                            <article id="post-javascript-property-descriptor" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        JavaScript의 Property Descriptor
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2019/02/04/javascript-property-descriptor/" class="article-date">
+            <time datetime="2019-02-04T07:41:50.000Z" itemprop="datePublished">2019-02-04</time>
+        </a>
+    </div>
+
+		
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/javascript/">javascript</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p>JavaScript의 Property Descriptor에 대해 정리해보겠습니다.<br>Property Descriptor란 말 그대로 Property를 설명해주는 객체를 말합니다.<br>Property Descriptor는 <code>Object.getOwnPropertyDescriptor()</code> 함수를 통해 가져올 수 있습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">    name: <span class="string">'postlude'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> nameDescriptor = <span class="built_in">Object</span>.getOwnPropertyDescriptor(person, <span class="string">'name'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(nameDescriptor);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// result</span></span><br><span class="line">&#123;</span><br><span class="line">    value: <span class="string">'postlude'</span>,</span><br><span class="line">    writable: <span class="literal">true</span>,</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    configurable: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Property Descriptor는 2가지 타입으로 나뉩니다. data descriptor와 accessor descriptor입니다.</p>
+<blockquote><p>A data descriptor is a property that has a value, which may or may not be writable. An accessor descriptor is a property described by a getter-setter pair of functions. A descriptor must be one of these two flavors; it cannot be both.</p>
+<footer><strong>MDN</strong><cite><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank" rel="noopener">Object.defineProperty()</a></cite></footer></blockquote>
+
+<p>위의 코드에서 여러 가지로 테스트해보겠습니다.</p>
+<h2 id="1-Data-Descriptor"><a href="#1-Data-Descriptor" class="headerlink" title="1. Data Descriptor"></a>1. Data Descriptor</h2><h3 id="1-1-Default-Value"><a href="#1-1-Default-Value" class="headerlink" title="1.1 Default Value"></a>1.1 Default Value</h3><p>Data Descriptor란 value를 가진 property를 말합니다. 위의 예시에서 <code>nameDescriptor</code>가 Data Descriptor가 그 예시입니다.<br>property를 추가할 때 <code>Object.defineProperty()</code> 함수를 이용하면 property descriptor를 바꿔서 추가할 수 있습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">'age'</span>, &#123;</span><br><span class="line">    value: <span class="number">10</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> ageDescriptor = <span class="built_in">Object</span>.getOwnPropertyDescriptor(person, <span class="string">'age'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(ageDescriptor);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// result</span></span><br><span class="line">&#123;</span><br><span class="line">    value: <span class="number">10</span>,</span><br><span class="line">    writable: <span class="literal">false</span>,</span><br><span class="line">    enumerable: <span class="literal">false</span>,</span><br><span class="line">    configurable: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Object.defineProperty()</code> 함수를 이용하여 property를 추가할 때 값을 넣지 않으면 리터럴 형식으로 넣는 것과는 다르게 default가 false라는 것을 알 수 있습니다.</p>
+<h3 id="1-2-enumerable"><a href="#1-2-enumerable" class="headerlink" title="1.2 enumerable"></a>1.2 enumerable</h3><p>위와 같은 상태에서 person을 출력해보겠습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(person);</span><br><span class="line"><span class="built_in">console</span>.log(person.age);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// result</span></span><br><span class="line">&#123; <span class="attr">name</span>: <span class="string">'postlude'</span> &#125;</span><br><span class="line"><span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p>person 을 출력해도 age는 보이지 않습니다. 하지만 <code>Object.defineProperty()</code> 를 이용해 age 라는 property를 추가했기 때문에 명시적으로 호출하면 값을 출력할 수 있습니다.<br>즉, enumerable 은 해당 property가 보일지 말지를 결정하는 속성입니다.</p>
+<h3 id="1-3-writable"><a href="#1-3-writable" class="headerlink" title="1.3 writable"></a>1.3 writable</h3><p>이름에서 바로 느껴지듯이 writable은 해당 속성이 = 를 이용해 새로운 값을 할당할 수 있는가에 대한 속성입니다.<br>(enumerable은 true로 변경하고 진행했습니다.)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">'age'</span>, &#123;</span><br><span class="line">    value: <span class="number">10</span>,</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> ageDescriptor = <span class="built_in">Object</span>.getOwnPropertyDescriptor(person, <span class="string">'age'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(ageDescriptor);</span><br><span class="line"><span class="built_in">console</span>.log(person);</span><br><span class="line">person.age = <span class="number">20</span>;</span><br><span class="line"><span class="built_in">console</span>.log(person.age);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// result</span></span><br><span class="line">&#123;</span><br><span class="line">    value: <span class="number">10</span>,</span><br><span class="line">    writable: <span class="literal">false</span>,</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    configurable: <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line">&#123; <span class="attr">name</span>: <span class="string">'postlude'</span>, <span class="attr">age</span>: <span class="number">10</span> &#125;</span><br><span class="line"><span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p>writable이 false이기 때문에 person.age 를 새로운 값으로 바꿀 수 없습니다.</p>
+<h3 id="1-4-configurable"><a href="#1-4-configurable" class="headerlink" title="1.4 configurable"></a>1.4 configurable</h3><p>configurable은 다음과 같이 설명되어 있습니다.</p>
+<blockquote><p>true if and only if the type of this property descriptor may be changed and if the property may be deleted from the corresponding object.</p>
+<footer><strong>MDN</strong><cite><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank" rel="noopener">Object.defineProperty()</a></cite></footer></blockquote>
+
+<p>property descriptor를 변경할 수 있는가에 대한 내용입니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">'age'</span>, &#123;</span><br><span class="line">    value: <span class="number">10</span>,</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">'age'</span>, &#123;</span><br><span class="line">    value: <span class="number">20</span>,</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    writable: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>위와 같이 age를 추가한 후에 다시 age를 추가하려고 시도하면</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// result</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">'age'</span>, &#123;</span><br><span class="line">   ^</span><br><span class="line"><span class="built_in">TypeError</span>: Cannot redefine property: age</span><br></pre></td></tr></table></figure>
+
+<p>에러가 발생합니다.<br>만약 configurable 이 true라면</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">'age'</span>, &#123;</span><br><span class="line">    value: <span class="number">10</span>,</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">'age'</span>, &#123;</span><br><span class="line">    value: <span class="number">20</span>,</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    writable: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(person);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// result</span></span><br><span class="line">&#123; <span class="attr">name</span>: <span class="string">'postlude'</span>, <span class="attr">age</span>: <span class="number">20</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>정상적으로 동작하게 됩니다.</p>
+<h2 id="2-Accessor-Descriptor"><a href="#2-Accessor-Descriptor" class="headerlink" title="2. Accessor Descriptor"></a>2. Accessor Descriptor</h2><p>Accessor Descriptor는 getter와 setter로 표현되는 descriptor입니다.<br>Accessor Descriptor도 동일하게 configurable과 enumerable을 가지고 있으며 data descriptor와 동일하게 동작합니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">'job'</span>, &#123;</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    get: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'job getter'</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    set: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'job setter'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> jobDescriptor = <span class="built_in">Object</span>.getOwnPropertyDescriptor(person, <span class="string">'job'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(jobDescriptor);</span><br><span class="line">person.job;</span><br><span class="line">person.job = <span class="string">'developer'</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// result</span></span><br><span class="line">&#123;</span><br><span class="line">    get: [<span class="built_in">Function</span>: get],</span><br><span class="line">    set: [<span class="built_in">Function</span>: set],</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    configurable: <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line">job getter</span><br><span class="line">job setter</span><br></pre></td></tr></table></figure>
+
+<p>get으로 지정된 함수는 property를 읽을 때, set으로 지정된 함수는 property를 세팅할 때 자동적으로 호출되는 함수입니다.</p>
+<h2 id="3-Private-변수"><a href="#3-Private-변수" class="headerlink" title="3. Private 변수"></a>3. Private 변수</h2><p>위의 내용을 바탕으로 외부에서 접근 불가능한 private 변수를 JavaScript에서도 비슷하게 흉내낼 수 있습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">'_job'</span>, &#123;</span><br><span class="line">    value: <span class="string">'student'</span>,</span><br><span class="line">    writable: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">'job'</span>, &#123;</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    get: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>._job;</span><br><span class="line">    &#125;,</span><br><span class="line">    set: <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>._job = value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> jobDescriptor = <span class="built_in">Object</span>.getOwnPropertyDescriptor(person, <span class="string">'job'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(jobDescriptor);</span><br><span class="line"><span class="built_in">console</span>.log(person.job);</span><br><span class="line">person.job = <span class="string">'developer'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(person.job);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// result</span></span><br><span class="line">&#123;</span><br><span class="line">    get: [<span class="built_in">Function</span>: get],</span><br><span class="line">    set: [<span class="built_in">Function</span>: set],</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    configurable: <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line">student</span><br><span class="line">developer</span><br></pre></td></tr></table></figure>
+
+<p>실제 데이터는 _job에 들어가지마 enumerable이 false 이기 때문에 외부에서 확인이 불가능합니다.<br>호출할 수 있는 property는 job이고, job을 통해 _job의 값을 읽거나 쓸 수 있게 됩니다.<br>물론 <code>person._job = &#39;test&#39;;</code> 라는 식으로 코드를 작성하면 값을 변경할 수 있게 됩니다. 완벽한 private 변수는 아닌 셈이지요.</p>
+<blockquote>
+<p>사실 private 변수를 이용하기 위해선 클로저로도 가능합니다. 다른 포스트로 알아보겠습니다.</p>
+</blockquote>
+
+        </div>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://postlude.github.io/2019/02/04/javascript-property-descriptor/" data-id="ckdq188js000odwvyljzlyrfd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/postlude" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2019/02/19/virtualbox-centos-install/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            VirtualBox에서 CentOS 설치하기 (1)
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2019/01/25/windows-ubuntu/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Windows에서 리눅스(ubuntu) 사용하기</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/git/">Git</a></p>
+                            <p class="item-title"><a href="/2020/08/11/git-checkout-permission-denied/" class="title">git checkout 에러 - cannot create directory Permission denied</a></p>
+                            <p class="item-date"><time datetime="2020-08-11T13:50:27.000Z" itemprop="datePublished">2020-08-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/기타/">기타</a></p>
+                            <p class="item-title"><a href="/2020/03/09/virtualbox-centos-minimal/" class="title">VirtualBox에 CentOS 7 minimal로 설치하기</a></p>
+                            <p class="item-date"><time datetime="2020-03-09T14:08:45.000Z" itemprop="datePublished">2020-03-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">JavaScript</a></p>
+                            <p class="item-title"><a href="/2020/02/16/javascript-object/" class="title">window와 BOM, DOM</a></p>
+                            <p class="item-date"><time datetime="2020-02-16T13:43:36.000Z" itemprop="datePublished">2020-02-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/docker/">Docker</a></p>
+                            <p class="item-title"><a href="/2020/02/12/docker-trouble-shooting/" class="title">도커 버전 업그레이드 후 Trouble Shooting</a></p>
+                            <p class="item-date"><time datetime="2020-02-12T14:44:57.000Z" itemprop="datePublished">2020-02-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/java/">JAVA</a></p>
+                            <p class="item-title"><a href="/2019/08/26/openjdk/" class="title">Windows에 OpenJDK 설치하기</a></p>
+                            <p class="item-date"><time datetime="2019-08-26T14:03:22.000Z" itemprop="datePublished">2019-08-26</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/css/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">Hexo</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">JAVA</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/기타/">기타</a><span class="category-list-count">9</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/job/">job</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/">tool</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 HSD</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_shortname = 'postlude';
+    
+    
+    var disqus_url = 'https://postlude.github.io/2019/02/04/javascript-property-descriptor/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
