@@ -43,15 +43,15 @@
     </url>
 
     <url>
-        <loc>https://postlude.github.io/categories/%EA%B8%B0%ED%83%80/</loc>
-        <lastmod>2020-04-01T16:18:45.112Z</lastmod>
+        <loc>https://postlude.github.io/categories/git/</loc>
+        <lastmod>2020-08-11T14:51:12.078Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://postlude.github.io/categories/git/</loc>
-        <lastmod>2020-08-11T14:51:12.078Z</lastmod>
+        <loc>https://postlude.github.io/categories/%EA%B8%B0%ED%83%80/</loc>
+        <lastmod>2020-10-25T14:25:02.326Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
