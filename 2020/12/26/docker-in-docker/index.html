@@ -21,7 +21,7 @@
 <meta property="og:description" content="0. 계기올해 초에 회사 jenkins 서버를 docker로 재구축한 적이 있었습니다. 그 때의 경험을 블로그에 반드시 남겨야겠다고 생각했었는데, 이제서야 글을 쓰게 되었네요. 일단 제가 겪은 상황은 다음과 같습니다.  docker 로 jenkins 서버를 구축합니다. 단, jenkins 공식 이미지가 아니라 ubuntu를 기본 이미지로 해 직접 설치하는">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://postlude.github.io/2020/12/26/docker-in-docker/2.JPG">
-<meta property="og:updated_time" content="2020-12-27T15:01:00.809Z">
+<meta property="og:updated_time" content="2020-12-27T15:09:25.541Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jenkins를 docker 컨테이너로 구축하기(Docker in Docker)">
 <meta name="twitter:description" content="0. 계기올해 초에 회사 jenkins 서버를 docker로 재구축한 적이 있었습니다. 그 때의 경험을 블로그에 반드시 남겨야겠다고 생각했었는데, 이제서야 글을 쓰게 되었네요. 일단 제가 겪은 상황은 다음과 같습니다.  docker 로 jenkins 서버를 구축합니다. 단, jenkins 공식 이미지가 아니라 ubuntu를 기본 이미지로 해 직접 설치하는">
@@ -227,7 +227,6 @@ ga('send', 'pageview');
 <p>그에 따라 Dockerfile에 docker를 설치하는 내용을 그대로 작성하되 <strong>docker-ce-cli</strong> 만 설치하도록 작성했습니다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install -y docker-ce-cli</span><br></pre></td></tr></table></figure>
 
-<p>※ 참고 : <a href="https://www.reddit.com/[object Object]comments/dsr6y2/containerdio_vs_dockercecli_vs_dockerce_what_are/" target="_blank" rel="noopener">docker-ce / docker-ce-cli / containerd.io 의 차이점</a></p>
 <p>이렇게 한 결과 컨테이너 내부에서도 도커 명령어를 사용할 수 있게 되었습니다.</p>
 <p>정확히는 호스트의 도커 데몬으로 명령을 내리는 것이기 때문에 컨테이너 내부에서 <code>docker images</code> 명령어를 치면 호스트의 이미지 목록이 나오게 됩니다.</p>
 <p>만약 위의 docker run -v 옵션 없이 docker-ce-cli만 설치 후 도커 명령어를 사용하면 도커 데몬에 연결할 수 없다는 메시지가 나오게 됩니다.<br>(Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?)</p>
