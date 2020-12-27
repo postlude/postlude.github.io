@@ -1,6 +1,6 @@
 ---
 categories:
-  - CSS
+  - 기타
 tags:
   - css
 date: 2018-12-17 23:03:07
