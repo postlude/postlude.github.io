@@ -69,8 +69,6 @@ jenkins 이미지를 만드는 것은 그다지 어렵지 않았습니다.
     apt-get install -y docker-ce-cli
 {% endcodeblock %}
 
-※ 참고 : {% link docker-ce / docker-ce-cli / containerd.io 의 차이점 https://www.reddit.com/r/docker/comments/dsr6y2/containerdio_vs_dockercecli_vs_dockerce_what_are/ %}
-
 이렇게 한 결과 컨테이너 내부에서도 도커 명령어를 사용할 수 있게 되었습니다.
 
 정확히는 호스트의 도커 데몬으로 명령을 내리는 것이기 때문에 컨테이너 내부에서 `docker images` 명령어를 치면 호스트의 이미지 목록이 나오게 됩니다.
