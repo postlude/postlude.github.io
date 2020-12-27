@@ -4,17 +4,17 @@
 
     <sitemap>
         <loc>https://postlude.github.io/post-sitemap.xml</loc>
-        <lastmod>2020-10-25T14:25:02.326Z</lastmod>
+        <lastmod>2020-12-27T15:01:00.809Z</lastmod>
     </sitemap>
 
     <sitemap>
         <loc>https://postlude.github.io/category-sitemap.xml</loc>
-        <lastmod>2019-07-29T14:15:31.793Z</lastmod>
+        <lastmod>2019-07-29T14:15:31.839Z</lastmod>
     </sitemap>
 
     <sitemap>
         <loc>https://postlude.github.io/tag-sitemap.xml</loc>
-        <lastmod>2019-07-29T14:15:31.793Z</lastmod>
+        <lastmod>2019-07-29T14:15:31.839Z</lastmod>
     </sitemap>
 
 </sitemapindex>

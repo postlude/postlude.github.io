@@ -6,28 +6,28 @@
     
 
     
-    <title>스타트업 6개월 후기 | Postlude&#39;s IT Blog</title>
+    <title>Jenkins를 docker 컨테이너로 구축하기(Docker in Docker) | Postlude&#39;s IT Blog</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="job">
+        <meta name="keywords" content="docker">
     
-    <meta name="description" content="제가 스타트업에서 개발자로 일을 한지 벌써 6개월이라는 시간이 흘렀네요.스스로를 점검할 겸 느낀 점들을 적어볼까 합니다. 1. git… GIT..!!입사 초반에 절실하게 느낀 것은 git에 대한 내용입니다.개발 회사에서 버전 관리 툴을 쓰지 않는 곳은 거의 없을 것이라고 생각하는데요,그 git을 잘 활용할 수 있어야 되겠다는 것을 피부로 많이 느끼게 되었습">
-<meta name="keywords" content="job">
+    <meta name="description" content="0. 계기올해 초에 회사 jenkins 서버를 docker로 재구축한 적이 있었습니다. 그 때의 경험을 블로그에 반드시 남겨야겠다고 생각했었는데, 이제서야 글을 쓰게 되었네요. 일단 제가 겪은 상황은 다음과 같습니다.  docker 로 jenkins 서버를 구축합니다. 단, jenkins 공식 이미지가 아니라 ubuntu를 기본 이미지로 해 직접 설치하는">
+<meta name="keywords" content="docker">
 <meta property="og:type" content="article">
-<meta property="og:title" content="스타트업 6개월 후기">
-<meta property="og:url" content="https://postlude.github.io/2019/06/16/startup-6month-review/index.html">
+<meta property="og:title" content="Jenkins를 docker 컨테이너로 구축하기(Docker in Docker)">
+<meta property="og:url" content="https://postlude.github.io/2020/12/26/docker-in-docker/index.html">
 <meta property="og:site_name" content="Postlude&#39;s IT Blog">
-<meta property="og:description" content="제가 스타트업에서 개발자로 일을 한지 벌써 6개월이라는 시간이 흘렀네요.스스로를 점검할 겸 느낀 점들을 적어볼까 합니다. 1. git… GIT..!!입사 초반에 절실하게 느낀 것은 git에 대한 내용입니다.개발 회사에서 버전 관리 툴을 쓰지 않는 곳은 거의 없을 것이라고 생각하는데요,그 git을 잘 활용할 수 있어야 되겠다는 것을 피부로 많이 느끼게 되었습">
+<meta property="og:description" content="0. 계기올해 초에 회사 jenkins 서버를 docker로 재구축한 적이 있었습니다. 그 때의 경험을 블로그에 반드시 남겨야겠다고 생각했었는데, 이제서야 글을 쓰게 되었네요. 일단 제가 겪은 상황은 다음과 같습니다.  docker 로 jenkins 서버를 구축합니다. 단, jenkins 공식 이미지가 아니라 ubuntu를 기본 이미지로 해 직접 설치하는">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://postlude.github.io/2019/06/16/startup-6month-review/1.JPG">
-<meta property="og:updated_time" content="2019-07-29T14:15:31.855Z">
+<meta property="og:image" content="https://postlude.github.io/2020/12/26/docker-in-docker/2.JPG">
+<meta property="og:updated_time" content="2020-12-27T15:01:00.809Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="스타트업 6개월 후기">
-<meta name="twitter:description" content="제가 스타트업에서 개발자로 일을 한지 벌써 6개월이라는 시간이 흘렀네요.스스로를 점검할 겸 느낀 점들을 적어볼까 합니다. 1. git… GIT..!!입사 초반에 절실하게 느낀 것은 git에 대한 내용입니다.개발 회사에서 버전 관리 툴을 쓰지 않는 곳은 거의 없을 것이라고 생각하는데요,그 git을 잘 활용할 수 있어야 되겠다는 것을 피부로 많이 느끼게 되었습">
-<meta name="twitter:image" content="https://postlude.github.io/2019/06/16/startup-6month-review/1.JPG">
+<meta name="twitter:title" content="Jenkins를 docker 컨테이너로 구축하기(Docker in Docker)">
+<meta name="twitter:description" content="0. 계기올해 초에 회사 jenkins 서버를 docker로 재구축한 적이 있었습니다. 그 때의 경험을 블로그에 반드시 남겨야겠다고 생각했었는데, 이제서야 글을 쓰게 되었네요. 일단 제가 겪은 상황은 다음과 같습니다.  docker 로 jenkins 서버를 구축합니다. 단, jenkins 공식 이미지가 아니라 ubuntu를 기본 이미지로 해 직접 설치하는">
+<meta name="twitter:image" content="https://postlude.github.io/2020/12/26/docker-in-docker/2.JPG">
     
-    <link rel="canonical" href="https://postlude.github.io/2019/06/16/startup-6month-review/">
+    <link rel="canonical" href="https://postlude.github.io/2020/12/26/docker-in-docker/">
 
     
 
@@ -148,7 +148,7 @@ ga('send', 'pageview');
                         <div class="main-body-header">
     <h1 class="header">
     
-    <a class="page-title-link" href="/categories/기타/">기타</a>
+    <a class="page-title-link" href="/categories/docker/">Docker</a>
     </h1>
 </div>
 
@@ -164,14 +164,14 @@ ga('send', 'pageview');
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
-                            <article id="post-startup-6month-review" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-docker-in-docker" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        스타트업 6개월 후기
+        Jenkins를 docker 컨테이너로 구축하기(Docker in Docker)
         </h1>
     
 
@@ -181,8 +181,8 @@ ga('send', 'pageview');
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/2019/06/16/startup-6month-review/" class="article-date">
-            <time datetime="2019-06-15T15:00:00.000Z" itemprop="datePublished">2019-06-16</time>
+        <a href="/2020/12/26/docker-in-docker/" class="article-date">
+            <time datetime="2020-12-26T13:58:48.000Z" itemprop="datePublished">2020-12-26</time>
         </a>
     </div>
 
@@ -191,53 +191,66 @@ ga('send', 'pageview');
                 
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/job/">job</a>
+        <a class="tag-link" href="/tags/docker/">docker</a>
     </div>
 
             </div>
         
         
         <div class="article-entry" itemprop="articleBody">
-            <p>제가 스타트업에서 개발자로 일을 한지 벌써 6개월이라는 시간이 흘렀네요.<br>스스로를 점검할 겸 느낀 점들을 적어볼까 합니다.</p>
-<h2 id="1-git…-GIT"><a href="#1-git…-GIT" class="headerlink" title="1. git… GIT..!!"></a>1. git… GIT..!!</h2><p>입사 초반에 절실하게 느낀 것은 git에 대한 내용입니다.<br>개발 회사에서 버전 관리 툴을 쓰지 않는 곳은 거의 없을 것이라고 생각하는데요,<br>그 git을 잘 활용할 수 있어야 되겠다는 것을 피부로 많이 느끼게 되었습니다.</p>
-<p>개인적으로 github 계정을 가지고 나름 제가 짠 코드를 올리고 있었는데<br>그런 부분들이 많이 도움이 되었습니다. 기본적인 명령어들을 알고 있었기 때문이죠.<br>더불어 제가 개발자로 취업을 준비하시는 분들에게 공부를 권장하고 싶은 것은 <strong>stash</strong>에 관한 내용입니다.</p>
-<p>저만 그럴지는 모르겠으나 저는 <strong>git stash</strong>를 정~말 많이 사용합니다.<br>그래서 입사 후 얼마 되지 않았을 때 블로그에 <a href="/2019/01/20/git-stash/" title="정리하는 글">정리하는 글</a>을 올리기도 했고요.</p>
-<p>또한 저희 회사는 git flow 를 사용하는데 기본적으로 git 명령어를 사용하는 것과 크게 다르지 않기 때문에 적응하는데도 큰 무리가 없었습니다.</p>
-<h2 id="2-평일에도-힘들지만-공부해야-한다"><a href="#2-평일에도-힘들지만-공부해야-한다" class="headerlink" title="2. 평일에도 힘들지만 공부해야 한다."></a>2. 평일에도 힘들지만 공부해야 한다.</h2><p>이건 사람마다 공부 패턴이 다르기 때문에 모두 이렇게 해야되는 것은 아닙니다만,<br>하나는 확실합니다.</p>
-<blockquote><p>정말 꾸준히 공부해야합니다.</p>
+            <h2 id="0-계기"><a href="#0-계기" class="headerlink" title="0. 계기"></a>0. 계기</h2><p>올해 초에 회사 jenkins 서버를 docker로 재구축한 적이 있었습니다. 그 때의 경험을 블로그에 반드시 남겨야겠다고 생각했었는데, 이제서야 글을 쓰게 되었네요.</p>
+<p>일단 제가 겪은 상황은 다음과 같습니다.</p>
+<ul>
+<li>docker 로 jenkins 서버를 구축합니다.</li>
+<li>단, jenkins 공식 이미지가 아니라 ubuntu를 기본 이미지로 해 직접 설치하는 식으로 Dockerfile을 작성합니다.</li>
+<li>jenkins에서는 docker build를 실행하도록 설정되어야 합니다.</li>
+</ul>
+<p>이 과정에서 제가 겪은 내용들을 정리해보고자 합니다.<br><strong>(잘못된 내용이 있다면 댓글로 지적해주시면 감사하겠습니다.)</strong></p>
+<h2 id="1-과정"><a href="#1-과정" class="headerlink" title="1. 과정"></a>1. 과정</h2><p>jenkins 이미지를 만드는 것은 그다지 어렵지 않았습니다.</p>
+<p>그런데 docker build를 실행하는 jenkins job을 만들 때 문득 이런 생각이 들었습니다.</p>
+<blockquote><p>jenkins에서 docker build를 하려면 docker 명령어를 써야하는데 그러면 docker 안에 docker를 설치해야 하나?</p>
 </blockquote>
 
-<p>그 이유를 최근에 명확하게 알게 되었습니다. 바로 <strong>언제 바빠질지 모르기 모르기 때문</strong>입니다.<br>제 github 활동을 한 번 보겠습니다.</p>
-<img src="/2019/06/16/startup-6month-review/1.JPG">
-
-<p>…정말 부끄럽기 짝이 없네요.<br>변명을 하자면 5월부터 회사 일이 점점 바빠지기 시작하더니 최근 몇 주간은 너무 바빠서 주말 출근도 할 지경이었습니다.<br>(물론 그 전에는 그냥 게으른 것이었지만..)</p>
-<p>어쨌든, 제가 공부를 조금씩 미루면서 스스로에게 한 변명은 이것이었습니다.</p>
-<p>‘내일하지 뭐. 나중에 하지 뭐.’</p>
-<p>그런데 그게 회사 일이 바빠지니까 <strong>아예 공부할 시간조차 나지 않더군요.</strong><br>그러니 평소에 조금씩이라도 꾸준히 공부해야 된다는 것을 최근 일로 많이 느끼게 되었습니다.</p>
-<h2 id="3-무조건은-없다"><a href="#3-무조건은-없다" class="headerlink" title="3. 무조건은 없다."></a>3. 무조건은 없다.</h2><p>개발을 하면서 경계해야되는 부분이죠. 세상에 ‘무조건’ 이라는 것은 없다.<br>그럼에도 불구하고 공부를 하면서 익혔던 부분들을 무의식 중에 적용을 하다가 낭패(?)를 겪은 적이 있습니다.</p>
-<p>회사에서 RDB 접속을 위해 Workbench를 사용하고 있습니다.<br>DB라는 것이 항상 신중하게 사용해야되기 때문에 저는 Workbench의 auto commit 기능을 꺼놓고 사용을 하고 있었습니다.<br>그런데 제가 로컬에서 작성한 api로 데이터를 넣은 후 Workbench에서 select문으로 확인하면 데이터가 들어가지 않은 것으로 표시가 되었습니다.<br>계속 헤매다가 다른 분이 도와주셔서 찾은 원인은 바로 그 auto commit 때문이었습니다.</p>
-<p>사실 데이터는 제대로 들어갔는데, auto commit이 꺼져있는 상태에서 select 문을 돌리니까<br>마치 dirty read 처럼 데이터가 들어가기 전 내용만 불러오는 현상이 있었습니다.</p>
-<p>저는 툴 사용에 있어서 ‘auto commit 은 위험하니까 무조건 끄고 사용해야된다’ 라는 생각을 가지고 있었는데<br>겪어보니 ‘무조건’ 이라는 건 역시나 존재하지 않더군요.</p>
-<h2 id="4-쓸데없는-경력이란-없다"><a href="#4-쓸데없는-경력이란-없다" class="headerlink" title="4. 쓸데없는 경력이란 없다."></a>4. 쓸데없는 경력이란 없다.</h2><p>저는 지금 회사에 들어오기 전에는 개발자가 아닌 WAS 엔지니어로 일을 했었습니다.<br>개발이 너무 하고 싶었기에 그 회사를 그만두고 개발자로서 취업 준비를 하고 지금 회사에 들어오게 되었습니다.</p>
-<p>이력서에 제 경력을 쓰기는 했습니다만, 실무적으로 크게 도움이 될 것이라고는 생각하지 않았습니다.<br>그런데 이게 왠걸, 도움이 되더군요.</p>
-<p>이전 회사에서 PaaS를 조금 접할 수 있는 기회가 있었고, 덕분에 Docker에 대해 알게 되었었는데<br>지금 회사에서도 Docker를 사용하고 있어서 상당히 도움이 많이 되었습니다.</p>
-<p>완전히 다른 분야에서 일을 한 것이 아니라면, <strong>정말로 쓸모없는 경력은 없습니다.</strong><br>단, 한 가지 조건은 있겠네요. 바로,</p>
-<blockquote><p>직장에서 무언가 얻는 것이 꾸준히 있어야 한다는 점입니다.</p>
+<h2 id="2-Docker-in-Docker"><a href="#2-Docker-in-Docker" class="headerlink" title="2. Docker in Docker"></a>2. Docker in Docker</h2><p>구글링을 하던 도중 <a href="https://aidanbae.github.io/code/docker/dinddood/" target="_blank" rel="noopener">아주 좋은 글</a>을 발견했습니다.</p>
+<p>간단하게 정리하면 다음과 같습니다.</p>
+<blockquote><p>docker 안에 docker daemon을 설치하는 것은 가능하지만, 권장하지 않는다.<br>목적은 컨테이너 내부에서 docker 명령어를 사용하는 것이므로 호스트의 도커 명령어를 사용할 수 있도록 세팅한다.</p>
 </blockquote>
 
-<p>이전 직장은 신입사원이 들어온다고 해서 차분하게 무언가를 알려주거나 교육해주는 시스템은 없었습니다.<br>(물론 중소기업에서 그런게 있는데가 많지는 않겠지만요.)</p>
-<p>하지만 그렇다고 제가 스스로 공부도 하지 않고 배우려고 하지 않았다면, 전 직장에서의 경력이 정말로 아무 의미가 없는 시간이 되었을지도 모릅니다.<br>그리고 지금 회사에서 도움이 될 법한 내용들을 알 수 없었을지도 모릅니다.</p>
-<p>그러니 회사가 좋든 나쁘든 어떤 곳을 다니는 동안에는 스스로 얻어가는 것이 있어야 할 것 같습니다.<br>월급 이외에 것을 말이죠.<br>그게 지식적인 것이 될수도 있고, 다른 것이 될수도 있겠지만 뭐가 되든 성장한다고 느끼고 있으면 될 것 같습니다.</p>
-<p>그래야 나중에 다른 직장을 가더라도 도움이 될테니까요.</p>
-<h2 id="5-개발-외적인-지식이-쓰일데도-있다"><a href="#5-개발-외적인-지식이-쓰일데도-있다" class="headerlink" title="5. 개발 외적인 지식이 쓰일데도 있다."></a>5. 개발 외적인 지식이 쓰일데도 있다.</h2><p>이건 그냥 번외 이야기로 제가 겪은 경험을 조금 써보고자 합니다.</p>
-<p>최근에 업무로 한 작업 중 일종의 통계를 내는 작업을 한 적이 있습니다.<br>DB에서 해당 내용들을 조회를 해서 결과 값을 계산하는 작업이었습니다.</p>
-<p>업무를 받았을 때는 단순히 모든 데이터들의 값들을 하나씩 다 조회해서 전부 계산을 하는 식으로 전달을 받았었는데,<br>이걸 천천히 살펴보다보니 다른 방식으로 계산이 가능할 것 같았습니다.</p>
-<p>결과적으로 얻고자 하는 값을 풀어서 보니<br>모든 데이터들을 전부 탐색하는 것이 아니라 전체를 일괄적으로 탐색해서 나온 값을 넣어서도 계산이 가능했습니다.</p>
-<p><strong>즉, 아주 간단한 수식 변환으로 DB 탐색의 횟수를 확 줄일 수 있었습니다.</strong></p>
-<p>이처럼 개발 관련 지식이 아니더라도 업무에 도움되는 경우가 있었습니다.<br>개인적으로는 꽤 신선한 경험이었습니다.</p>
-<h2 id="6-마무리"><a href="#6-마무리" class="headerlink" title="6. 마무리"></a>6. 마무리</h2><p>6개월이라는 시간동안 제가 확실히 느낀 것은</p>
-<p><strong>‘역시 개발이 내 적성에 맞구나’</strong></p>
-<p>라는 것이었습니다.<br>앞으로 6개월의 시간이 더 흘러서 1년의 시간이 지났을 때는<br>조금 더 성장한 모습으로 후기를 쓸 수 있으면 좋겠네요.</p>
+<h2 id="3-세팅"><a href="#3-세팅" class="headerlink" title="3. 세팅"></a>3. 세팅</h2><p>처음에는 구글링해서 나오는 여러 글들처럼 docker run 명령어 사용시에 아래와 같은 세팅을 추가했습니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">-v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>젠킨스에는 docker 관련 플러그인들이 존재하기 때문에 젠킨스 컨테이너에 위의 세팅 후 플러그인 설치 및 세팅을 거치면</p>
+<p>플러그인에서 제공하는 docker 관련 기능들을 사용할 수 있게 됩니다.</p>
+<p>다만, 플러그인에서 모든 도커 관련 명령어에 대한 기능을 제공해주지는 않아서 제 경우에는 직접 도커 명령어를 젠킨스 컨테이너 내부에서 사용이 가능해야 했습니다.</p>
+<p>그런데 이렇게 설정을 해도 컨테이너 내부에서 docker 명령어 사용시 <code>command not found</code> 라는 메시지만 나왔습니다.</p>
+<p>이리 저리 찾아보다가 결국 컨테이너 내부에서도 <strong>docker daemon</strong>이 아닌 <strong>docker cli</strong>는 설치해야 한다는 것을 알게 되었습니다.<br>(<a href="https://stackoverflow.com/questions/55315528/docker-not-found-after-mounting-var-run-docker-sock" target="_blank" rel="noopener">docker: not found after mounting /var/run/docker.sock</a>)</p>
+<p>그에 따라 Dockerfile에 docker를 설치하는 내용을 그대로 작성하되 <strong>docker-ce-cli</strong> 만 설치하도록 작성했습니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install -y docker-ce-cli</span><br></pre></td></tr></table></figure>
+
+<p>※ 참고 : <a href="https://www.reddit.com/[object Object]comments/dsr6y2/containerdio_vs_dockercecli_vs_dockerce_what_are/" target="_blank" rel="noopener">docker-ce / docker-ce-cli / containerd.io 의 차이점</a></p>
+<p>이렇게 한 결과 컨테이너 내부에서도 도커 명령어를 사용할 수 있게 되었습니다.</p>
+<p>정확히는 호스트의 도커 데몬으로 명령을 내리는 것이기 때문에 컨테이너 내부에서 <code>docker images</code> 명령어를 치면 호스트의 이미지 목록이 나오게 됩니다.</p>
+<p>만약 위의 docker run -v 옵션 없이 docker-ce-cli만 설치 후 도커 명령어를 사용하면 도커 데몬에 연결할 수 없다는 메시지가 나오게 됩니다.<br>(Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?)</p>
+<h2 id="4-권한-설정"><a href="#4-권한-설정" class="headerlink" title="4. 권한 설정"></a>4. 권한 설정</h2><p>위의 세팅까지 적용하면 ‘젠킨스 컨테이너에서 플러그인으로 도커 빌드하기’ + ‘컨테이너 내부에서 도커 명령어 사용하기’ 까지는 가능합니다.</p>
+<p>젠킨스 job에서 직접 도커 명령어를 사용하려고 하면 아마 권한 문제로 실행이 되지 않을 겁니다.</p>
+<p>그 이유는 컨테이너 내부/외부의 /var/run/docker.sock 을 보면 알 수 있습니다.</p>
+<p>호스트의 /var/run/docker.sock 은 다음과 같습니다.</p>
+<img src="/2020/12/26/docker-in-docker/2.JPG">
+
+<p>반면에 컨테이너 내부는 다음과 같습니다.</p>
+<img src="/2020/12/26/docker-in-docker/1.JPG">
+
+<p>컨테이너 내부에는 docker 라는 그룹이 없습니다. 따라서 호스트의 그룹 아이디(994)가 그대로 나오게 됩니다.</p>
+<p>또한, jenkins 유저는 root도 아니고 994 라는 그룹에 속해있지도 않기 때문에 docker 명령어를 사용할 수 없는 것입니다.</p>
+<p>컨테이너 내부에 994 아이디로 docker 라는 그룹을 만들고 jenkins 유저를 docker 그룹에도 속하게 함으로써 젠킨스 job에서도 도커 명령어를 사용할 수 있게 되었습니다.</p>
+<h2 id="5-결론"><a href="#5-결론" class="headerlink" title="5. 결론"></a>5. 결론</h2><p>당시에 이 문제를 해결할 때는 꽤 시간을 잡아먹었는데 그래도 얻은 것도 많은 좋은 경험이었습니다.</p>
+<p>참고한 링크들도 남겨드리니 한 번쯤 보시는 것도 좋을 것 같습니다.</p>
+<ul>
+<li><a href="https://aidanbae.github.io/code/docker/dinddood/" target="_blank" rel="noopener">DinD(docker in docker)와 DooD(docker out of docker)</a></li>
+<li><a href="http://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/" target="_blank" rel="noopener">Using Docker-in-Docker for your CI or testing environment? Think twice.</a></li>
+<li><a href="https://github.com/jpetazzo/dind" target="_blank" rel="noopener">Docker-in-Docker</a></li>
+<li><a href="https://itnext.io/docker-in-docker-521958d34efd" target="_blank" rel="noopener">Docker in Docker?</a></li>
+</ul>
 
         </div>
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -256,7 +269,7 @@ ga('send', 'pageview');
 
 
 
-    <a data-url="https://postlude.github.io/2019/06/16/startup-6month-review/" data-id="ckj79gkrj0015e8vypc6og6a0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://postlude.github.io/2020/12/26/docker-in-docker/" data-id="ckj79gkq10001e8vylr9cdfhn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -354,20 +367,10 @@ ga('send', 'pageview');
         
 <nav id="article-nav">
     
-        <a href="/2019/07/02/mobaxterm/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">newer</strong>
-        <p class="article-nav-title">
-        
-            SSH 접속 프로그램 MobaXterm
-        
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
     
-    
-        <a href="/2019/03/21/git-checkout-reset-revert/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2020/10/25/ngrok-invalid-host-header/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">older</strong>
-        <p class="article-nav-title">Git의 여러 가지 되돌리기 기능들(checkout, reset, revert)</p>
+        <p class="article-nav-title">ngrok 사용시 Invalid Host header 에러</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
@@ -501,7 +504,7 @@ ga('send', 'pageview');
     var disqus_shortname = 'postlude';
     
     
-    var disqus_url = 'https://postlude.github.io/2019/06/16/startup-6month-review/';
+    var disqus_url = 'https://postlude.github.io/2020/12/26/docker-in-docker/';
     
     (function() {
     var dsq = document.createElement('script');

@@ -8,13 +8,6 @@
     </url>
 
     <url>
-        <loc>https://postlude.github.io/categories/css/</loc>
-        <lastmod>2019-07-29T14:15:31.793Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://postlude.github.io/categories/hexo/</loc>
         <lastmod>2019-07-29T14:15:31.839Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -24,13 +17,6 @@
     <url>
         <loc>https://postlude.github.io/categories/java/</loc>
         <lastmod>2019-08-26T15:38:03.113Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://postlude.github.io/categories/docker/</loc>
-        <lastmod>2020-02-12T15:12:56.351Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -51,7 +37,14 @@
 
     <url>
         <loc>https://postlude.github.io/categories/%EA%B8%B0%ED%83%80/</loc>
-        <lastmod>2020-10-25T14:25:02.326Z</lastmod>
+        <lastmod>2020-12-26T14:00:36.852Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://postlude.github.io/categories/docker/</loc>
+        <lastmod>2020-12-27T15:01:00.809Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
