@@ -6,26 +6,26 @@
     
 
     
-    <title>도커 버전 업그레이드 후 Trouble Shooting | Postlude&#39;s IT Blog</title>
+    <title>docker build시 특정 레이어 이후로만 캐시 비활성화 하기 | Postlude&#39;s IT Blog</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
         <meta name="keywords" content="docker">
     
-    <meta name="description" content="최근 회사에서 사용하던 도커 버전을 업그레이드했습니다. 오늘은 그 과정에서 겪었던 Trouble Shooting을 적어보려고 합니다. 1. 컨테이너 구동 시 아래와 같은 에러가 발생할 경우docker: Error response from daemon: OCI runtime create failed: container_linux.go:345: starting">
+    <meta name="description" content="Dockerfile을 작성해 빌드를 할 때 캐시와 관련된 내용을 정리해보도록 하겠습니다. 1. 일반적인 상황예시로 아래와 같은 Dockerfile을 만들었습니다. Dockerfile12345678910FROM nginx:latestCOPY ./test1.txt /RUN apt-get update \    &amp;amp;&amp;amp; apt-get install -y">
 <meta name="keywords" content="docker">
 <meta property="og:type" content="article">
-<meta property="og:title" content="도커 버전 업그레이드 후 Trouble Shooting">
-<meta property="og:url" content="https://postlude.github.io/2020/02/12/docker-trouble-shooting/index.html">
+<meta property="og:title" content="docker build시 특정 레이어 이후로만 캐시 비활성화 하기">
+<meta property="og:url" content="https://postlude.github.io/2020/12/31/docker-build-disable-cache/index.html">
 <meta property="og:site_name" content="Postlude&#39;s IT Blog">
-<meta property="og:description" content="최근 회사에서 사용하던 도커 버전을 업그레이드했습니다. 오늘은 그 과정에서 겪었던 Trouble Shooting을 적어보려고 합니다. 1. 컨테이너 구동 시 아래와 같은 에러가 발생할 경우docker: Error response from daemon: OCI runtime create failed: container_linux.go:345: starting">
+<meta property="og:description" content="Dockerfile을 작성해 빌드를 할 때 캐시와 관련된 내용을 정리해보도록 하겠습니다. 1. 일반적인 상황예시로 아래와 같은 Dockerfile을 만들었습니다. Dockerfile12345678910FROM nginx:latestCOPY ./test1.txt /RUN apt-get update \    &amp;amp;&amp;amp; apt-get install -y">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-02-12T15:12:56.351Z">
+<meta property="og:updated_time" content="2020-12-31T13:13:19.124Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="도커 버전 업그레이드 후 Trouble Shooting">
-<meta name="twitter:description" content="최근 회사에서 사용하던 도커 버전을 업그레이드했습니다. 오늘은 그 과정에서 겪었던 Trouble Shooting을 적어보려고 합니다. 1. 컨테이너 구동 시 아래와 같은 에러가 발생할 경우docker: Error response from daemon: OCI runtime create failed: container_linux.go:345: starting">
+<meta name="twitter:title" content="docker build시 특정 레이어 이후로만 캐시 비활성화 하기">
+<meta name="twitter:description" content="Dockerfile을 작성해 빌드를 할 때 캐시와 관련된 내용을 정리해보도록 하겠습니다. 1. 일반적인 상황예시로 아래와 같은 Dockerfile을 만들었습니다. Dockerfile12345678910FROM nginx:latestCOPY ./test1.txt /RUN apt-get update \    &amp;amp;&amp;amp; apt-get install -y">
     
-    <link rel="canonical" href="https://postlude.github.io/2020/02/12/docker-trouble-shooting/">
+    <link rel="canonical" href="https://postlude.github.io/2020/12/31/docker-build-disable-cache/">
 
     
 
@@ -162,14 +162,14 @@ ga('send', 'pageview');
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
-                            <article id="post-docker-trouble-shooting" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-docker-build-disable-cache" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        도커 버전 업그레이드 후 Trouble Shooting
+        docker build시 특정 레이어 이후로만 캐시 비활성화 하기
         </h1>
     
 
@@ -179,8 +179,8 @@ ga('send', 'pageview');
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/2020/02/12/docker-trouble-shooting/" class="article-date">
-            <time datetime="2020-02-12T14:44:57.000Z" itemprop="datePublished">2020-02-12</time>
+        <a href="/2020/12/31/docker-build-disable-cache/" class="article-date">
+            <time datetime="2020-12-31T08:47:33.000Z" itemprop="datePublished">2020-12-31</time>
         </a>
     </div>
 
@@ -196,21 +196,42 @@ ga('send', 'pageview');
         
         
         <div class="article-entry" itemprop="articleBody">
-            <p>최근 회사에서 사용하던 도커 버전을 업그레이드했습니다.</p>
-<p>오늘은 그 과정에서 겪었던 Trouble Shooting을 적어보려고 합니다.</p>
-<h2 id="1-컨테이너-구동-시-아래와-같은-에러가-발생할-경우"><a href="#1-컨테이너-구동-시-아래와-같은-에러가-발생할-경우" class="headerlink" title="1. 컨테이너 구동 시 아래와 같은 에러가 발생할 경우"></a>1. 컨테이너 구동 시 아래와 같은 에러가 발생할 경우</h2><blockquote><p>docker: Error response from daemon: OCI runtime create failed: container_linux.go:345: starting container process caused “process_linux.go:430: container init caused &quot;write /proc/self/attr/keycreate: permission denied&quot;“: unknown.</p>
-</blockquote>
+            <p>Dockerfile을 작성해 빌드를 할 때 캐시와 관련된 내용을 정리해보도록 하겠습니다.</p>
+<h2 id="1-일반적인-상황"><a href="#1-일반적인-상황" class="headerlink" title="1. 일반적인 상황"></a>1. 일반적인 상황</h2><p>예시로 아래와 같은 Dockerfile을 만들었습니다.</p>
+<figure class="highlight bash"><figcaption><span>Dockerfile</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">FROM nginx:latest</span><br><span class="line"></span><br><span class="line">COPY ./test1.txt /</span><br><span class="line"></span><br><span class="line">RUN apt-get update \</span><br><span class="line">    &amp;&amp; apt-get install -y vim</span><br><span class="line"></span><br><span class="line">COPY ./test2.txt /</span><br><span class="line"></span><br><span class="line">CMD [<span class="string">"nginx"</span>, <span class="string">"-g"</span>, <span class="string">"daemon off;"</span>]</span><br></pre></td></tr></table></figure>
 
-<p>구글링을 통해 알아본 결과 container-selinux package의 버전이 무언가 맞지 않아 생긴 문제로 보였습니다.</p>
-<p>따라서 해당 패키지를 update(혹은 downgrade)를 해서 해결했습니다.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum list container-selinux</span><br><span class="line"> </span><br><span class="line">yum update container-selinux</span><br><span class="line">yum downgrade container-selinux</span><br></pre></td></tr></table></figure>
+<p>이 Dockerfile을 아래 명령어로 첫 빌드를 하게 되면 여러 메시지와 함께 빌드가 됩니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t ngins:<span class="built_in">test</span> .</span><br></pre></td></tr></table></figure>
 
-<p>검색한 다른 해결 방법으론 selinux를 끄는 방법도 있었지만, 왠지 내키지 않아 시도해보지는 않았습니다.<br>참고1 : <a href="https://stackoverflow.com/questions/56870478/cannot-start-docker-container-in-docker-ce-on-oracle-linux" target="_blank" rel="noopener">특정 버전으로 설치</a><br>참고2 : <a href="https://gitmemory.com/issue/containerd/containerd/3862/560205832" target="_blank" rel="noopener">containerd를 1.2.5로 downgrade</a> (해당 방법으로는 직접해보지는 않아서 확실하진 않습니다.)</p>
-<h2 id="2-docker-images-에는-이미지-목록이-나오는데-docker-rmi-명령어로-이미지를-지울-경우-‘No-such-image’-메시지가-나올-경우"><a href="#2-docker-images-에는-이미지-목록이-나오는데-docker-rmi-명령어로-이미지를-지울-경우-‘No-such-image’-메시지가-나올-경우" class="headerlink" title="2. docker images 에는 이미지 목록이 나오는데 docker rmi 명령어로 이미지를 지울 경우 ‘No such image’ 메시지가 나올 경우"></a>2. docker images 에는 이미지 목록이 나오는데 docker rmi 명령어로 이미지를 지울 경우 ‘No such image’ 메시지가 나올 경우</h2><p>버전 업을 하면서 어딘가 꼬여서 이렇게 나오는 것으로 보입니다.</p>
-<p>도커를 내리고 <code>/var/lib/docker</code> 디렉토리를 삭제 후 다시 실행하면 됩니다.<br>(<code>/var/lib/docker</code> 디렉토리는 도커 실행시 다시 생성됩니다.)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop docker</span><br><span class="line"> </span><br><span class="line"># /var/lib/docker 디렉토리는 docker 엔진 재시작시 새로 생성됨</span><br><span class="line">rm -rf /var/lib/docker</span><br><span class="line"></span><br><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Step 1/5 : FROM nginx:latest</span><br><span class="line">---&gt; ae2feff98a0c</span><br><span class="line">Step 2/5 : COPY ./test1.txt /</span><br><span class="line">---&gt; 4a3488e1f867</span><br><span class="line">Step 3/5 : RUN apt-get update     &amp;&amp; apt-get install -y vim</span><br><span class="line">---&gt; Running <span class="keyword">in</span> 4c3e3e6b8ce2</span><br><span class="line">Get:1 http://security.debian.org/debian-security buster/updates InRelease [65.4 kB]</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">Step 4/5 : COPY ./test2.txt /</span><br><span class="line">---&gt; 3fc5a63670e8</span><br><span class="line">Step 5/5 : CMD [<span class="string">"nginx"</span>, <span class="string">"-g"</span>, <span class="string">"daemon off;"</span>]</span><br><span class="line">---&gt; Running <span class="keyword">in</span> 6d4383aa7c6f</span><br><span class="line">Removing intermediate container 6d4383aa7c6f</span><br><span class="line">---&gt; 4f7c8d7872fc</span><br><span class="line">Successfully built 4f7c8d7872fc</span><br><span class="line">Successfully tagged nginx:<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
 
-<p>참고 : <a href="https://stackoverflow.com/questions/46381888/docker-images-shows-image-docker-rmi-says-no-such-image-or-reference-doe/46386670" target="_blank" rel="noopener">stackoverflow</a></p>
+<p>만약 Dockerfile이 변경되지 않은 상태로 다시 빌드하게 되면 아래와 같이 캐시를 사용하는 것으로 빌드 메시지가 나오게 됩니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Sending build context to Docker daemon  9.216kB</span><br><span class="line">Step 1/5 : FROM nginx:latest</span><br><span class="line">---&gt; ae2feff98a0c</span><br><span class="line">Step 2/5 : COPY ./test1.txt /</span><br><span class="line">---&gt; Using cache</span><br><span class="line">---&gt; 4a3488e1f867</span><br><span class="line">Step 3/5 : RUN apt-get update     &amp;&amp; apt-get install -y vim</span><br><span class="line">---&gt; Using cache</span><br><span class="line">---&gt; ea3bc604e29b</span><br><span class="line">Step 4/5 : COPY ./test2.txt /</span><br><span class="line">---&gt; Using cache</span><br><span class="line">---&gt; 3fc5a63670e8</span><br><span class="line">Step 5/5 : CMD [<span class="string">"nginx"</span>, <span class="string">"-g"</span>, <span class="string">"daemon off;"</span>]</span><br><span class="line">---&gt; Using cache</span><br><span class="line">---&gt; 4f7c8d7872fc</span><br><span class="line">Successfully built 4f7c8d7872fc</span><br><span class="line">Successfully tagged nginx:<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-캐시-비활성화"><a href="#2-캐시-비활성화" class="headerlink" title="2. 캐시 비활성화"></a>2. 캐시 비활성화</h2><p>위 상황에서 캐시를 사용하지 않으려면 어떻게 해야할까요?<br>docker build 명령어에 <code>--no-cache</code> 옵션을 주면 됩니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build --no-cache -t ngins:<span class="built_in">test</span> .</span><br></pre></td></tr></table></figure>
+
+<p>이렇게 하면 처음 빌드를 할 때와 동일하게 모든 레이어를 다시 빌드하게 됩니다.</p>
+<h2 id="3-특정-레이어-이후로만-캐시-비활성화"><a href="#3-특정-레이어-이후로만-캐시-비활성화" class="headerlink" title="3. 특정 레이어 이후로만 캐시 비활성화"></a>3. 특정 레이어 이후로만 캐시 비활성화</h2><p>이런 상황을 가정해보겠습니다.</p>
+<p>예를 들어 어떤 레이어는 빌드가 오래 걸리지만 변경될 일이 없어서 캐시를 사용해야하고 싶을 수도 있습니다.<br>(실제로 제가 회사 작업 중에 맞닥뜨린 상황이었습니다.)</p>
+<p><code>--no-cache</code> 옵션은 모든 레이어의 캐시를 사용하지 않는 옵션이기 때문에 이 상황에서는 사용할수가 없습니다.</p>
+<p>명령어 혹은 옵션으로 해결 방법이 존재하는 것은 아니지만, 우회하여 해결할 수 있는 방법은 있습니다.</p>
+<p>바로 ARG 를 통해 argument를 전달하는 것입니다.</p>
+<figure class="highlight bash"><figcaption><span>Dockerfile</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">FROM nginx:latest</span><br><span class="line"></span><br><span class="line">COPY ./test1.txt /</span><br><span class="line"></span><br><span class="line">ARG DISABLE_CACHE</span><br><span class="line"></span><br><span class="line">RUN apt-get update \</span><br><span class="line">    &amp;&amp; apt-get install -y vim</span><br><span class="line"></span><br><span class="line">COPY ./test2.txt /</span><br><span class="line"></span><br><span class="line">CMD [<span class="string">"nginx"</span>, <span class="string">"-g"</span>, <span class="string">"daemon off;"</span>]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CUR_TIME=$(date +%s)</span><br><span class="line">docker build --build-arg DISABLE_CACHE=<span class="variable">$CUR_TIME</span> -t nginx:<span class="built_in">test</span> .</span><br></pre></td></tr></table></figure>
+
+<p>위와 같이 DISABLE_CACHE argument 값을 준 후 빌드를 하면 ARG로 이전의 레이어는 캐시를 사용하고,<br>이후는 캐시를 사용하지 않게 되어 RUN 으로 실행한 명령어가 실행되게 됩니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Sending build context to Docker daemon  9.216kB</span><br><span class="line">Step 1/6 : FROM nginx:latest</span><br><span class="line">---&gt; ae2feff98a0c</span><br><span class="line">Step 2/6 : COPY ./test1.txt /</span><br><span class="line">---&gt; Using cache</span><br><span class="line">---&gt; 4a3488e1f867</span><br><span class="line">Step 3/6 : ARG DISABLE_CACHE</span><br><span class="line">---&gt; Using cache</span><br><span class="line">---&gt; b6ab6ed6f1e4</span><br><span class="line">Step 4/6 : RUN apt-get update     &amp;&amp; apt-get install -y vim</span><br><span class="line">---&gt; Running <span class="keyword">in</span> e62eeb8aa185</span><br><span class="line">Get:1 http://security.debian.org/debian-security buster/updates InRelease [65.4 kB]</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">Step 5/6 : COPY ./test2.txt /</span><br><span class="line">---&gt; b5019df04f18</span><br><span class="line">Step 6/6 : CMD [<span class="string">"nginx"</span>, <span class="string">"-g"</span>, <span class="string">"daemon off;"</span>]</span><br><span class="line">---&gt; Running <span class="keyword">in</span> 946f777160a4</span><br><span class="line">Removing intermediate container 946f777160a4</span><br><span class="line">---&gt; 42787d4961b9</span><br><span class="line">Successfully built 42787d4961b9</span><br><span class="line">Successfully tagged nginx:<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<p>단, 여기도 몇 가지 제약이 있습니다.</p>
+<ul>
+<li>캐시 비활성화를 위해 넘겨주는 ARG 는 위의 <strong>시간 값처럼 항상 변하는 값</strong>이어야 합니다.<br>고정된 값을 줄 경우 처음에만 캐시를 사용하지 않고, 두 번째 이후부터는 다시 캐시를 사용합니다.</li>
+<li>이 방법은 <code>RUN</code> 명령어 이후만 캐시 비활성화가 가능합니다.<br>즉, COPY 에는 적용되지 않기 때문에 ARG 선언부가 RUN 밑으로 오게 되면 ‘COPY ./test2.txt’ 부분은 계속 캐시를 사용하게 됩니다.<br>만약 COPY에도 적용하고 싶다면 ARG - RUN - COPY 순으로 Dockerfile을 작성하면 RUN 이후의 COPY까지도 캐시를 사용하지 않게 됩니다.</li>
+</ul>
+<h2 id="4-참고"><a href="#4-참고" class="headerlink" title="4. 참고"></a>4. 참고</h2><ul>
+<li><a href="http://dev.im-bot.com/docker-select-caching/" target="_blank" rel="noopener">Selectively disable caching for specific RUN commands in Dockerfile</a></li>
+</ul>
 
         </div>
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -229,7 +250,7 @@ ga('send', 'pageview');
 
 
 
-    <a data-url="https://postlude.github.io/2020/02/12/docker-trouble-shooting/" data-id="ckjcvdif30004lgvyqa3cr53x" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://postlude.github.io/2020/12/31/docker-build-disable-cache/" data-id="ckjcvdiev0000lgvy4uixt9bx" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -327,20 +348,10 @@ ga('send', 'pageview');
         
 <nav id="article-nav">
     
-        <a href="/2020/02/16/javascript-object/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">newer</strong>
-        <p class="article-nav-title">
-        
-            window와 BOM, DOM
-        
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
     
-    
-        <a href="/2019/08/26/openjdk/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2020/12/26/docker-in-docker/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">older</strong>
-        <p class="article-nav-title">Windows에 OpenJDK 설치하기</p>
+        <p class="article-nav-title">Jenkins를 docker 컨테이너로 구축하기(Docker in Docker)</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
@@ -474,7 +485,7 @@ ga('send', 'pageview');
     var disqus_shortname = 'postlude';
     
     
-    var disqus_url = 'https://postlude.github.io/2020/02/12/docker-trouble-shooting/';
+    var disqus_url = 'https://postlude.github.io/2020/12/31/docker-build-disable-cache/';
     
     (function() {
     var dsq = document.createElement('script');
