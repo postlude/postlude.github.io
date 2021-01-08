@@ -2,7 +2,7 @@
 categories:
   - 기타
 tags:
-  - nodejx
+  - nodejs
 date: 2021-01-08 18:59:09
 title: pm2 watch가 동작하지 않을 때
 updated:
