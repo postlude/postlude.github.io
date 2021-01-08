@@ -6,28 +6,26 @@
     
 
     
-    <title>Windows에 OpenJDK 설치하기 | Postlude&#39;s IT Blog</title>
+    <title>pm2 watch가 동작하지 않을 때 | Postlude&#39;s IT Blog</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="java">
+        <meta name="keywords" content="nodejx">
     
-    <meta name="description" content="Oracle JDK의 유료화 이슈(정확히는 기업에서 쓰는 용도가 유료화) 이후로 많은 기업들이 OpenJDK로 변경한 것으로 알고 있습니다.(사실 회사에서 JAVA를 쓰지 않아서 정확하지는 않습니다만, 예전에 면접볼 때 물어본 기업은 변경해서 큰 이슈없이 잘 쓰고 있다고 했었습니다.) 사실 개인적으로 공부할 때는 상관없지만, 그래도 환경을 맞춰보고자 로컬">
-<meta name="keywords" content="java">
+    <meta name="description" content="제가 개인 프로젝트를 위해 신규 Node.js 프로젝트를 만들고 pm2를 이용해 환경을 세팅했는데pm2 watch가 제대로 동작하지 않은 적이 있습니다. 이에 대한 포스팅을 해보고자 합니다. 1. 세팅일단 기본적으로 아주 간단한 node 서버를 만들었습니다. package.json12345678910111213&amp;#123;    &quot;name&quot;: &quot;test1&quot;,">
+<meta name="keywords" content="nodejx">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Windows에 OpenJDK 설치하기">
-<meta property="og:url" content="https://postlude.github.io/2019/08/26/openjdk/index.html">
+<meta property="og:title" content="pm2 watch가 동작하지 않을 때">
+<meta property="og:url" content="https://postlude.github.io/2021/01/08/pm2-watch/index.html">
 <meta property="og:site_name" content="Postlude&#39;s IT Blog">
-<meta property="og:description" content="Oracle JDK의 유료화 이슈(정확히는 기업에서 쓰는 용도가 유료화) 이후로 많은 기업들이 OpenJDK로 변경한 것으로 알고 있습니다.(사실 회사에서 JAVA를 쓰지 않아서 정확하지는 않습니다만, 예전에 면접볼 때 물어본 기업은 변경해서 큰 이슈없이 잘 쓰고 있다고 했었습니다.) 사실 개인적으로 공부할 때는 상관없지만, 그래도 환경을 맞춰보고자 로컬">
+<meta property="og:description" content="제가 개인 프로젝트를 위해 신규 Node.js 프로젝트를 만들고 pm2를 이용해 환경을 세팅했는데pm2 watch가 제대로 동작하지 않은 적이 있습니다. 이에 대한 포스팅을 해보고자 합니다. 1. 세팅일단 기본적으로 아주 간단한 node 서버를 만들었습니다. package.json12345678910111213&amp;#123;    &quot;name&quot;: &quot;test1&quot;,">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://postlude.github.io/2019/08/26/openjdk/2.JPG">
-<meta property="og:updated_time" content="2019-08-26T15:38:03.113Z">
+<meta property="og:updated_time" content="2021-01-08T10:27:51.604Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Windows에 OpenJDK 설치하기">
-<meta name="twitter:description" content="Oracle JDK의 유료화 이슈(정확히는 기업에서 쓰는 용도가 유료화) 이후로 많은 기업들이 OpenJDK로 변경한 것으로 알고 있습니다.(사실 회사에서 JAVA를 쓰지 않아서 정확하지는 않습니다만, 예전에 면접볼 때 물어본 기업은 변경해서 큰 이슈없이 잘 쓰고 있다고 했었습니다.) 사실 개인적으로 공부할 때는 상관없지만, 그래도 환경을 맞춰보고자 로컬">
-<meta name="twitter:image" content="https://postlude.github.io/2019/08/26/openjdk/2.JPG">
+<meta name="twitter:title" content="pm2 watch가 동작하지 않을 때">
+<meta name="twitter:description" content="제가 개인 프로젝트를 위해 신규 Node.js 프로젝트를 만들고 pm2를 이용해 환경을 세팅했는데pm2 watch가 제대로 동작하지 않은 적이 있습니다. 이에 대한 포스팅을 해보고자 합니다. 1. 세팅일단 기본적으로 아주 간단한 node 서버를 만들었습니다. package.json12345678910111213&amp;#123;    &quot;name&quot;: &quot;test1&quot;,">
     
-    <link rel="canonical" href="https://postlude.github.io/2019/08/26/openjdk/">
+    <link rel="canonical" href="https://postlude.github.io/2021/01/08/pm2-watch/">
 
     
 
@@ -148,7 +146,7 @@ ga('send', 'pageview');
                         <div class="main-body-header">
     <h1 class="header">
     
-    <a class="page-title-link" href="/categories/java/">JAVA</a>
+    <a class="page-title-link" href="/categories/기타/">기타</a>
     </h1>
 </div>
 
@@ -164,14 +162,14 @@ ga('send', 'pageview');
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
-                            <article id="post-openjdk" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-pm2-watch" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        Windows에 OpenJDK 설치하기
+        pm2 watch가 동작하지 않을 때
         </h1>
     
 
@@ -181,8 +179,8 @@ ga('send', 'pageview');
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/2019/08/26/openjdk/" class="article-date">
-            <time datetime="2019-08-26T14:03:22.000Z" itemprop="datePublished">2019-08-26</time>
+        <a href="/2021/01/08/pm2-watch/" class="article-date">
+            <time datetime="2021-01-08T09:59:09.000Z" itemprop="datePublished">2021-01-08</time>
         </a>
     </div>
 
@@ -191,63 +189,49 @@ ga('send', 'pageview');
                 
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/java/">java</a>
+        <a class="tag-link" href="/tags/nodejx/">nodejx</a>
     </div>
 
             </div>
         
         
         <div class="article-entry" itemprop="articleBody">
-            <p>Oracle JDK의 유료화 이슈(정확히는 기업에서 쓰는 용도가 유료화) 이후로 많은 기업들이 OpenJDK로 변경한 것으로 알고 있습니다.<br>(사실 회사에서 JAVA를 쓰지 않아서 정확하지는 않습니다만, 예전에 면접볼 때 물어본 기업은 변경해서 큰 이슈없이 잘 쓰고 있다고 했었습니다.)</p>
-<p>사실 개인적으로 공부할 때는 상관없지만, 그래도 환경을 맞춰보고자 로컬 환경에 OpenJDK를 설치해보고자 합니다.</p>
-<h2 id="1-OpenJDK-다운로드"><a href="#1-OpenJDK-다운로드" class="headerlink" title="1. OpenJDK 다운로드"></a>1. OpenJDK 다운로드</h2><p>Oracle JDK처럼 공식 사이트에서 받기 위해 구글링을 하던 도중 2개의 사이트를 찾았습니다.</p>
-<p>첫 번째는 <a href="https://github.com/ojdkbuild/ojdkbuild" target="_blank" rel="noopener">github 저장소</a>입니다.</p>
-<img src="/2019/08/26/openjdk/2.JPG">
+            <p>제가 개인 프로젝트를 위해 신규 Node.js 프로젝트를 만들고 pm2를 이용해 환경을 세팅했는데<br>pm2 watch가 제대로 동작하지 않은 적이 있습니다. 이에 대한 포스팅을 해보고자 합니다.</p>
+<h2 id="1-세팅"><a href="#1-세팅" class="headerlink" title="1. 세팅"></a>1. 세팅</h2><p>일단 기본적으로 아주 간단한 node 서버를 만들었습니다.</p>
+<figure class="highlight javascript"><figcaption><span>package.json</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"test1"</span>,</span><br><span class="line">    <span class="string">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">    <span class="string">"description"</span>: <span class="string">""</span>,</span><br><span class="line">    <span class="string">"main"</span>: <span class="string">"app.js"</span>,</span><br><span class="line">    <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"author"</span>: <span class="string">""</span>,</span><br><span class="line">    <span class="string">"license"</span>: <span class="string">"ISC"</span>,</span><br><span class="line">    <span class="string">"dependencies"</span>: &#123;</span><br><span class="line">        <span class="string">"express"</span>: <span class="string">"^4.17.1"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>두 번째는 <a href="https://jdk.java.net/" target="_blank" rel="noopener">이 사이트</a>입니다.<br>왼쪽의 Archive에서 다운받으실 수 있습니다.</p>
-<img src="/2019/08/26/openjdk/3.JPG">
+<figure class="highlight javascript"><figcaption><span>app.js</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"><span class="keyword">const</span> port = <span class="number">3000</span>;</span><br><span class="line"></span><br><span class="line">app.listen(port, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'test1 start'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<p>양쪽 다 테스트하기 위해 github 저장소에서는 1.8 버전 msi 파일을 받았고,<br>jdk 사이트에서는 10.0.2 버전의 tar.gz 파일을 받았습니다.</p>
-<h2 id="2-1-설치"><a href="#2-1-설치" class="headerlink" title="2.1 설치"></a>2.1 설치</h2><p>msi 파일은 간단합니다. 그대로 실행시켜서 설치하시면 됩니다.</p>
-<img src="/2019/08/26/openjdk/1.JPG">
+<p>pm2는 글로벌로 설치했으며, 버전은 4.5.0입니다.<br>ecosystem 파일을 생성합니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pm2 ecosystem</span><br></pre></td></tr></table></figure>
 
-<p>tar 파일의 경우에는 원하는 경로에 압축을 풀어 설치합니다.</p>
-<img src="/2019/08/26/openjdk/4.JPG">
+<p>ecosystem 파일에는 watch 설정만 했습니다.</p>
+<figure class="highlight javascript"><figcaption><span>ecosystem.config.js</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    apps: [&#123;</span><br><span class="line">        name: <span class="string">'test1'</span>,</span><br><span class="line">        script: <span class="string">'app.js'</span>,</span><br><span class="line">        watch: <span class="literal">true</span></span><br><span class="line">    &#125;],</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<h2 id="2-2-환경변수-설정"><a href="#2-2-환경변수-설정" class="headerlink" title="2.2 환경변수 설정"></a>2.2 환경변수 설정</h2><p>아래와 같은 경로로 접근해 JAVA_HOME 경로를 설정해줍니다.</p>
-<p>내 컴퓨터 우클릭 - 속성 - 고급 시스템 설정 - 환경 변수 - 새로 만들기</p>
-<img src="/2019/08/26/openjdk/5.JPG">
+<h2 id="2-테스트"><a href="#2-테스트" class="headerlink" title="2. 테스트"></a>2. 테스트</h2><p>위 상태에서 ecosystem 파일을 이용해 서버를 구동합니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pm2 start ecosystem.config.js</span><br></pre></td></tr></table></figure>
 
-<br>
+<p>로그를 보면 정상적으로 구동된 것을 확인할 수 있습니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pm2 <span class="built_in">log</span></span><br></pre></td></tr></table></figure>
 
-<img src="/2019/08/26/openjdk/6.JPG">
+<p>이 상태에서 코드를 수정하면 자동적으로 pm2가 재시작하면서 수정된 코드가 반영됩니다.</p>
+<figure class="highlight javascript"><figcaption><span>app.js</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app.listen(port, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'test1 start'</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'modify code'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<br>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PM2      | Change detected on path app.js <span class="keyword">for</span> app test1 - restarting</span><br><span class="line">PM2      | Stopping app:test1 id:0</span><br><span class="line">PM2      | App [test1:0] exited with code [1] via signal [SIGINT]</span><br><span class="line">PM2      | pid=412 msg=process killed</span><br><span class="line">PM2      | App [test1:0] starting <span class="keyword">in</span> -fork mode-</span><br><span class="line">PM2      | App [test1:0] online</span><br><span class="line">0|test1  | test1 start</span><br><span class="line">0|test1  | modify code</span><br></pre></td></tr></table></figure>
 
-<img src="/2019/08/26/openjdk/7.JPG">
+<p>그런데 pm2 stop을 하고 다시 start하면 watch가 동작하지 않아서 코드를 수정해도 restart가 일어나지 않습니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pm2 stop ecosystem.config.js // 정지 후</span><br><span class="line">pm2 start ecosystem.config.js // 다시 시작</span><br></pre></td></tr></table></figure>
 
-<br>
+<h2 id="3-해결"><a href="#3-해결" class="headerlink" title="3. 해결"></a>3. 해결</h2><p>좀 더 세련된 방법이 있을지는 모르겠으나 어쨌든 제가 찾아서 해결한 방법은 다음과 같습니다.</p>
+<blockquote><p><code>pm2 stop</code>후 <code>pm2 delete</code>를 통해 프로세스를 아예 삭제 후 start하면 watch가 정상적으로 동작합니다.</p>
+</blockquote>
 
-<img src="/2019/08/26/openjdk/8.JPG">
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pm2 stop ecosystem.config.js &amp;&amp; pm2 delete ecosystem.config.js // 정지 및 삭제</span><br><span class="line">pm2 start ecosystem.config.js // 다시 시작</span><br></pre></td></tr></table></figure>
 
-<p>JAVA_HOME 생성 후 Path를 수정해줍니다.</p>
-<p>Path 선택 후 편집 - 새로 만들기</p>
-<img src="/2019/08/26/openjdk/9.JPG">
-
-<br>
-
-<img src="/2019/08/26/openjdk/10.JPG">
-
-<h2 id="3-테스트"><a href="#3-테스트" class="headerlink" title="3. 테스트"></a>3. 테스트</h2><p>세팅한 JAVA_HOME을 변경해 가면서 cmd 창에서 아래 명령어를 실행했습니다.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br><span class="line">javac -version</span><br></pre></td></tr></table></figure>
-
-<img src="/2019/08/26/openjdk/11.JPG">
-
-<br>
-
-<img src="/2019/08/26/openjdk/12.JPG">
-
-<p>8버전과 10버전 모두 정상적으로 세팅되는 것을 확인했습니다.</p>
+<h2 id="※-참고"><a href="#※-참고" class="headerlink" title="※ 참고"></a>※ 참고</h2><ul>
+<li><a href="https://pm2.keymetrics.io/docs/usage/application-declaration/" target="_blank" rel="noopener">https://pm2.keymetrics.io/docs/usage/application-declaration/</a></li>
+<li><a href="https://github.com/Unitech/pm2/issues/3578" target="_blank" rel="noopener">https://github.com/Unitech/pm2/issues/3578</a></li>
+</ul>
 
         </div>
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -266,7 +250,7 @@ ga('send', 'pageview');
 
 
 
-    <a data-url="https://postlude.github.io/2019/08/26/openjdk/" data-id="ckjo4zbrz001dpovy2uvs2zlb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://postlude.github.io/2021/01/08/pm2-watch/" data-id="ckjo4zbs1001hpovygcpyynho" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -364,20 +348,10 @@ ga('send', 'pageview');
         
 <nav id="article-nav">
     
-        <a href="/2020/02/12/docker-trouble-shooting/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">newer</strong>
-        <p class="article-nav-title">
-        
-            도커 버전 업그레이드 후 Trouble Shooting
-        
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
     
-    
-        <a href="/2019/08/20/ngrok/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2021/01/01/2020-review/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">older</strong>
-        <p class="article-nav-title">ngrok 사용방법</p>
+        <p class="article-nav-title">간단하게 쓰는 2020년 회고</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
@@ -511,7 +485,7 @@ ga('send', 'pageview');
     var disqus_shortname = 'postlude';
     
     
-    var disqus_url = 'https://postlude.github.io/2019/08/26/openjdk/';
+    var disqus_url = 'https://postlude.github.io/2021/01/08/pm2-watch/';
     
     (function() {
     var dsq = document.createElement('script');
