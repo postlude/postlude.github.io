@@ -247,7 +247,7 @@ AWS console에 접속해 확인해보면 t3a.medium 으로 ec2 인스턴스가 2
 
 또한 처음에 만든 key 파일을 이용해 생성된 ec2 인스턴스(master, worker node)에도 접속할 수 있습니다.
 
-다음 포스팅에서는 추가적인 세팅 및 테스트를 해보도록 하겠습니다.
+{% post_link kops-k8s-deploy-nginx 다음 포스트 %}에서는 추가적인 세팅 및 테스트를 해보도록 하겠습니다.
 
 ## ※ 비용
 
