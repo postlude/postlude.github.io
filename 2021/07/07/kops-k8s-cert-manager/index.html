@@ -6,28 +6,28 @@
     
 
     
-    <title>쿠버네티스 클러스터에 nginx pod 띄우기 | Postlude&#39;s IT Blog</title>
+    <title>kops 쿠버네티스 클러스터에 cert-manager 설치하기 | Postlude&#39;s IT Blog</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
         <meta name="keywords" content="k8s,kops">
     
-    <meta name="description" content="지난 포스트에서 kops로 kubernetes 클러스터를 구축했었습니다. 이번에는 해당 클러스터에 간단한 nginx 를 띄워보도록 하겠습니다. 1. 클러스터 세팅먼저 클러스터에 몇 가지 세팅을 해주도록 하겠습니다.(이 부분들은 반드시 필요한 것은 아닙니다.) 1.1. 보안 그룹 변경우선, 저와 동일하게 public 네트워크 형태로 클러스터를 구축하셨다면 쿠">
+    <meta name="description" content="지난 포스트에서 ingress를 세팅하고 접속하는 것까지 진행했습니다. 이번에는 클러스터에 cert-manager addon을 설치하는 작업을 진행하도록 하겠습니다.이 작업을 마치면 ingress를 통해 접속시 https로 접속이 가능해집니다. 1. addon 설치기본적으로 kops 문서 참고하여 진행하겠습니다. 먼저 아래 명령어를 통해 cert-manag">
 <meta name="keywords" content="k8s,kops">
 <meta property="og:type" content="article">
-<meta property="og:title" content="쿠버네티스 클러스터에 nginx pod 띄우기">
-<meta property="og:url" content="https://postlude.github.io/2021/07/03/kops-k8s-deploy-nginx/index.html">
+<meta property="og:title" content="kops 쿠버네티스 클러스터에 cert-manager 설치하기">
+<meta property="og:url" content="https://postlude.github.io/2021/07/07/kops-k8s-cert-manager/index.html">
 <meta property="og:site_name" content="Postlude&#39;s IT Blog">
-<meta property="og:description" content="지난 포스트에서 kops로 kubernetes 클러스터를 구축했었습니다. 이번에는 해당 클러스터에 간단한 nginx 를 띄워보도록 하겠습니다. 1. 클러스터 세팅먼저 클러스터에 몇 가지 세팅을 해주도록 하겠습니다.(이 부분들은 반드시 필요한 것은 아닙니다.) 1.1. 보안 그룹 변경우선, 저와 동일하게 public 네트워크 형태로 클러스터를 구축하셨다면 쿠">
+<meta property="og:description" content="지난 포스트에서 ingress를 세팅하고 접속하는 것까지 진행했습니다. 이번에는 클러스터에 cert-manager addon을 설치하는 작업을 진행하도록 하겠습니다.이 작업을 마치면 ingress를 통해 접속시 https로 접속이 가능해집니다. 1. addon 설치기본적으로 kops 문서 참고하여 진행하겠습니다. 먼저 아래 명령어를 통해 cert-manag">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://postlude.github.io/2021/07/03/kops-k8s-deploy-nginx/1.jpg">
-<meta property="og:updated_time" content="2021-07-03T16:39:18.350Z">
+<meta property="og:image" content="https://postlude.github.io/2021/07/07/kops-k8s-cert-manager/1.JPG">
+<meta property="og:updated_time" content="2021-07-10T10:36:08.896Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="쿠버네티스 클러스터에 nginx pod 띄우기">
-<meta name="twitter:description" content="지난 포스트에서 kops로 kubernetes 클러스터를 구축했었습니다. 이번에는 해당 클러스터에 간단한 nginx 를 띄워보도록 하겠습니다. 1. 클러스터 세팅먼저 클러스터에 몇 가지 세팅을 해주도록 하겠습니다.(이 부분들은 반드시 필요한 것은 아닙니다.) 1.1. 보안 그룹 변경우선, 저와 동일하게 public 네트워크 형태로 클러스터를 구축하셨다면 쿠">
-<meta name="twitter:image" content="https://postlude.github.io/2021/07/03/kops-k8s-deploy-nginx/1.jpg">
+<meta name="twitter:title" content="kops 쿠버네티스 클러스터에 cert-manager 설치하기">
+<meta name="twitter:description" content="지난 포스트에서 ingress를 세팅하고 접속하는 것까지 진행했습니다. 이번에는 클러스터에 cert-manager addon을 설치하는 작업을 진행하도록 하겠습니다.이 작업을 마치면 ingress를 통해 접속시 https로 접속이 가능해집니다. 1. addon 설치기본적으로 kops 문서 참고하여 진행하겠습니다. 먼저 아래 명령어를 통해 cert-manag">
+<meta name="twitter:image" content="https://postlude.github.io/2021/07/07/kops-k8s-cert-manager/1.JPG">
     
-    <link rel="canonical" href="https://postlude.github.io/2021/07/03/kops-k8s-deploy-nginx/">
+    <link rel="canonical" href="https://postlude.github.io/2021/07/07/kops-k8s-cert-manager/">
 
     
 
@@ -164,14 +164,14 @@ ga('send', 'pageview');
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
-                            <article id="post-kops-k8s-deploy-nginx" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-kops-k8s-cert-manager" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        쿠버네티스 클러스터에 nginx pod 띄우기
+        kops 쿠버네티스 클러스터에 cert-manager 설치하기
         </h1>
     
 
@@ -181,8 +181,8 @@ ga('send', 'pageview');
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/2021/07/03/kops-k8s-deploy-nginx/" class="article-date">
-            <time datetime="2021-07-03T08:53:54.000Z" itemprop="datePublished">2021-07-03</time>
+        <a href="/2021/07/07/kops-k8s-cert-manager/" class="article-date">
+            <time datetime="2021-07-07T14:18:19.000Z" itemprop="datePublished">2021-07-07</time>
         </a>
     </div>
 
@@ -198,61 +198,76 @@ ga('send', 'pageview');
         
         
         <div class="article-entry" itemprop="articleBody">
-            <a href="/2021/06/22/k8s-by-kops/" title="지난 포스트">지난 포스트</a>에서 kops로 kubernetes 클러스터를 구축했었습니다.
-<p>이번에는 해당 클러스터에 간단한 nginx 를 띄워보도록 하겠습니다.</p>
-<h2 id="1-클러스터-세팅"><a href="#1-클러스터-세팅" class="headerlink" title="1. 클러스터 세팅"></a>1. 클러스터 세팅</h2><p>먼저 클러스터에 몇 가지 세팅을 해주도록 하겠습니다.<br>(이 부분들은 반드시 필요한 것은 아닙니다.)</p>
-<h3 id="1-1-보안-그룹-변경"><a href="#1-1-보안-그룹-변경" class="headerlink" title="1.1. 보안 그룹 변경"></a>1.1. 보안 그룹 변경</h3><p>우선, 저와 동일하게 public 네트워크 형태로 클러스터를 구축하셨다면 쿠버네티스의 모든 master, worker node가 아래와 같이 모든 ip에 대해 ssh 접속이 가능하도록 되어있을겁니다.</p>
-<img src="/2021/07/03/kops-k8s-deploy-nginx/1.jpg">
-
-<p>이 부분을 저희 집과 bastion 서버에서만 접속이 가능하도록 수정하도록 하겠습니다.</p>
-<img src="/2021/07/03/kops-k8s-deploy-nginx/2.jpg">
-
-<h3 id="1-2-백업-설정-변경"><a href="#1-2-백업-설정-변경" class="headerlink" title="1.2. 백업 설정 변경"></a>1.2. 백업 설정 변경</h3><p>다음은 백업에 관한 설정입니다.</p>
-<a href="https://kops.sigs.k8s.io/operations/etcd_backup_restore_encryption/#taking-backups" target="_blank" rel="noopener">문서</a>에 따르면 hourly backup은 1주일간 유지되며 daily backup은 1년간 유지된다고 합니다.
-<p>백업 내용은 클러스터 구축시 만들었던 S3에 저장됩니다.</p>
-<p>저는 개인적으로 클러스터를 구축한 것이고 (아마도) 백업 파일이 많아지면 S3 비용 부담이 생길지도 몰라서 이 기간을 줄이도록 하겠습니다.</p>
-<a href="https://kops.sigs.k8s.io/cluster_spec/#etcd-backups-retention" target="_blank" rel="noopener">이 문서</a>를 참고했습니다.
-
-<p>bastion 서버에서 아래 명령어를 입력합니다.</p>
+            <a href="/2021/07/05/kops-k8s-ingress/" title="지난 포스트">지난 포스트</a>에서 ingress를 세팅하고 접속하는 것까지 진행했습니다.
+<p>이번에는 클러스터에 cert-manager addon을 설치하는 작업을 진행하도록 하겠습니다.<br>이 작업을 마치면 ingress를 통해 접속시 https로 접속이 가능해집니다.</p>
+<h2 id="1-addon-설치"><a href="#1-addon-설치" class="headerlink" title="1. addon 설치"></a>1. addon 설치</h2><p>기본적으로 <a href="https://kops.sigs.k8s.io/addons/#cert-manager" target="_blank" rel="noopener">kops 문서</a> 참고하여 진행하겠습니다.</p>
+<p>먼저 아래 명령어를 통해 cert-manager 를 활성화합니다.</p>
 <figure class="highlight bash"><figcaption><span>edit cluster</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kops edit cluster</span><br></pre></td></tr></table></figure>
 
-<p>그러면 클러스터 설정을 세팅할 수 있도록 나올텐데요, 아래와 같이 변경하도록 하겠습니다.</p>
-<figure class="highlight bash"><figcaption><span>set backup</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">etcdClusters:</span><br><span class="line">- cpuRequest: 200m</span><br><span class="line">  etcdMembers:</span><br><span class="line">  - encryptedVolume: <span class="literal">true</span></span><br><span class="line">    instanceGroup: master-ap-northeast-2a</span><br><span class="line">    name: a</span><br><span class="line">  memoryRequest: 100Mi</span><br><span class="line">  name: main</span><br><span class="line">  <span class="comment"># ===== 추가 =====</span></span><br><span class="line">  manager:</span><br><span class="line">    env:</span><br><span class="line">    - name: ETCD_MANAGER_HOURLY_BACKUPS_RETENTION</span><br><span class="line">      value: 1d</span><br><span class="line">    - name: ETCD_MANAGER_DAILY_BACKUPS_RETENTION</span><br><span class="line">      value: 7d</span><br><span class="line">  <span class="comment"># ===== 추가 =====</span></span><br><span class="line">- cpuRequest: 100m</span><br><span class="line">  etcdMembers:</span><br><span class="line">  - encryptedVolume: <span class="literal">true</span></span><br><span class="line">    instanceGroup: master-ap-northeast-2a</span><br><span class="line">    name: a</span><br><span class="line">  memoryRequest: 100Mi</span><br><span class="line">  name: events</span><br><span class="line">  <span class="comment"># ===== 추가 =====</span></span><br><span class="line">  manager:</span><br><span class="line">    env:</span><br><span class="line">    - name: ETCD_MANAGER_HOURLY_BACKUPS_RETENTION</span><br><span class="line">      value: 1d</span><br><span class="line">    - name: ETCD_MANAGER_DAILY_BACKUPS_RETENTION</span><br><span class="line">      value: 7d</span><br><span class="line">  <span class="comment"># ===== 추가 =====</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><figcaption><span>set cert-manager addon</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">spec:</span><br><span class="line">  certManager:</span><br><span class="line">    enabled: <span class="literal">true</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
-<p>edit 명령어는 설정자체를 저장한 것이고 이것을 실제로 적용하려면 아래 명령어를 실행해야 합니다.</p>
+<p>이후 update 명령어를 통해 변경될 설정을 적용합니다.</p>
 <figure class="highlight bash"><figcaption><span>update cluster</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kops update cluster --yes</span><br></pre></td></tr></table></figure>
 
-<h2 id="2-샘플-nginx-pod-생성"><a href="#2-샘플-nginx-pod-생성" class="headerlink" title="2. 샘플 nginx pod 생성"></a>2. 샘플 nginx pod 생성</h2><p>이제 테스트 네임스페이스를 만들어서 nginx pod 를 띄워보도로 하겠습니다.</p>
-<p>먼저 아래 명령어로 테스트 네임스페이스를 만듭니다.</p>
-<figure class="highlight bash"><figcaption><span>create namespace</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create ns <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<p>적용이 완료되면 <strong>kube-system</strong> 네임스페이스에 cert-manager 관련 pod가 뜬 것을 확인할 수 있습니다.</p>
+<img src="/2021/07/07/kops-k8s-cert-manager/1.JPG">
 
-<p>그리고 nginx pod를 띄우기 위한 deployment yaml 파일을 생성합니다.</p>
-<a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment" target="_blank" rel="noopener">kubernetes 문서</a>에서 참고했습니다.
-<p>다만, 저는 예시로 샘플을 만들기 위함이므로 pod 개수는 1개로 생성하도록 하겠습니다.</p>
-<figure class="highlight bash"><figcaption><span>nginx-deployment.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx-deployment</span><br><span class="line">  labels:</span><br><span class="line">    app: nginx</span><br><span class="line">spec:</span><br><span class="line">  replicas: 1</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: nginx</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: nginx</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: nginx</span><br><span class="line">        image: nginx:1.14.2</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 80</span><br></pre></td></tr></table></figure>
+<h2 id="2-issuer-생성"><a href="#2-issuer-생성" class="headerlink" title="2. issuer 생성"></a>2. issuer 생성</h2><p>https 통신을 위해서는 인증서가 필요합니다. 이 인증서를 무료로 발급해주는 Let’s Encrypt를 사용하도록 하겠습니다.</p>
+<a href="https://cert-manager.io/docs/tutorials/acme/ingress/#step-6-configure-let-s-encrypt-issuer" target="_blank" rel="noopener">cert manager 문서</a>에 나와 있는 방법에 따라 진행하도록 하겠습니다.
 
-<p>명령어를 통해 deployment를 생성합니다.</p>
-<figure class="highlight bash"><figcaption><span>create deployment</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f ./nginx-deployment.yaml -n <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<p>아래와 같이 staging-issuer.yaml 파일을 작성합니다.</p>
+<figure class="highlight bash"><figcaption><span>staging-issuer.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: cert-manager.io/v1</span><br><span class="line">kind: ClusterIssuer</span><br><span class="line">metadata:</span><br><span class="line">  name: letsencrypt-staging</span><br><span class="line">spec:</span><br><span class="line">  acme:</span><br><span class="line">    server: https://acme-staging-v02.api.letsencrypt.org/directory</span><br><span class="line">    email: [이메일 주소]</span><br><span class="line">    privateKeySecretRef:</span><br><span class="line">      name: letsencrypt-staging</span><br><span class="line">    solvers:</span><br><span class="line">    - http01:</span><br><span class="line">        ingress:</span><br><span class="line">          class:  nginx</span><br></pre></td></tr></table></figure>
 
-<img src="/2021/07/03/kops-k8s-deploy-nginx/3.JPG">
+<p>문서와 다른 점은 <code>kind: Issuer</code>가 아닌 <code>kind: ClusterIssuer</code> 라는 것입니다.<br>Issuer는 네임스페이스에 포함된 리소스라 네임스페이스가 다른 ingress에서는 해당 Issuer를 사용하지 못합니다.<br>따라서 ClusterIssuer로 만들어 모든 네임스페이스에서 사용이 가능하도록 하겠습니다.</p>
+<p>아래 명령어로 생성합니다.</p>
+<figure class="highlight bash"><figcaption><span>create clusterissuer</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f ./staging-issuer.yaml</span><br></pre></td></tr></table></figure>
 
-<p>kubectl 명령어를 통해 deployment와 pod가 생성된 것을 확인할 수 있습니다.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl get deploy -n <span class="built_in">test</span></span><br><span class="line">kubectl get po -n <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<p>생성 후 <code>kubectl describe clusterissuers letsencrypt-staging</code> 명령어를 통해 확인했을때 맨아래에 다음과 같이 Status: True라고 나오면 정상적으로 생성된 것입니다.</p>
+<img src="/2021/07/07/kops-k8s-cert-manager/2.JPG">
 
-<img src="/2021/07/03/kops-k8s-deploy-nginx/4.JPG">
+<h2 id="3-ingress-생성"><a href="#3-ingress-생성" class="headerlink" title="3. ingress 생성"></a>3. ingress 생성</h2><p>이전에 test 네임스페이스에 만든 ingress는 삭제하도록 하겠습니다.</p>
+<figure class="highlight bash"><figcaption><span>delete ingress</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete ingress <span class="built_in">test</span>-ingress -n <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="3-서비스-생성"><a href="#3-서비스-생성" class="headerlink" title="3. 서비스 생성"></a>3. 서비스 생성</h2><p>이렇게 생성한 pod에 외부에서 접속하기 위해서는 서비스가 필요합니다.<br>아래 명령어를 통해 서비스를 생성합니다. 외부에서 접속하기 위함이므로 NodePort 타입으로 생성하겠습니다.</p>
-<figure class="highlight bash"><figcaption><span>create service</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl expose deployment nginx-deployment -n <span class="built_in">test</span> --<span class="built_in">type</span> NodePort</span><br><span class="line">kubectl get svc -n <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<p>그리고 아래와 같은 ingress를 생성하도록 하겠습니다. <a href="https://cert-manager.io/docs/tutorials/acme/ingress/#step-7-deploy-a-tls-ingress-resource" target="_blank" rel="noopener">이 문서</a>를 참고했습니다.</p>
+<figure class="highlight bash"><figcaption><span>cert-test-ingress.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: networking.k8s.io/v1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  name: cert-test-ingress</span><br><span class="line">  annotations:</span><br><span class="line">    kubernetes.io/ingress.class: <span class="string">"nginx"</span></span><br><span class="line">    cert-manager.io/cluster-issuer: <span class="string">"letsencrypt-staging"</span></span><br><span class="line">spec:</span><br><span class="line">  tls:</span><br><span class="line">  - hosts:</span><br><span class="line">    - [ELB에 연결된 HOST 이름]</span><br><span class="line">    secretName: letsencrypt-staging</span><br><span class="line">  rules:</span><br><span class="line">  - host: [ELB에 연결된 HOST 이름]</span><br><span class="line">    http:</span><br><span class="line">      paths:</span><br><span class="line">      - path: /</span><br><span class="line">        pathType: Prefix</span><br><span class="line">        backend:</span><br><span class="line">          service:</span><br><span class="line">            name: [<span class="built_in">test</span> 네임스페이스의 서비스 이름]</span><br><span class="line">            port:</span><br><span class="line">              number: 80</span><br></pre></td></tr></table></figure>
 
-<p>저는 worker node가 1개 뿐이고 NodePort 타입으로 생성했으니 worker node ec2 ip에 생성된 NodePort로 접속이 가능합니다. 그런데 막상 접속해보니,</p>
-<img src="/2021/07/03/kops-k8s-deploy-nginx/5.JPG">
+<p>저는 cluster issuer로 만들었기 때문에 annotation이 issuer가 아닌 cluster-issuer로 작성했습니다.<br>아래 명령어로 생성하겠습니다.</p>
+<figure class="highlight bash"><figcaption><span>create ingress</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f ./cert-test-ingress.yaml -n <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
 
-<p>접속이 되지 않았습니다. <a href="https://stackoverflow.com/questions/45543694/kubernetes-cluster-on-aws-with-kops-nodeport-service-unavailable" target="_blank" rel="noopener">구글링</a>을 통해 이유를 찾을 수 있었는데요, 원인은 간단합니다.<br>kops로 생성한 kubernetes 클러스터의 ec2 worker node는 NodePort 타입의 서비스에서 사용하는 범위의 포트(30000-32767)를 자동으로 오픈시켜주지 않기 때문입니다.</p>
-<p>포트를 열어주기 위해 ec2 콘솔로 접속해 worker node ec2의 보안그룹을 수정하도록 하겠습니다.</p>
-<img src="/2021/07/03/kops-k8s-deploy-nginx/6.JPG">
+<p>아래 명령어로 확인했을때 마지막 부분에 Status: True라고 나오면 정상적으로 생성된 것입니다.<br>(몇 초 가량 시간이 걸릴 수 있습니다.)</p>
+<figure class="highlight bash"><figcaption><span>describe ingress</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe certificate letsencrypt-staging -n <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
 
-<p>이렇게 수정하면 정상적으로 접속되는 것을 확인할 수 있습니다.</p>
-<img src="/2021/07/03/kops-k8s-deploy-nginx/7.JPG">
+<p>만약 위 yaml 파일에서 path에 <code>/</code>가 아닌 다른 경로를 주었다면 annotation에 <code>ingress.kubernetes.io/rewrite-target: /</code>을 추가하면 됩니다.</p>
+<figure class="highlight bash"><figcaption><span>cert-test-ingress.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: networking.k8s.io/v1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  name: cert-test-ingress</span><br><span class="line">  annotations:</span><br><span class="line">    kubernetes.io/ingress.class: <span class="string">"nginx"</span></span><br><span class="line">    cert-manager.io/cluster-issuer: <span class="string">"letsencrypt-staging"</span></span><br><span class="line">    ingress.kubernetes.io/rewrite-target: /</span><br><span class="line">spec:</span><br><span class="line">  tls:</span><br><span class="line">  - hosts:</span><br><span class="line">    - [ELB에 연결된 HOST 이름]</span><br><span class="line">    secretName: letsencrypt-staging</span><br><span class="line">  rules:</span><br><span class="line">  - host: [ELB에 연결된 HOST 이름]</span><br><span class="line">    http:</span><br><span class="line">      paths:</span><br><span class="line">      - path: /<span class="built_in">test</span></span><br><span class="line">        pathType: Prefix</span><br><span class="line">        backend:</span><br><span class="line">          service:</span><br><span class="line">            name: [<span class="built_in">test</span> 네임스페이스의 서비스 이름]</span><br><span class="line">            port:</span><br><span class="line">              number: 80</span><br></pre></td></tr></table></figure>
+
+<p>ELB에 연결한 도메인에 접속하면 아래와 같이 정상적으로 접속되는 것을 알 수 있습니다.</p>
+<img src="/2021/07/07/kops-k8s-cert-manager/3.jpg">
+
+<h2 id="4-prod-issuer-적용"><a href="#4-prod-issuer-적용" class="headerlink" title="4. prod issuer 적용"></a>4. prod issuer 적용</h2><p>위의 과정까지 거치면 정상적으로 접속은 됩니다. 하지만 여전히 인증서가 유효하지 않는 것으로 나옵니다.<br>이유는 Let’s Encrypt 문서에서 확인할 수 있었습니다.</p>
+<blockquote><p>Let’s Encrypt는 속도 제한에 영향을 주지 않고 인증서 요청을 테스트할 수 있는 스테이징 API를 제공합니다.<br>스테이징 환경에서 생성된 인증서는 공개적으로 신뢰되지 않습니다.</p>
+<footer><strong>Let's Encrypt</strong><cite><a href="https://letsencrypt.org/ko/docs/glossary/#def-staging" target="_blank" rel="noopener">def-staging</a></cite></footer></blockquote>
+
+<p>따라서 운영 환경에서 쓸 수 있는 issuer를 생성하면 됩니다.<br>과정의 위의 staging issuer를 만들고 적용하는 과정과 동일합니다.</p>
+<p>아래와 같이 prod-issuer.yaml 파일을 생성합니다.</p>
+<figure class="highlight bash"><figcaption><span>prod-issuer.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: cert-manager.io/v1</span><br><span class="line">kind: ClusterIssuer</span><br><span class="line">metadata:</span><br><span class="line">  name: letsencrypt-prod</span><br><span class="line">spec:</span><br><span class="line">  acme:</span><br><span class="line">    server: https://acme-v02.api.letsencrypt.org/directory</span><br><span class="line">    email: [이메일]</span><br><span class="line">    privateKeySecretRef:</span><br><span class="line">      name: letsencrypt-prod</span><br><span class="line">    solvers:</span><br><span class="line">    - http01:</span><br><span class="line">        ingress:</span><br><span class="line">          class:  nginx</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><figcaption><span>create prod issuer</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f ./prod-issuer.yaml</span><br></pre></td></tr></table></figure>
+
+<p>아래 명령어를 통해 정상적으로 생성되었는지 체크합니다.</p>
+<figure class="highlight bash"><figcaption><span>describe prod issuer</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe clusterissuer letsencrypt-prod</span><br></pre></td></tr></table></figure>
+
+<p>test 네임스페이스의 ingress를 수정합니다.</p>
+<figure class="highlight bash"><figcaption><span>edit ingress</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl edit ingress cert-test-ingress -n <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><figcaption><span>cert-test-ingress</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    cert-manager.io/cluster-issuer: letsencrypt-prod</span><br><span class="line">...</span><br><span class="line">secretName: letsencrypt-prod</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>이렇게 하면 동일하게 접속했을때 staging 일때와 다르게 https 인증서 경고가 뜨지 않는 것을 확인할 수 있습니다.</p>
+<img src="/2021/07/07/kops-k8s-cert-manager/4.jpg">
+
+<p>이렇게 모든 설정을 마쳤습니다. 쿠버네티스에 배포되는 앱이 추가되면 ingress rule을 추가해 적용하면 됩니다.</p>
+<h2 id="※-참고-문서"><a href="#※-참고-문서" class="headerlink" title="※ 참고 문서"></a>※ 참고 문서</h2><ul>
+<li><a href="https://cert-manager.io/docs/usage/ingress/" target="_blank" rel="noopener">ingress annotaion 관련</a></li>
+</ul>
 
         </div>
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -271,7 +286,7 @@ ga('send', 'pageview');
 
 
 
-    <a data-url="https://postlude.github.io/2021/07/03/kops-k8s-deploy-nginx/" data-id="ckqxmuihg00155svyc77asxks" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://postlude.github.io/2021/07/07/kops-k8s-cert-manager/" data-id="ckqxmuihd000z5svyy8e9mubw" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -369,20 +384,10 @@ ga('send', 'pageview');
         
 <nav id="article-nav">
     
-        <a href="/2021/07/05/kops-k8s-ingress/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">newer</strong>
-        <p class="article-nav-title">
-        
-            kops로 구축한 k8s 클러스터에 ingress 설정하기
-        
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
     
-    
-        <a href="/2021/06/22/k8s-by-kops/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2021/07/05/kops-k8s-ingress/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">older</strong>
-        <p class="article-nav-title">kops를 이용해 쿠버네티스 클러스터 구축하기</p>
+        <p class="article-nav-title">kops로 구축한 k8s 클러스터에 ingress 설정하기</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
@@ -516,7 +521,7 @@ ga('send', 'pageview');
     var disqus_shortname = 'postlude';
     
     
-    var disqus_url = 'https://postlude.github.io/2021/07/03/kops-k8s-deploy-nginx/';
+    var disqus_url = 'https://postlude.github.io/2021/07/07/kops-k8s-cert-manager/';
     
     (function() {
     var dsq = document.createElement('script');
