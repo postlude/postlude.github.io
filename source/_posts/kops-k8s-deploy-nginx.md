@@ -98,7 +98,7 @@ edit 명령어는 설정자체를 저장한 것이고 이것을 실제로 적용
 {% link kubernetes 문서 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment %}에서 참고했습니다.
 다만, 저는 예시로 샘플을 만들기 위함이므로 pod 개수는 1개로 생성하도록 하겠습니다.
 
-{% codeblock nginx-deployment.yaml lang:Bash %}
+{% codeblock nginx-deployment.yaml lang:yaml %}
     apiVersion: apps/v1
     kind: Deployment
     metadata:

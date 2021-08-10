@@ -44,7 +44,7 @@ ingress는 간단히 설명하자면 kubernetes의 모든 요청을 설정한 �
 
 우선, yaml파일의 `v1beta1`로 되어 있는 부분을 전부 `v1`으로 변경합니다. 또한 저는 ingress-nginx replicas를 1로 줄이도록 하겠습니다.
 
-{% codeblock modify yaml lang:Bash %}
+{% codeblock modify yaml lang:yaml %}
     kind: Deployment
     apiVersion: apps/v1
     metadata:
@@ -92,7 +92,7 @@ AWS 콘솔의 EC2에서 로드밸런서에서 확인할 수 있으며 ELB는 과
 
 그리고 {% link kubernetes 문서 https://kubernetes.io/docs/concepts/services-networking/ingress/#the-ingress-resource %}에서 기본적인 ingress yaml 파일을 가져와 아래와 같이 수정했습니다.
 
-{% codeblock test-ingress.yaml lang:Bash %}
+{% codeblock test-ingress.yaml lang:yaml %}
     apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:

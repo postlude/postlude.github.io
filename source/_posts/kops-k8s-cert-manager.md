@@ -48,7 +48,7 @@ https 통신을 위해서는 인증서가 필요합니다. 이 인증서를 무�
 
 아래와 같이 staging-issuer.yaml 파일을 작성합니다.
 
-{% codeblock staging-issuer.yaml lang:Bash %}
+{% codeblock staging-issuer.yaml lang:yaml %}
     apiVersion: cert-manager.io/v1
     kind: ClusterIssuer
     metadata:
@@ -89,7 +89,7 @@ Issuer는 네임스페이스에 포함된 리소스라 네임스페이스가 다
 
 그리고 아래와 같은 ingress를 생성하도록 하겠습니다. {% link 이 문서 https://cert-manager.io/docs/tutorials/acme/ingress/#step-7-deploy-a-tls-ingress-resource %}를 참고했습니다.
 
-{% codeblock cert-test-ingress.yaml lang:Bash %}
+{% codeblock cert-test-ingress.yaml lang:yaml %}
     apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:
@@ -131,7 +131,7 @@ Issuer는 네임스페이스에 포함된 리소스라 네임스페이스가 다
 
 만약 위 yaml 파일에서 path에 `/`가 아닌 다른 경로를 주었다면 annotation에 `ingress.kubernetes.io/rewrite-target: /`을 추가하면 됩니다.
 
-{% codeblock cert-test-ingress.yaml lang:Bash %}
+{% codeblock cert-test-ingress.yaml lang:yaml %}
     apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:
@@ -177,7 +177,7 @@ ELB에 연결한 도메인에 접속하면 아래와 같이 정상적으로 접�
 
 아래와 같이 prod-issuer.yaml 파일을 생성합니다.
 
-{% codeblock prod-issuer.yaml lang:Bash %}
+{% codeblock prod-issuer.yaml lang:yaml %}
     apiVersion: cert-manager.io/v1
     kind: ClusterIssuer
     metadata:
