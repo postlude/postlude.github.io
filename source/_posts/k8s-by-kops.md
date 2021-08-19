@@ -258,7 +258,16 @@ AWS console에 접속해 확인해보면 t3a.medium 으로 ec2 인스턴스가 2
 - Bastion 서버(t2.micro) : $10.368
 - master(t3a.medium) : $33.696
 - worker node(t3a.medium) : $33.696
-- +Load Balancer, EBS, S3 등에서 청구되는 비용
-- 총합 : 월 $77.76 + a
+- ~~+Load Balancer, EBS, S3 등에서 청구되는 비용~~
+- ~~총합 : 월 $77.76 + a~~
+- EBS 볼륨(gp3 * 120GB + gp2 * 10GB) : $12.08
+- Load Balancer : $16
+- +S3, Route53, 세금 등
 
-경험상 한 달에 약 $100 정도 청구되었습니다.
+~~경험상 한 달에 약 $100 정도 청구되었습니다.~~
+
+제가 간과한 것이 EBS 볼륨으로 청구되는 금액이었습니다.
+아무런 세팅을 하지 않은 저의 경우 master에 etcd용으로 gp3 20GB씩 2개가 생성되었습니다.
+거기에 더해 master와 node의 볼륨으로 쓰는 것도 gp3로 생성되었으며 Bastion에서 쓰는 볼륨은 gp2로 생성되었습니다.
+
+여기에 LB 요금과 세금까지 더하면 한 달에 $120 내외로 비용이 청구됩니다.
