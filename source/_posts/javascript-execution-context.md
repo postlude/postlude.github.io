@@ -273,3 +273,4 @@ multiply 함수가 실행되면 g 변수에 값을 할당하고 계산 값을 �
 - {% link Understanding Execution Context and Execution Stack in Javascript https://blog.bitsrc.io/understanding-execution-context-and-execution-stack-in-javascript-1c9ea8642dd0 %}
 - {% link [JS] 자바스크립트의 The Execution Context (실행 컨텍스트) 와 Hoisting (호이스팅) https://velog.io/@imacoolgirlyo/JS-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%9D%98-Hoisting-The-Execution-Context-%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85-%EC%8B%A4%ED%96%89-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-6bjsmmlmgy %}
 - {% link Execution Context https://medium.com/@snaag.dev/execution-context-d53a258c7415 %}
+- {% link [JS] Execution Context(실행 컨텍스트) https://baeharam.netlify.app/posts/javascript/execution-context %}
