@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>Kubernetes에 MySQL Pod 띄우기 | Postlude&#39;s IT Blog</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="k8s,db" />
+    
+    <meta name="description" content="이번 포스트에서는 kubernetes 위에 mysql pod를 띄우는 일을 정리해보도록 하겠습니다. 1. 기본 Deployment 작성처음에는 가장 기본적인 deployment를 작성해보도록 하겠습니다. 아래와 같이 작성하면 됩니다. deployment.yaml123456789101112131415161718192021222324apiVersion: app">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes에 MySQL Pod 띄우기">
+<meta property="og:url" content="https://postlude.github.io/2021/08/10/k8s-mysql/index.html">
+<meta property="og:site_name" content="Postlude&#39;s IT Blog">
+<meta property="og:description" content="이번 포스트에서는 kubernetes 위에 mysql pod를 띄우는 일을 정리해보도록 하겠습니다. 1. 기본 Deployment 작성처음에는 가장 기본적인 deployment를 작성해보도록 하겠습니다. 아래와 같이 작성하면 됩니다. deployment.yaml123456789101112131415161718192021222324apiVersion: app">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-10T07:56:03.000Z">
+<meta property="article:modified_time" content="2021-11-07T08:15:42.043Z">
+<meta property="article:author" content="HSD">
+<meta property="article:tag" content="k8s">
+<meta property="article:tag" content="db">
+<meta name="twitter:card" content="summary">
+    
+    <link rel="canonical" href="https://postlude.github.io/2021/08/10/k8s-mysql/"/>
+
+    
+
+    
+        <link rel="icon" href="/assets/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+    
+<script src="/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-131293106-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/font-nanum/1.0/nanumbarungothic/nanumbarungothic.css">
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/rss2.xml" title="Postlude's IT Blog" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">개발 블로그</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/db/">DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/hexo/">Hexo</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/java/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/javascript/">JavaScript</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/k8s/">K8S</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/k8s/">K8S</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                            <article id="post-k8s-mysql" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Kubernetes에 MySQL Pod 띄우기
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2021/08/10/k8s-mysql/" class="article-date">
+            <time datetime="2021-08-10T07:56:03.000Z" itemprop="datePublished">2021-08-10</time>
+        </a>
+    </div>
+
+		
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/db/" rel="tag">db</a>, <a class="tag-link" href="/tags/k8s/" rel="tag">k8s</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p>이번 포스트에서는 kubernetes 위에 mysql pod를 띄우는 일을 정리해보도록 하겠습니다.</p>
+<h2 id="1-기본-Deployment-작성"><a href="#1-기본-Deployment-작성" class="headerlink" title="1. 기본 Deployment 작성"></a>1. 기본 Deployment 작성</h2><p>처음에는 가장 기본적인 deployment를 작성해보도록 하겠습니다. 아래와 같이 작성하면 됩니다.</p>
+<figure class="highlight yaml"><figcaption><span>deployment.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">mysql</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">mysql</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">mysql</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">mysql</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">mysql</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">mysql:8.0.26</span></span><br><span class="line">        <span class="attr">env:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">MYSQL_ROOT_PASSWORD</span></span><br><span class="line">          <span class="attr">value:</span> <span class="string">root</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">3306</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><figcaption><span>apply deployment.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f deployment.yaml</span><br></pre></td></tr></table></figure>
+
+<p>여기서 중요한 것은 <code>MYSQL_ROOT_PASSWORD</code>입니다.<br>mysql을 실행시킬 때 <code>MYSQL_ROOT_PASSWORD</code>을 세팅하지 않으면 pod가 정상적으로 뜨지 않게 됩니다. 따라서 환경변수를 세팅하도록 합니다.</p>
+<p>이렇게 하면 dockerhub로 부터 mysql 이미지를 pull 받아 pod를 띄우게 됩니다. </p>
+<h2 id="2-Secret-사용"><a href="#2-Secret-사용" class="headerlink" title="2. Secret 사용"></a>2. Secret 사용</h2><p>루트 패스워드를 세팅한 것은 좋은데 이렇게 되면 deployment.yaml에 패스워드를 그대로 노출하게 됩니다.<br>이것보다는 kubernetes의 secret을 이용하는 것이 보안적으로 더 좋은 방법이므로 사용해보도록 하겠습니다.</p>
+<p>기본적으로 secret은 아래와 같은 형태로 만들면 됩니다.</p>
+<figure class="highlight yaml"><figcaption><span>secret.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Secret</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">mysql-root</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">Opaque</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">password:</span> [<span class="string">ROOT</span> <span class="string">PASSWORD</span>]</span><br></pre></td></tr></table></figure>
+
+<p>data 하위에 key-value 형태로 원하는 값을 넣으면 됩니다. 저는 password라는 이름으로 사용할 비밀번호를 작성했습니다.<br>여기서 중요한 점은 secret에 넣는 value 값들은 <strong>base64로 인코딩한 값</strong>을 넣어야 한다는 것입니다.<br>예를 들어 패스워드를 <code>root</code>로 사용한다고 하면 <code>password: root</code>로 작성하는 것이 아니라 <code>password: [root를 base64로 인코딩한 문자열]</code>로 작성하셔야 합니다.</p>
+<p>base64로 인코딩한 문자열은 리눅스의 echo 를 통해서 아래와 같이 알아낼 수 있습니다.</p>
+<figure class="highlight bash"><figcaption><span>encoding base64</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -n root | base64</span><br></pre></td></tr></table></figure>
+
+<p>여기서 중요한 점은 <strong>-n 옵션</strong>입니다.<br>echo 명령어는 자동으로 trailing newline을 삽입한다고 합니다. <strong>따라서 -n 옵션으로 trailing newline을 없앤 후에 인코딩을 해야 정상적으로 인코딩된 문자열을 얻을 수 있습니다.</strong><br>실제로 -n 있는 상태에서 인코딩된 문자열은 <code>cm9vdA==</code> 이고, -n 옵션이 없는 상태에서 인코딩된 문자열은 <code>cm9vdAo=</code> 으로 서로 다른 것을 알 수 있습니다.</p>
+<p>아래와 같은 secret을 만들고 deployment.yaml도 수정하도록 하겠습니다.</p>
+<figure class="highlight yaml"><figcaption><span>secret.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Secret</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">mysql-root</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">Opaque</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">password:</span> <span class="string">cm9vdA==</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><figcaption><span>deployment.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">env:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">MYSQL_ROOT_PASSWORD</span></span><br><span class="line">  <span class="attr">valueFrom:</span></span><br><span class="line">    <span class="attr">secretKeyRef:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">mysql-root</span></span><br><span class="line">      <span class="attr">key:</span> <span class="string">password</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<p>만약 -n 옵션이 없는 상태에서 인코딩된 문자열을 사용하면 어떻게 될까요?<br>secret과 deployment 모두 정상적으로 생성이 되지만 mysql pod가 뜨면서 <strong>mysql: unknown option ‘–”‘</strong> 과 같은 에러가 납니다. 그리고 pod가 계속해서 생성되었다가 종료되었다가를 반복하게 됩니다.<br>실제로 제가 이런 실수를 해서 원인을 한참을 찾았었습니다.<br>다행히 <a href="https://stackoverflow.com/questions/62985541/mysql-unknown-option-in-kubernetes" title="" target="">이 글</a>을 보고 원인을 찾아 해결할 수 있었는데요, 저와 같은 실수를 하지 않으시길 바라겠습니다.</p>
+<h2 id="3-Volume-사용하기"><a href="#3-Volume-사용하기" class="headerlink" title="3. Volume 사용하기"></a>3. Volume 사용하기</h2><p>지금까지 작업을 통해 띄운 mysql pod는 volume을 사용하지 않고 있기 때문에 만약 pod 종료되었다가 다시 시작되면 그 동안 DB에 저장된 모든 내용은 날아가게 됩니다.<br>따라서 PV, PVC를 이용해 volume을 연결해주도록 하겠습니다.</p>
+<p>저는 kubernetes를 kops를 이용해 EC2 서버 위에 구동하고 있기 때문에 EBS 볼륨을 생성하고 그 볼륨을 연결하려고 했지만… 볼륨을 사용하는 것 자체가 비용이 추가가 되기 때문에 node의 특정 디렉토리를 사용하는 volume(<strong>local-storage</strong>)을 만들어 사용하기로 했습니다.</p>
+<p>먼저 node로 사용 중인 ec2에 접속해 <code>/volume/pv1</code> 디렉토리를 만들었습니다. 또한 pv가 특정 node에 연결된 것을 세팅하기 위해 node에 label을 추가했습니다.<br>저 같은 경우 <code>name=node1</code>로 label을 추가했습니다.</p>
+<figure class="highlight bash"><figcaption><span>add label</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl label nodes [NODE_NAME] name=node1</span><br></pre></td></tr></table></figure>
+
+<p>그리고 아래와 같이 pv, pvc를 만들어주었습니다.</p>
+<figure class="highlight yaml"><figcaption><span>pv.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolume</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pv1</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">capacity:</span></span><br><span class="line">    <span class="attr">storage:</span> <span class="string">10Gi</span></span><br><span class="line">  <span class="attr">volumeMode:</span> <span class="string">Filesystem</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">ReadWriteOnce</span></span><br><span class="line">  <span class="attr">persistentVolumeReclaimPolicy:</span> <span class="string">Retain</span></span><br><span class="line">  <span class="attr">storageClassName:</span> <span class="string">local-storage</span></span><br><span class="line">  <span class="attr">local:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">/volume/pv1</span></span><br><span class="line">  <span class="attr">nodeAffinity:</span></span><br><span class="line">    <span class="attr">required:</span></span><br><span class="line">      <span class="attr">nodeSelectorTerms:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">matchExpressions:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">name</span></span><br><span class="line">          <span class="attr">operator:</span> <span class="string">In</span></span><br><span class="line">          <span class="attr">values:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">node1</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><figcaption><span>pv.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolumeClaim</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pvc1</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">storageClassName:</span> <span class="string">local-storage</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ReadWriteOnce</span></span><br><span class="line">  <span class="attr">resources:</span></span><br><span class="line">    <span class="attr">requests:</span></span><br><span class="line">      <span class="attr">storage:</span> <span class="string">10Gi</span></span><br></pre></td></tr></table></figure>
+
+<p>그리고 deployment.yaml을 아래와 같이 수정하도록 하겠습니다.</p>
+<figure class="highlight yaml"><figcaption><span>deployment.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">mysql</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:8.0.26</span></span><br><span class="line">    <span class="attr">volumeMounts:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">volume1</span></span><br><span class="line">      <span class="attr">mountPath:</span> <span class="string">/var/lib/mysql</span></span><br><span class="line">    <span class="attr">env:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">MYSQL_ROOT_PASSWORD</span></span><br><span class="line">      <span class="attr">valueFrom:</span></span><br><span class="line">        <span class="attr">secretKeyRef:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">mysql-root</span></span><br><span class="line">          <span class="attr">key:</span> <span class="string">password</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">3306</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">volume1</span></span><br><span class="line">    <span class="attr">persistentVolumeClaim:</span></span><br><span class="line">      <span class="attr">claimName:</span> <span class="string">pvc1</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<p>pod가 재시작된 후 node의 <code>/volume/pv1</code> 디렉토리에 데이터들이 쌓이면 정상적으로 연결된 것입니다.</p>
+<h2 id="※-참고-사항"><a href="#※-참고-사항" class="headerlink" title="※ 참고 사항"></a>※ 참고 사항</h2><p>application 서버에서 mysql pod에 접속하기 위해서는 mysql pod와 동일한 네임스페이스에 pod를 띄운 후 mysql 서비스 이름과 port로 접속이 가능합니다.</p>
+<h2 id="※-참고-링크"><a href="#※-참고-링크" class="headerlink" title="※ 참고 링크"></a>※ 참고 링크</h2><ul>
+<li><a href="https://kubernetes.io/docs/concepts/storage/volumes/#local" title="" target="">kubernetes docs</a></li>
+<li><a href="https://lapee79.github.io/article/use-a-local-disk-by-local-volume-static-provisioner-in-kubernetes/" title="" target="">Kubernetes에서 Local Persistent Volume을 사용하여 local disk 사용</a></li>
+</ul>
+
+        </div>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://postlude.github.io/2021/08/10/k8s-mysql/" data-id="ckvoygrhk00195ovyaan7c3ey" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/postlude" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2021/11/07/javascript-execution-context/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            JavaScript의 실행 컨텍스트(Execution Context)
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2021/07/20/github-actions-container-registry/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">GitHub Actions와 GitHub Container Registry를 이용한 도커 빌드</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">JavaScript</a></p>
+                            <p class="item-title"><a href="/2021/11/07/javascript-execution-context/" class="title">JavaScript의 실행 컨텍스트(Execution Context)</a></p>
+                            <p class="item-date"><time datetime="2021-11-07T07:54:31.000Z" itemprop="datePublished">2021-11-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/k8s/">K8S</a></p>
+                            <p class="item-title"><a href="/2021/08/10/k8s-mysql/" class="title">Kubernetes에 MySQL Pod 띄우기</a></p>
+                            <p class="item-date"><time datetime="2021-08-10T07:56:03.000Z" itemprop="datePublished">2021-08-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/git/">Git</a></p>
+                            <p class="item-title"><a href="/2021/07/20/github-actions-container-registry/" class="title">GitHub Actions와 GitHub Container Registry를 이용한 도커 빌드</a></p>
+                            <p class="item-date"><time datetime="2021-07-20T13:05:56.000Z" itemprop="datePublished">2021-07-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/k8s/">K8S</a></p>
+                            <p class="item-title"><a href="/2021/07/07/kops-k8s-cert-manager/" class="title">kops 쿠버네티스 클러스터에 cert-manager 설치하기</a></p>
+                            <p class="item-date"><time datetime="2021-07-07T14:18:19.000Z" itemprop="datePublished">2021-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/k8s/">K8S</a></p>
+                            <p class="item-title"><a href="/2021/07/05/kops-k8s-ingress/" class="title">kops로 구축한 k8s 클러스터에 ingress 설정하기</a></p>
+                            <p class="item-date"><time datetime="2021-07-05T09:17:59.000Z" itemprop="datePublished">2021-07-05</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/db/">DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">Hexo</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">JAVA</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">JavaScript</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/k8s/">K8S</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a><span class="category-list-count">13</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/" rel="tag">db</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/job/" rel="tag">job</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kops/" rel="tag">kops</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2021 HSD</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_shortname = 'postlude';
+    
+    
+    var disqus_url = 'https://postlude.github.io/2021/08/10/k8s-mysql/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>쿠버네티스 클러스터에 nginx pod 띄우기 | Postlude&#39;s IT Blog</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="k8s,kops" />
+    
+    <meta name="description" content="지난 포스트에서 kops로 kubernetes 클러스터를 구축했었습니다. 이번에는 해당 클러스터에 간단한 nginx 를 띄워보도록 하겠습니다. 1. 클러스터 세팅먼저 클러스터에 몇 가지 세팅을 해주도록 하겠습니다.(이 부분들은 반드시 필요한 것은 아닙니다.) 1.1. 보안 그룹 변경우선, 저와 동일하게 public 네트워크 형태로 클러스터를 구축하셨다면 쿠">
+<meta property="og:type" content="article">
+<meta property="og:title" content="쿠버네티스 클러스터에 nginx pod 띄우기">
+<meta property="og:url" content="https://postlude.github.io/2021/07/03/kops-k8s-deploy-nginx/index.html">
+<meta property="og:site_name" content="Postlude&#39;s IT Blog">
+<meta property="og:description" content="지난 포스트에서 kops로 kubernetes 클러스터를 구축했었습니다. 이번에는 해당 클러스터에 간단한 nginx 를 띄워보도록 하겠습니다. 1. 클러스터 세팅먼저 클러스터에 몇 가지 세팅을 해주도록 하겠습니다.(이 부분들은 반드시 필요한 것은 아닙니다.) 1.1. 보안 그룹 변경우선, 저와 동일하게 public 네트워크 형태로 클러스터를 구축하셨다면 쿠">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://postlude.github.io/2021/07/03/kops-k8s-deploy-nginx/1.jpg">
+<meta property="article:published_time" content="2021-07-03T08:53:54.000Z">
+<meta property="article:modified_time" content="2021-11-07T08:15:42.050Z">
+<meta property="article:author" content="HSD">
+<meta property="article:tag" content="k8s">
+<meta property="article:tag" content="kops">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://postlude.github.io/2021/07/03/kops-k8s-deploy-nginx/1.jpg">
+    
+    <link rel="canonical" href="https://postlude.github.io/2021/07/03/kops-k8s-deploy-nginx/"/>
+
+    
+
+    
+        <link rel="icon" href="/assets/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+    
+<script src="/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-131293106-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/font-nanum/1.0/nanumbarungothic/nanumbarungothic.css">
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/rss2.xml" title="Postlude's IT Blog" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">개발 블로그</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/db/">DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/hexo/">Hexo</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/java/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/javascript/">JavaScript</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/k8s/">K8S</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/k8s/">K8S</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                            <article id="post-kops-k8s-deploy-nginx" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        쿠버네티스 클러스터에 nginx pod 띄우기
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2021/07/03/kops-k8s-deploy-nginx/" class="article-date">
+            <time datetime="2021-07-03T08:53:54.000Z" itemprop="datePublished">2021-07-03</time>
+        </a>
+    </div>
+
+		
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/k8s/" rel="tag">k8s</a>, <a class="tag-link" href="/tags/kops/" rel="tag">kops</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <a href="/2021/06/22/k8s-by-kops/" title="지난 포스트">지난 포스트</a>에서 kops로 kubernetes 클러스터를 구축했었습니다.
+<p>이번에는 해당 클러스터에 간단한 nginx 를 띄워보도록 하겠습니다.</p>
+<h2 id="1-클러스터-세팅"><a href="#1-클러스터-세팅" class="headerlink" title="1. 클러스터 세팅"></a>1. 클러스터 세팅</h2><p>먼저 클러스터에 몇 가지 세팅을 해주도록 하겠습니다.<br>(이 부분들은 반드시 필요한 것은 아닙니다.)</p>
+<h3 id="1-1-보안-그룹-변경"><a href="#1-1-보안-그룹-변경" class="headerlink" title="1.1. 보안 그룹 변경"></a>1.1. 보안 그룹 변경</h3><p>우선, 저와 동일하게 public 네트워크 형태로 클러스터를 구축하셨다면 쿠버네티스의 모든 master, worker node가 아래와 같이 모든 ip에 대해 ssh 접속이 가능하도록 되어있을겁니다.</p>
+<img src="/2021/07/03/kops-k8s-deploy-nginx/1.jpg" class="">
+
+<p>이 부분을 저희 집과 bastion 서버에서만 접속이 가능하도록 수정하도록 하겠습니다.</p>
+<img src="/2021/07/03/kops-k8s-deploy-nginx/2.jpg" class="">
+
+<h3 id="1-2-백업-설정-변경"><a href="#1-2-백업-설정-변경" class="headerlink" title="1.2. 백업 설정 변경"></a>1.2. 백업 설정 변경</h3><p>다음은 백업에 관한 설정입니다.</p>
+<a href="https://kops.sigs.k8s.io/operations/etcd_backup_restore_encryption/#taking-backups" title="" target="">문서</a>에 따르면 hourly backup은 1주일간 유지되며 daily backup은 1년간 유지된다고 합니다.
+<p>백업 내용은 클러스터 구축시 만들었던 S3에 저장됩니다.</p>
+<p>저는 개인적으로 클러스터를 구축한 것이고 (아마도) 백업 파일이 많아지면 S3 비용 부담이 생길지도 몰라서 이 기간을 줄이도록 하겠습니다.</p>
+<a href="https://kops.sigs.k8s.io/cluster_spec/#etcd-backups-retention" title="" target="">이 문서</a>를 참고했습니다.
+
+<p>bastion 서버에서 아래 명령어를 입력합니다.</p>
+<figure class="highlight bash"><figcaption><span>edit cluster</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kops edit cluster</span><br></pre></td></tr></table></figure>
+
+<p>그러면 클러스터 설정을 세팅할 수 있도록 나올텐데요, 아래와 같이 변경하도록 하겠습니다.</p>
+<figure class="highlight bash"><figcaption><span>set backup</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">etcdClusters:</span><br><span class="line">- cpuRequest: 200m</span><br><span class="line">  etcdMembers:</span><br><span class="line">  - encryptedVolume: <span class="literal">true</span></span><br><span class="line">    instanceGroup: master-ap-northeast-2a</span><br><span class="line">    name: a</span><br><span class="line">  memoryRequest: 100Mi</span><br><span class="line">  name: main</span><br><span class="line">  <span class="comment"># ===== 추가 =====</span></span><br><span class="line">  manager:</span><br><span class="line">    env:</span><br><span class="line">    - name: ETCD_MANAGER_HOURLY_BACKUPS_RETENTION</span><br><span class="line">      value: 1d</span><br><span class="line">    - name: ETCD_MANAGER_DAILY_BACKUPS_RETENTION</span><br><span class="line">      value: 7d</span><br><span class="line">  <span class="comment"># ===== 추가 =====</span></span><br><span class="line">- cpuRequest: 100m</span><br><span class="line">  etcdMembers:</span><br><span class="line">  - encryptedVolume: <span class="literal">true</span></span><br><span class="line">    instanceGroup: master-ap-northeast-2a</span><br><span class="line">    name: a</span><br><span class="line">  memoryRequest: 100Mi</span><br><span class="line">  name: events</span><br><span class="line">  <span class="comment"># ===== 추가 =====</span></span><br><span class="line">  manager:</span><br><span class="line">    env:</span><br><span class="line">    - name: ETCD_MANAGER_HOURLY_BACKUPS_RETENTION</span><br><span class="line">      value: 1d</span><br><span class="line">    - name: ETCD_MANAGER_DAILY_BACKUPS_RETENTION</span><br><span class="line">      value: 7d</span><br><span class="line">  <span class="comment"># ===== 추가 =====</span></span><br></pre></td></tr></table></figure>
+
+<p>edit 명령어는 설정자체를 저장한 것이고 이것을 실제로 적용하려면 아래 명령어를 실행해야 합니다.</p>
+<figure class="highlight bash"><figcaption><span>update cluster</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kops update cluster --yes</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-샘플-nginx-pod-생성"><a href="#2-샘플-nginx-pod-생성" class="headerlink" title="2. 샘플 nginx pod 생성"></a>2. 샘플 nginx pod 생성</h2><p>이제 테스트 네임스페이스를 만들어서 nginx pod 를 띄워보도로 하겠습니다.</p>
+<p>먼저 아래 명령어로 테스트 네임스페이스를 만듭니다.</p>
+<figure class="highlight bash"><figcaption><span>create namespace</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create ns <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<p>그리고 nginx pod를 띄우기 위한 deployment yaml 파일을 생성합니다.</p>
+<a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment" title="" target="">kubernetes 문서</a>에서 참고했습니다.
+<p>다만, 저는 예시로 샘플을 만들기 위함이므로 pod 개수는 1개로 생성하도록 하겠습니다.</p>
+<figure class="highlight yaml"><figcaption><span>nginx-deployment.yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-deployment</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.14.2</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p>명령어를 통해 deployment를 생성합니다.</p>
+<figure class="highlight bash"><figcaption><span>create deployment</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f ./nginx-deployment.yaml -n <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/07/03/kops-k8s-deploy-nginx/3.JPG" class="">
+
+<p>kubectl 명령어를 통해 deployment와 pod가 생성된 것을 확인할 수 있습니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl get deploy -n <span class="built_in">test</span></span><br><span class="line">kubectl get po -n <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/07/03/kops-k8s-deploy-nginx/4.JPG" class="">
+
+<h2 id="3-서비스-생성"><a href="#3-서비스-생성" class="headerlink" title="3. 서비스 생성"></a>3. 서비스 생성</h2><p>이렇게 생성한 pod에 외부에서 접속하기 위해서는 서비스가 필요합니다.<br>아래 명령어를 통해 서비스를 생성합니다. 외부에서 접속하기 위함이므로 NodePort 타입으로 생성하겠습니다.</p>
+<figure class="highlight bash"><figcaption><span>create service</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl expose deployment nginx-deployment -n <span class="built_in">test</span> --<span class="built_in">type</span> NodePort</span><br><span class="line">kubectl get svc -n <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<p>저는 worker node가 1개 뿐이고 NodePort 타입으로 생성했으니 worker node ec2 ip에 생성된 NodePort로 접속이 가능합니다. 그런데 막상 접속해보니,</p>
+<img src="/2021/07/03/kops-k8s-deploy-nginx/5.JPG" class="">
+
+<p>접속이 되지 않았습니다. <a href="https://stackoverflow.com/questions/45543694/kubernetes-cluster-on-aws-with-kops-nodeport-service-unavailable" title="" target="">구글링</a>을 통해 이유를 찾을 수 있었는데요, 원인은 간단합니다.<br>kops로 생성한 kubernetes 클러스터의 ec2 worker node는 NodePort 타입의 서비스에서 사용하는 범위의 포트(30000-32767)를 자동으로 오픈시켜주지 않기 때문입니다.</p>
+<p>포트를 열어주기 위해 ec2 콘솔로 접속해 worker node ec2의 보안그룹을 수정하도록 하겠습니다.</p>
+<img src="/2021/07/03/kops-k8s-deploy-nginx/6.JPG" class="">
+
+<p>이렇게 수정하면 정상적으로 접속되는 것을 확인할 수 있습니다.</p>
+<img src="/2021/07/03/kops-k8s-deploy-nginx/7.JPG" class="">
+
+        </div>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://postlude.github.io/2021/07/03/kops-k8s-deploy-nginx/" data-id="ckvoygrhm001h5ovy3ui5f2r8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/postlude" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2021/07/05/kops-k8s-ingress/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            kops로 구축한 k8s 클러스터에 ingress 설정하기
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2021/06/22/k8s-by-kops/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">kops를 이용해 쿠버네티스 클러스터 구축하기</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">JavaScript</a></p>
+                            <p class="item-title"><a href="/2021/11/07/javascript-execution-context/" class="title">JavaScript의 실행 컨텍스트(Execution Context)</a></p>
+                            <p class="item-date"><time datetime="2021-11-07T07:54:31.000Z" itemprop="datePublished">2021-11-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/k8s/">K8S</a></p>
+                            <p class="item-title"><a href="/2021/08/10/k8s-mysql/" class="title">Kubernetes에 MySQL Pod 띄우기</a></p>
+                            <p class="item-date"><time datetime="2021-08-10T07:56:03.000Z" itemprop="datePublished">2021-08-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/git/">Git</a></p>
+                            <p class="item-title"><a href="/2021/07/20/github-actions-container-registry/" class="title">GitHub Actions와 GitHub Container Registry를 이용한 도커 빌드</a></p>
+                            <p class="item-date"><time datetime="2021-07-20T13:05:56.000Z" itemprop="datePublished">2021-07-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/k8s/">K8S</a></p>
+                            <p class="item-title"><a href="/2021/07/07/kops-k8s-cert-manager/" class="title">kops 쿠버네티스 클러스터에 cert-manager 설치하기</a></p>
+                            <p class="item-date"><time datetime="2021-07-07T14:18:19.000Z" itemprop="datePublished">2021-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/k8s/">K8S</a></p>
+                            <p class="item-title"><a href="/2021/07/05/kops-k8s-ingress/" class="title">kops로 구축한 k8s 클러스터에 ingress 설정하기</a></p>
+                            <p class="item-date"><time datetime="2021-07-05T09:17:59.000Z" itemprop="datePublished">2021-07-05</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/db/">DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">Hexo</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">JAVA</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">JavaScript</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/k8s/">K8S</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a><span class="category-list-count">13</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/" rel="tag">db</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/job/" rel="tag">job</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kops/" rel="tag">kops</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2021 HSD</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_shortname = 'postlude';
+    
+    
+    var disqus_url = 'https://postlude.github.io/2021/07/03/kops-k8s-deploy-nginx/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>Javascript의 Array 함수들 | Postlude&#39;s IT Blog</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="javascript" />
+    
+    <meta name="description" content="일을 하던 도중 JavaScript의 배열 관련 함수를 자주 봤었다.정확한 기능을 모르는 것도 있어서 구글링을 하곤 했는데 이게 반복되니 한 번 정리를 해야겠다 싶었다. 1. Array.length기본이라고 말하기도 민망한 property지만 mdn을 보면서 새로운 사실을 알게 되어 정리하려고 한다. JavaScript 배열의 속성을 설정할 때 그 속성이">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javascript의 Array 함수들">
+<meta property="og:url" content="https://postlude.github.io/2019/07/16/javascript-array/index.html">
+<meta property="og:site_name" content="Postlude&#39;s IT Blog">
+<meta property="og:description" content="일을 하던 도중 JavaScript의 배열 관련 함수를 자주 봤었다.정확한 기능을 모르는 것도 있어서 구글링을 하곤 했는데 이게 반복되니 한 번 정리를 해야겠다 싶었다. 1. Array.length기본이라고 말하기도 민망한 property지만 mdn을 보면서 새로운 사실을 알게 되어 정리하려고 한다. JavaScript 배열의 속성을 설정할 때 그 속성이">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-07-16T14:29:08.000Z">
+<meta property="article:modified_time" content="2021-11-07T08:15:42.029Z">
+<meta property="article:author" content="HSD">
+<meta property="article:tag" content="javascript">
+<meta name="twitter:card" content="summary">
+    
+    <link rel="canonical" href="https://postlude.github.io/2019/07/16/javascript-array/"/>
+
+    
+
+    
+        <link rel="icon" href="/assets/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+    
+<script src="/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-131293106-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/font-nanum/1.0/nanumbarungothic/nanumbarungothic.css">
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/rss2.xml" title="Postlude's IT Blog" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">개발 블로그</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/db/">DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/hexo/">Hexo</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/java/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/javascript/">JavaScript</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/k8s/">K8S</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/javascript/">JavaScript</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                            <article id="post-javascript-array" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Javascript의 Array 함수들
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2019/07/16/javascript-array/" class="article-date">
+            <time datetime="2019-07-16T14:29:08.000Z" itemprop="datePublished">2019-07-16</time>
+        </a>
+    </div>
+
+		
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/javascript/" rel="tag">javascript</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p>일을 하던 도중 JavaScript의 배열 관련 함수를 자주 봤었다.<br>정확한 기능을 모르는 것도 있어서 구글링을 하곤 했는데 이게 반복되니 한 번 정리를 해야겠다 싶었다.</p>
+<h2 id="1-Array-length"><a href="#1-Array-length" class="headerlink" title="1. Array.length"></a>1. Array.length</h2><p>기본이라고 말하기도 민망한 property지만 mdn을 보면서 새로운 사실을 알게 되어 정리하려고 한다.</p>
+<blockquote><p>JavaScript 배열의 속성을 설정할 때 그 속성이 유효한 배열 인덱스이고 그 인덱스가 현재 배열의 경계(bounds)를 넘어간다면, 엔진은 배열의 length 속성을 그에 맞춰 업데이트 합니다:</p>
+<p>하지만, length 속성을 감소시키면 요소(element)를 지웁니다.</p>
+<footer><strong>MDN</strong><cite><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array#length_%EC%99%80_%EC%88%AB%EC%9E%90%ED%98%95_%EC%86%8D%EC%84%B1%EC%9D%98_%EA%B4%80%EA%B3%84" target="_blank" rel="noopener">length 와 숫자형 속성의 관계</a></cite></footer></blockquote>
+
+<p>첫 번째 문장은 너무나 당연한 이야기다. 하지만 아래의 문장은 처음 알게 된 내용이었다.<br>즉, 아래와 같은 코드가 가능하다는 이야기</p>
+<figure class="highlight javascript"><figcaption><span>Array.length</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> ary = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]; <span class="comment">// ary.length === 3</span></span><br><span class="line">ary.length = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.log(ary);</span><br><span class="line"><span class="comment">// [1]</span></span><br></pre></td></tr></table></figure>
+
+<p>만약, length를 줄인 뒤에 다시 늘린다면 어떻게 될까?</p>
+<figure class="highlight javascript"><figcaption><span>Array.length</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> ary = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]; <span class="comment">// ary.length === 3</span></span><br><span class="line">ary.length = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.log(ary);</span><br><span class="line"><span class="comment">// [1]</span></span><br><span class="line">ary.length = <span class="number">3</span>;</span><br><span class="line"><span class="comment">// [1, undefined, undefined]</span></span><br></pre></td></tr></table></figure>
+
+<p>역시나 undefined로 채워진다.</p>
+<h2 id="2-Array-from"><a href="#2-Array-from" class="headerlink" title="2. Array.from()"></a>2. Array.from()</h2><figure class="highlight javascript"><figcaption><span>Array.from()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.from(<span class="string">&#x27;foo&#x27;</span>));</span><br><span class="line"><span class="comment">// expected output: Array [&quot;f&quot;, &quot;o&quot;, &quot;o&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.from([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="function"><span class="params">x</span> =&gt;</span> x + x));</span><br><span class="line"><span class="comment">// expected output: Array [2, 4, 6]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.from(&#123; <span class="attr">a</span>: <span class="string">&#x27;1&#x27;</span>, <span class="attr">b</span>: <span class="string">&#x27;2&#x27;</span> &#125;));</span><br><span class="line"><span class="comment">// [] : object는 빈 배열로 리턴된다.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> obj = &#123; <span class="attr">a</span>: <span class="string">&#x27;1&#x27;</span>, <span class="attr">b</span>: <span class="string">&#x27;2&#x27;</span> &#125;;</span><br><span class="line"><span class="built_in">Array</span>.from(<span class="built_in">Object</span>.keys(obj));</span><br><span class="line"><span class="comment">// [&quot;a&quot;, &quot;b&quot;]</span></span><br><span class="line"><span class="built_in">Array</span>.from(<span class="built_in">Object</span>.values(obj));</span><br><span class="line"><span class="comment">// [&quot;1&quot;, &quot;2&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-Array-of"><a href="#3-Array-of" class="headerlink" title="3. Array.of()"></a>3. Array.of()</h2><figure class="highlight javascript"><figcaption><span>Array.of()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Array</span>.of(<span class="number">7</span>);       <span class="comment">// [7] </span></span><br><span class="line"><span class="built_in">Array</span>.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>); <span class="comment">// [1, 2, 3]</span></span><br><span class="line"><span class="built_in">Array</span>.of(<span class="literal">undefined</span>); <span class="comment">// [undefined]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">Array</span>(<span class="number">7</span>);          <span class="comment">// [ , , , , , , ]</span></span><br><span class="line"><span class="built_in">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);    <span class="comment">// [1, 2, 3]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-Array-prototype-concat"><a href="#4-Array-prototype-concat" class="headerlink" title="4. Array.prototype.concat()"></a>4. Array.prototype.concat()</h2><p>기존배열을 변경하지 않습니다.<br>추가된 새로운 배열을 반환합니다.<br>중첩 배열 내부로 재귀하지 않습니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.concat()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> alpha = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"><span class="keyword">const</span> numeric = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"></span><br><span class="line">alpha.concat(numeric);</span><br><span class="line"><span class="comment">// 결과: [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;, 1, 2, 3]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> c = [<span class="number">4</span>, <span class="number">5</span>, [<span class="number">6</span>, <span class="number">7</span>]];</span><br><span class="line">b.concat(c);</span><br><span class="line"><span class="comment">// [1, 2, 3, 4, 5, [6, 7]]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-Array-prototype-copyWithin"><a href="#5-Array-prototype-copyWithin" class="headerlink" title="5. Array.prototype.copyWithin()"></a>5. Array.prototype.copyWithin()</h2><p>배열의 일부를 얕게 복사한 뒤, 동일한 배열의 다른 위치에 덮어쓰고 그 배열을 반환합니다. 이 때, 크기(배열의 길이)를 수정하지 않고 반환합니다.</p>
+<blockquote><p>arr.copyWithin(target[, start[, end]])</p>
+</blockquote>
+
+<p>target</p>
+<ul>
+<li>복사한 시퀀스(값)를 넣을 위치를 가리키는 0 기반 인덱스. 음수를 지정하면 인덱스를 배열의 끝에서부터 계산합니다.<br>target이 arr.length보다 크거나 같으면 아무것도 복사하지 않습니다. target이 start 이후라면 복사한 시퀀스를 arr.length에 맞춰 자릅니다.</li>
+</ul>
+<p>start (Optional)</p>
+<ul>
+<li>복사를 시작할 위치를 가리키는 0 기반 인덱스. 음수를 지정하면 인덱스를 배열의 끝에서부터 계산합니다.<br>기본값은 0으로, start를 지정하지 않으면 배열의 처음부터 복사합니다.</li>
+</ul>
+<p>end (Optional)</p>
+<ul>
+<li>복사를 끝낼 위치를 가리키는 0 기반 인덱스. copyWithin은 end 인덱스 이전까지 복사하므로 end 인덱스가 가리키는 요소는 제외합니다. 음수를 지정하면 인덱스를 배열의 끝에서부터 계산합니다.<br>기본값은 arr.length로, end를 지정하지 않으면 배열의 끝까지 복사합니다.</li>
+</ul>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.copyWithin()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>].copyWithin(-<span class="number">2</span>);</span><br><span class="line"><span class="comment">// [1, 2, 3, 1, 2]</span></span><br><span class="line"></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>].copyWithin(<span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line"><span class="comment">// [4, 5, 3, 4, 5]</span></span><br><span class="line"></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>].copyWithin(<span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line"><span class="comment">// [4, 2, 3, 4, 5]</span></span><br><span class="line"></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>].copyWithin(-<span class="number">2</span>, -<span class="number">3</span>, -<span class="number">1</span>);</span><br><span class="line"><span class="comment">// [1, 2, 3, 3, 4]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-Array-prototype-entries"><a href="#6-Array-prototype-entries" class="headerlink" title="6. Array.prototype.entries()"></a>6. Array.prototype.entries()</h2><p>배열의 각 인덱스에 대한 키/값 쌍을 가지는 새로운 Array Iterator 객체를 반환합니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.entries()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array1 = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"><span class="keyword">var</span> iterator1 = array1.entries();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(iterator1.next().value);</span><br><span class="line"><span class="comment">// expected output: Array [0, &quot;a&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(iterator1.next().value);</span><br><span class="line"><span class="comment">// expected output: Array [1, &quot;b&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"><span class="keyword">var</span> iterator = a.entries();</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> e <span class="keyword">of</span> iterator) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// [0, &#x27;a&#x27;]</span></span><br><span class="line"><span class="comment">// [1, &#x27;b&#x27;]</span></span><br><span class="line"><span class="comment">// [2, &#x27;c&#x27;]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="7-Array-prototype-every"><a href="#7-Array-prototype-every" class="headerlink" title="7. Array.prototype.every()"></a>7. Array.prototype.every()</h2><p>배열 안의 모든 요소가 주어진 판별 함수를 통과하는지 테스트합니다.<br>every는 호출한 배열을 변형하지 않습니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.every()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isBelowThreshold</span>(<span class="params">currentValue, index, array</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(index);</span><br><span class="line">    <span class="keyword">return</span> currentValue &lt; <span class="number">40</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> array1 = [<span class="number">1</span>, <span class="number">30</span>, <span class="number">45</span>, <span class="number">29</span>, <span class="number">10</span>, <span class="number">13</span>];</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(array1.every(isBelowThreshold));</span><br><span class="line"><span class="comment">// 0</span></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="8-Array-prototype-fill"><a href="#8-Array-prototype-fill" class="headerlink" title="8. Array.prototype.fill()"></a>8. Array.prototype.fill()</h2><p>배열의 시작 인덱스부터 끝 인덱스의 이전까지 정적인 값 하나로 채웁니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.fill()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// fill with 0 from position 2 until position 4</span></span><br><span class="line"><span class="built_in">console</span>.log(array1.fill(<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>));</span><br><span class="line"><span class="comment">// expected output: [1, 2, 0, 0]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// fill with 5 from position 1</span></span><br><span class="line"><span class="built_in">console</span>.log(array1.fill(<span class="number">5</span>, <span class="number">1</span>));</span><br><span class="line"><span class="comment">// expected output: [1, 5, 5, 5]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(array1.fill(<span class="number">6</span>));</span><br><span class="line"><span class="comment">// expected output: [6, 6, 6, 6]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="9-Array-prototype-filter"><a href="#9-Array-prototype-filter" class="headerlink" title="9. Array.prototype.filter()"></a>9. Array.prototype.filter()</h2><p>주어진 함수의 테스트를 통과하는 모든 요소를 모아 새로운 배열로 반환합니다.<br>원본 배열은 그대로 유지.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.filter()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> words = [<span class="string">&#x27;spray&#x27;</span>, <span class="string">&#x27;limit&#x27;</span>, <span class="string">&#x27;elite&#x27;</span>, <span class="string">&#x27;exuberant&#x27;</span>, <span class="string">&#x27;destruction&#x27;</span>, <span class="string">&#x27;present&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> result = words.filter(<span class="function"><span class="params">word</span> =&gt;</span> word.length &gt; <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(words);</span><br><span class="line"><span class="built_in">console</span>.log(result);</span><br><span class="line"><span class="comment">// Array [&quot;spray&quot;, &quot;limit&quot;, &quot;elite&quot;, &quot;exuberant&quot;, &quot;destruction&quot;, &quot;present&quot;]</span></span><br><span class="line"><span class="comment">// Array [&quot;exuberant&quot;, &quot;destruction&quot;, &quot;present&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="10-Array-prototype-find"><a href="#10-Array-prototype-find" class="headerlink" title="10. Array.prototype.find()"></a>10. Array.prototype.find()</h2><p>주어진 판별 함수를 만족하는 첫 번째 요소의 값을 반환합니다. 그런 요소가 없다면 undefined를 반환합니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.find()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array1 = [<span class="number">5</span>, <span class="number">12</span>, <span class="number">8</span>, <span class="number">130</span>, <span class="number">44</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> found = array1.find(<span class="function"><span class="keyword">function</span>(<span class="params">element</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> element &gt; <span class="number">10</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(found);</span><br><span class="line"><span class="comment">// expected output: 12</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> inventory = [</span><br><span class="line">    &#123;<span class="attr">name</span>: <span class="string">&#x27;apples&#x27;</span>, <span class="attr">quantity</span>: <span class="number">2</span>&#125;,</span><br><span class="line">    &#123;<span class="attr">name</span>: <span class="string">&#x27;bananas&#x27;</span>, <span class="attr">quantity</span>: <span class="number">0</span>&#125;,</span><br><span class="line">    &#123;<span class="attr">name</span>: <span class="string">&#x27;cherries&#x27;</span>, <span class="attr">quantity</span>: <span class="number">5</span>&#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> result = inventory.find(<span class="function"><span class="params">fruit</span> =&gt;</span> fruit.name === <span class="string">&#x27;cherries&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(result) <span class="comment">// &#123; name: &#x27;cherries&#x27;, quantity: 5 &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="11-Array-prototype-findIndex"><a href="#11-Array-prototype-findIndex" class="headerlink" title="11. Array.prototype.findIndex()"></a>11. Array.prototype.findIndex()</h2><p>주어진 판별 함수를 만족하는 배열의 첫 번째 요소에 대한 인덱스를 반환합니다. 만족하는 요소가 없으면 -1을 반환합니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.findIndex()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array1 = [<span class="number">5</span>, <span class="number">12</span>, <span class="number">8</span>, <span class="number">130</span>, <span class="number">44</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isLargeNumber</span>(<span class="params">element</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> element &gt; <span class="number">13</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(array1.findIndex(isLargeNumber));</span><br><span class="line"><span class="comment">// expected output: 3</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="12-Array-prototype-flat"><a href="#12-Array-prototype-flat" class="headerlink" title="12. Array.prototype.flat()"></a>12. Array.prototype.flat()</h2><p>모든 하위 배열 엘리먼트를 지정된 깊이까지 재귀적으로 이어붙여 새로운 배열을 생성합니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.flat()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]];</span><br><span class="line">arr1.flat(); </span><br><span class="line"><span class="comment">// [1, 2, 3, 4]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr2 = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>, [<span class="number">5</span>, <span class="number">6</span>]]];</span><br><span class="line">arr2.flat();</span><br><span class="line"><span class="comment">// [1, 2, 3, 4, [5, 6]]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr3 = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>, [<span class="number">5</span>, <span class="number">6</span>]]];</span><br><span class="line">arr3.flat(<span class="number">2</span>);</span><br><span class="line"><span class="comment">// [1, 2, 3, 4, 5, 6]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr4 = [<span class="number">1</span>, <span class="number">2</span>, , <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">arr4.flat();</span><br><span class="line"><span class="comment">// [1, 2, 4, 5]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="13-Array-prototype-flatMap"><a href="#13-Array-prototype-flatMap" class="headerlink" title="13. Array.prototype.flatMap()"></a>13. Array.prototype.flatMap()</h2><p>매핑함수를 사용해 각 엘리먼트에 대해 map 수행 후, 결과를 새로운 배열로 평평화합니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.flatMap()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span><br><span class="line"></span><br><span class="line">arr1.map(<span class="function"><span class="params">x</span> =&gt;</span> [x * <span class="number">2</span>]); </span><br><span class="line"><span class="comment">// [[2], [4], [6], [8]]</span></span><br><span class="line"></span><br><span class="line">arr1.flatMap(<span class="function"><span class="params">x</span> =&gt;</span> [x * <span class="number">2</span>]);</span><br><span class="line"><span class="comment">// [2, 4, 6, 8]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 한 레벨만 평평화됨</span></span><br><span class="line">arr1.flatMap(<span class="function"><span class="params">x</span> =&gt;</span> [[x * <span class="number">2</span>]]);</span><br><span class="line"><span class="comment">// [[2], [4], [6], [8]]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> arr2 = [<span class="string">&quot;it&#x27;s Sunny in&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;California&quot;</span>];</span><br><span class="line"></span><br><span class="line">arr2.map(<span class="function"><span class="params">x</span>=&gt;</span>x.split(<span class="string">&quot; &quot;</span>));</span><br><span class="line"><span class="comment">// [[&quot;it&#x27;s&quot;,&quot;Sunny&quot;,&quot;in&quot;],[&quot;&quot;],[&quot;California&quot;]]</span></span><br><span class="line"></span><br><span class="line">arr2.flatMap(<span class="function"><span class="params">x</span> =&gt;</span> x.split(<span class="string">&quot; &quot;</span>));</span><br><span class="line"><span class="comment">// [&quot;it&#x27;s&quot;,&quot;Sunny&quot;,&quot;in&quot;,&quot;California&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="14-Array-prototype-forEach"><a href="#14-Array-prototype-forEach" class="headerlink" title="14. Array.prototype.forEach()"></a>14. Array.prototype.forEach()</h2><p>주어진 함수를 배열 요소 각각에 대해 실행합니다.<br>forEach()는 배열을 변형하지 않습니다. 그러나 callback이 변형할 수는 있습니다.<br>예외를 던지지 않고는 forEach()를 중간에 멈출 수 없습니다.</p>
+<h2 id="15-Array-prototype-includes"><a href="#15-Array-prototype-includes" class="headerlink" title="15. Array.prototype.includes()"></a>15. Array.prototype.includes()</h2><p>includes() 메서드는 배열이 특정 요소를 포함하고 있는지 판별합니다.</p>
+<blockquote><p>arr.includes(valueToFind[, fromIndex])</p>
+</blockquote>
+
+<p>valueToFind</p>
+<ul>
+<li>탐색할 요소. 문자나 문자열을 비교할 때, includes()는 대소문자를 구분합니다.</li>
+</ul>
+<p>fromIndex (Optional)</p>
+<ul>
+<li>이 배열에서 searchElement 검색을 시작할 위치입니다. 음의 값은 array.length + fromIndex의 인덱스를 asc로 검색합니다. 기본값은 0입니다.</li>
+</ul>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.includes()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// array length is 3</span></span><br><span class="line"><span class="comment">// fromIndex is -1</span></span><br><span class="line"><span class="comment">// computed index is 3 + (-1) = 2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"></span><br><span class="line">arr.includes(<span class="string">&#x27;a&#x27;</span>, -<span class="number">1</span>); <span class="comment">// false</span></span><br><span class="line">arr.includes(<span class="string">&#x27;a&#x27;</span>, -<span class="number">2</span>); <span class="comment">// false</span></span><br><span class="line">arr.includes(<span class="string">&#x27;a&#x27;</span>, -<span class="number">3</span>); <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> ary = [</span><br><span class="line">    &#123; <span class="attr">a</span>: <span class="string">&#x27;a&#x27;</span>, <span class="attr">b</span>: <span class="string">&#x27;b&#x27;</span>&#125;,</span><br><span class="line">    &#123; <span class="attr">a</span>: <span class="string">&#x27;aa&#x27;</span>, <span class="attr">b</span>: <span class="string">&#x27;bb&#x27;</span>&#125;</span><br><span class="line">];</span><br><span class="line">ary.includes(&#123; <span class="attr">a</span>: <span class="string">&#x27;a&#x27;</span>, <span class="attr">b</span>: <span class="string">&#x27;b&#x27;</span>&#125;); <span class="comment">// false. 객체는 확인 불가</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="16-Array-prototype-indexOf"><a href="#16-Array-prototype-indexOf" class="headerlink" title="16. Array.prototype.indexOf()"></a>16. Array.prototype.indexOf()</h2><p>indexOf() 메서드는 배열에서 지정된 요소를 찾을 수있는 첫 번째 인덱스를 반환하고 존재하지 않으면 -1을 반환합니다.</p>
+<blockquote><p>arr.indexOf(searchElement[, fromIndex])</p>
+</blockquote>
+
+<p>searchElement</p>
+<ul>
+<li>배열에서 찾을 요소입니다.</li>
+</ul>
+<p>fromIndex (Optional)</p>
+<ul>
+<li>검색을 시작할 색인입니다. 인덱스가 배열의 길이보다 크거나 같은 경우 -1이 반환되므로 배열이 검색되지 않습니다. 제공된 색인 값이 음수이면 배열 끝에서부터의 오프셋 값으로 사용됩니다.</li>
+<li>제공된 색인이 음수이면 배열은 여전히 앞에서 뒤로 검색됩니다. 계산 된 인덱스가 0보다 작 으면 전체 배열이 검색됩니다. 기본값 : 0 (전체 배열 검색).</li>
+</ul>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.indexOf()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array = [<span class="number">2</span>, <span class="number">9</span>, <span class="number">9</span>];</span><br><span class="line">array.indexOf(<span class="number">2</span>);     <span class="comment">// 0</span></span><br><span class="line">array.indexOf(<span class="number">7</span>);     <span class="comment">// -1</span></span><br><span class="line">array.indexOf(<span class="number">9</span>, <span class="number">2</span>);  <span class="comment">// 2</span></span><br><span class="line">array.indexOf(<span class="number">2</span>, -<span class="number">1</span>); <span class="comment">// -1</span></span><br><span class="line">array.indexOf(<span class="number">2</span>, -<span class="number">3</span>); <span class="comment">// 0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> ary = [</span><br><span class="line">    &#123; <span class="attr">a</span>: <span class="string">&#x27;a&#x27;</span>, <span class="attr">b</span>: <span class="string">&#x27;b&#x27;</span>&#125;,</span><br><span class="line">    &#123; <span class="attr">a</span>: <span class="string">&#x27;aa&#x27;</span>, <span class="attr">b</span>: <span class="string">&#x27;bb&#x27;</span>&#125;</span><br><span class="line">];</span><br><span class="line">ary.indexOf(&#123; <span class="attr">a</span>: <span class="string">&#x27;a&#x27;</span>, <span class="attr">b</span>: <span class="string">&#x27;b&#x27;</span>&#125;); <span class="comment">// -1. 객체는 확인 불가</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="17-Array-prototype-join"><a href="#17-Array-prototype-join" class="headerlink" title="17. Array.prototype.join()"></a>17. Array.prototype.join()</h2><p>join() 메서드는 배열의 모든 요소를 연결해 하나의 문자열로 만듭니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.join()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> elements = [<span class="string">&#x27;Fire&#x27;</span>, <span class="string">&#x27;Air&#x27;</span>, <span class="string">&#x27;Water&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(elements.join());</span><br><span class="line"><span class="comment">// expected output: &quot;Fire,Air,Water&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(elements.join(<span class="string">&#x27;&#x27;</span>));</span><br><span class="line"><span class="comment">// expected output: &quot;FireAirWater&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(elements.join(<span class="string">&#x27;-&#x27;</span>));</span><br><span class="line"><span class="comment">// expected output: &quot;Fire-Air-Water&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="18-Array-prototype-keys"><a href="#18-Array-prototype-keys" class="headerlink" title="18. Array.prototype.keys()"></a>18. Array.prototype.keys()</h2><p>keys() 메서드는 배열의 각 인덱스를 키 값으로 가지는 새로운 Array Iterator 객체를 반환합니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.keys()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array1 = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"><span class="keyword">var</span> iterator = array1.keys(); </span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">of</span> iterator) &#123;</span><br><span class="line"><span class="built_in">console</span>.log(key); <span class="comment">// expected output: 0 1 2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="19-Array-prototype-keys"><a href="#19-Array-prototype-keys" class="headerlink" title="19. Array.prototype.keys()"></a>19. Array.prototype.keys()</h2><p>keys() 메서드는 배열의 각 인덱스를 키 값으로 가지는 새로운 Array Iterator 객체를 반환합니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.keys()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array1 = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"><span class="keyword">var</span> iterator = array1.keys(); </span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">of</span> iterator) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(key); <span class="comment">// expected output: 0 1 2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;a&#x27;</span>, , <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"><span class="keyword">var</span> sparseKeys = <span class="built_in">Object</span>.keys(arr);</span><br><span class="line"><span class="keyword">var</span> denseKeys = [...arr.keys()];</span><br><span class="line"><span class="built_in">console</span>.log(sparseKeys); <span class="comment">// [&#x27;0&#x27;, &#x27;2&#x27;]</span></span><br><span class="line"><span class="built_in">console</span>.log(denseKeys);  <span class="comment">// [0, 1, 2] 빈 값을 무시하지 않음</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="20-Array-prototype-lastIndexOf"><a href="#20-Array-prototype-lastIndexOf" class="headerlink" title="20. Array.prototype.lastIndexOf()"></a>20. Array.prototype.lastIndexOf()</h2><p>lastIndexOf() 메서드는 지정된 요소가 배열에서 발견 될 수있는 마지막 인덱스를 반환하고, 존재하지 않으면 -1을 반환합니다. 배열은 fromIndex에서 시작하여 뒤로 검색됩니다.</p>
+<h2 id="21-Array-prototype-map"><a href="#21-Array-prototype-map" class="headerlink" title="21. Array.prototype.map()"></a>21. Array.prototype.map()</h2><p>map() 메서드는 배열 내의 모든 요소 각각에 대하여 주어진 함수를 호출한 결과를 모아 새로운 배열을 반환합니다.<br>map이 처리할 요소의 범위는 첫 callback을 호출하기 전에 정해집니다. map이 시작한 이후 배열에 추가되는 요소들은 callback을 호출하지 않습니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.map()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array1 = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// pass a function to map</span></span><br><span class="line"><span class="keyword">const</span> map1 = array1.map(<span class="function"><span class="params">x</span> =&gt;</span> x * <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(map1); <span class="comment">// expected output: Array [2, 8, 18, 32]</span></span><br><span class="line"><span class="built_in">console</span>.log(array1); <span class="comment">// Array [1, 4, 9, 16] 원본 유지</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 아래 라인을 보시면...</span></span><br><span class="line">[<span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>].map(<span class="built_in">parseInt</span>);</span><br><span class="line"><span class="comment">// 결과를 [1, 2, 3] 으로 기대할 수 있습니다.</span></span><br><span class="line"><span class="comment">// 그러나 실제 결과는 [1, NaN, NaN] 입니다.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// parseInt 함수는 보통 하나의 인자만 사용하지만, 두 개를 받을 수 있습니다.</span></span><br><span class="line"><span class="comment">// 첫 번째 인자는 변환하고자 하는 표현이고 두 번째는 숫자로 변환할 때 사용할 진법입니다.</span></span><br><span class="line"><span class="comment">// Array.prototype.map은 콜백에 세 가지 인자를 전달합니다.</span></span><br><span class="line"><span class="comment">// 배열의 값, 값의 인덱스, 그리고 배열</span></span><br><span class="line"><span class="comment">// 세 번째 인자는 parseInt가 무시하지만 두 번째 인자는 아닙니다.</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="22-Array-prototype-pop"><a href="#22-Array-prototype-pop" class="headerlink" title="22. Array.prototype.pop()"></a>22. Array.prototype.pop()</h2><p>pop() 메서드는 배열에서 마지막 요소를 제거하고 그 요소를 반환합니다.</p>
+<h2 id="23-Array-prototype-push"><a href="#23-Array-prototype-push" class="headerlink" title="23. Array.prototype.push()"></a>23. Array.prototype.push()</h2><p>push() 메서드는 배열의 끝에 하나 이상의 요소를 추가하고, 배열의 새로운 길이를 반환합니다.</p>
+<h2 id="24-Array-prototype-reduce"><a href="#24-Array-prototype-reduce" class="headerlink" title="24. Array.prototype.reduce()"></a>24. Array.prototype.reduce()</h2><p>reduce() 메서드는 배열의 각 요소에 대해 주어진 리듀서(reducer) 함수를 실행하고, 하나의 결과값을 반환합니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.reduce()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>].reduce(<span class="function"><span class="keyword">function</span>(<span class="params">accumulator, currentValue, currentIndex, array</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> accumulator + currentValue;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">callback</th>
+<th align="center">accumulator</th>
+<th align="center">currentValue</th>
+<th align="center">currentIndex</th>
+<th align="center">array</th>
+<th align="center">반환 값</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1번째 호출</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">[0, 1, 2, 3, 4]</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">2번째 호출</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">[0, 1, 2, 3, 4]</td>
+<td align="center">3</td>
+</tr>
+<tr>
+<td align="center">3번째 호출</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">[0, 1, 2, 3, 4]</td>
+<td align="center">6</td>
+</tr>
+<tr>
+<td align="center">4번째 호출</td>
+<td align="center">6</td>
+<td align="center">4</td>
+<td align="center">4</td>
+<td align="center">[0, 1, 2, 3, 4]</td>
+<td align="center">10</td>
+</tr>
+</tbody></table>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.reduce()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>].reduce(<span class="function"><span class="keyword">function</span>(<span class="params">accumulator, currentValue, currentIndex, array</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> accumulator + currentValue;</span><br><span class="line">&#125;, <span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">callback</th>
+<th align="center">accumulator</th>
+<th align="center">currentValue</th>
+<th align="center">currentIndex</th>
+<th align="center">array</th>
+<th align="center">반환 값</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1번째 호출</td>
+<td align="center">10</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">[0, 1, 2, 3, 4]</td>
+<td align="center">10</td>
+</tr>
+<tr>
+<td align="center">2번째 호출</td>
+<td align="center">10</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">[0, 1, 2, 3, 4]</td>
+<td align="center">11</td>
+</tr>
+<tr>
+<td align="center">3번째 호출</td>
+<td align="center">11</td>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">[0, 1, 2, 3, 4]</td>
+<td align="center">13</td>
+</tr>
+<tr>
+<td align="center">4번째 호출</td>
+<td align="center">13</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">[0, 1, 2, 3, 4]</td>
+<td align="center">16</td>
+</tr>
+<tr>
+<td align="center">5번째 호출</td>
+<td align="center">16</td>
+<td align="center">4</td>
+<td align="center">4</td>
+<td align="center">[0, 1, 2, 3, 4]</td>
+<td align="center">20</td>
+</tr>
+</tbody></table>
+<h2 id="25-Array-prototype-reduceRight"><a href="#25-Array-prototype-reduceRight" class="headerlink" title="25. Array.prototype.reduceRight()"></a>25. Array.prototype.reduceRight()</h2><p>reduceRight() 메서드는 누적기에 대해 함수를 적용하고 배열의 각 값 (오른쪽에서 왼쪽으로)은 값을 단일 값으로 줄여야합니다.<br>reduce와 동일하되 오른쪽에서 왼쪽으로 reducer 함수 호출.</p>
+<h2 id="26-Array-prototype-reverse"><a href="#26-Array-prototype-reverse" class="headerlink" title="26. Array.prototype.reverse()"></a>26. Array.prototype.reverse()</h2><p>배열의 순서를 반전합니다.</p>
+<h2 id="27-Array-prototype-shift"><a href="#27-Array-prototype-shift" class="headerlink" title="27. Array.prototype.shift()"></a>27. Array.prototype.shift()</h2><p>shift() 메서드는 배열에서 첫 번째 요소를 제거하고, 제거된 요소를 반환합니다. 이 메서드는 배열의 길이를 변하게 합니다.</p>
+<h2 id="28-Array-prototype-slice"><a href="#28-Array-prototype-slice" class="headerlink" title="28. Array.prototype.slice()"></a>28. Array.prototype.slice()</h2><p>slice() 메서드는 어떤 배열의 begin부터 end까지(end 미포함)에 대한 얕은 복사본을 새로운 배열 객체로 반환합니다. 원본 배열은 수정되지 않습니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.slice()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> animals = [<span class="string">&#x27;ant&#x27;</span>, <span class="string">&#x27;bison&#x27;</span>, <span class="string">&#x27;camel&#x27;</span>, <span class="string">&#x27;duck&#x27;</span>, <span class="string">&#x27;elephant&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ary1 = animals.slice(<span class="number">2</span>);</span><br><span class="line"><span class="keyword">const</span> ary2 = animals.slice(<span class="number">2</span>, <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(animals);</span><br><span class="line"><span class="built_in">console</span>.log(ary1);</span><br><span class="line"><span class="built_in">console</span>.log(ary2);</span><br><span class="line"></span><br><span class="line">animals[<span class="number">0</span>] = <span class="string">&#x27;aaaaa&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(animals);</span><br><span class="line"><span class="built_in">console</span>.log(ary1);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Array [&quot;ant&quot;, &quot;bison&quot;, &quot;camel&quot;, &quot;duck&quot;, &quot;elephant&quot;]</span></span><br><span class="line"><span class="comment">// Array [&quot;camel&quot;, &quot;duck&quot;, &quot;elephant&quot;]</span></span><br><span class="line"><span class="comment">// Array [&quot;camel&quot;, &quot;duck&quot;]</span></span><br><span class="line"><span class="comment">// Array [&quot;aaaaa&quot;, &quot;bison&quot;, &quot;camel&quot;, &quot;duck&quot;, &quot;elephant&quot;]</span></span><br><span class="line"><span class="comment">// Array [&quot;camel&quot;, &quot;duck&quot;, &quot;elephant&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="29-Array-prototype-some"><a href="#29-Array-prototype-some" class="headerlink" title="29. Array.prototype.some()"></a>29. Array.prototype.some()</h2><p>some() 메서드는 배열 안의 어떤 요소라도 주어진 판별 함수를 통과하는지 테스트합니다.<br>빈 배열에서 호출하면 무조건 false를 반환합니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.some()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="keyword">var</span> array2 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> even = <span class="function"><span class="keyword">function</span>(<span class="params">element</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// checks whether an element is even</span></span><br><span class="line">    <span class="keyword">return</span> element % <span class="number">2</span> === <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(array.some(even));</span><br><span class="line"><span class="comment">// expected output: true</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(array2.some(even));</span><br><span class="line"><span class="comment">// expected output: true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="30-Array-prototype-sort"><a href="#30-Array-prototype-sort" class="headerlink" title="30. Array.prototype.sort()"></a>30. Array.prototype.sort()</h2><p>sort() 메서드는 배열의 요소를 적절한 위치에 정렬한 후 그 배열을 반환합니다. 정렬은 stable sort가 아닐 수 있습니다.<br>기본 정렬 순서는 문자열의 유니코드 코드 포인트를 따릅니다.(오름차순)</p>
+<blockquote><p>stable sort : 졍렬시 같은 값에 대하여 원본 순서가 유지되는 정렬<br>unstable sort : 졍렬시 같은 값에 대하여 원본 순서가 유지되지 않는 정렬</p>
+</blockquote>
+
+<h2 id="31-Array-prototype-splice"><a href="#31-Array-prototype-splice" class="headerlink" title="31. Array.prototype.splice()"></a>31. Array.prototype.splice()</h2><p>splice() 메서드는 배열의 기존 요소를 삭제 또는 교체하거나 새 요소를 추가하여 배열의 내용을 변경합니다.<br>만약 제거할 요소의 수와 추가할 요소의 수가 다른 경우 배열의 길이는 달라집니다.</p>
+<blockquote><p>array.splice(start[, deleteCount[, item1[, item2[, …]]]])</p>
+</blockquote>
+
+<p>start</p>
+<ul>
+<li>배열의 변경을 시작할 인덱스입니다. 배열의 길이보다 큰 값이라면 실제 시작 인덱스는 배열의 길이로 설정됩니다.<br>음수인 경우 배열의 끝에서부터 요소를 세어나갑니다(원점 -1, 즉 -n이면 요소 끝의 n번째 요소를 가리키며 array.length - n번째 인덱스와 같음).<br>값의 절대값이 배열의 길이 보다 큰 경우 0으로 설정됩니다.</li>
+</ul>
+<p>deleteCount (Optional)</p>
+<ul>
+<li>배열에서 제거할 요소의 수입니다.<br>deleteCount를 생략하거나 값이 array.length - start보다 크면 start부터의 모든 요소를 제거합니다.<br>deleteCount가 0 이하라면 어떤 요소도 제거하지 않습니다. 이 때는 최소한 하나의 새로운 요소를 지정해야 합니다.</li>
+</ul>
+<p>item1, item2, … (Optional)</p>
+<ul>
+<li>배열에 추가할 요소입니다. 아무 요소도 지정하지 않으면 splice()는 요소를 제거하기만 합니다.</li>
+</ul>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.splice()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> months = [<span class="string">&#x27;Jan&#x27;</span>, <span class="string">&#x27;March&#x27;</span>, <span class="string">&#x27;April&#x27;</span>, <span class="string">&#x27;June&#x27;</span>];</span><br><span class="line">months.splice(<span class="number">1</span>, <span class="number">0</span>, <span class="string">&#x27;Feb&#x27;</span>);</span><br><span class="line"><span class="comment">// inserts at index 1</span></span><br><span class="line"><span class="built_in">console</span>.log(months);</span><br><span class="line"><span class="comment">// expected output: Array [&#x27;Jan&#x27;, &#x27;Feb&#x27;, &#x27;March&#x27;, &#x27;April&#x27;, &#x27;June&#x27;]</span></span><br><span class="line"></span><br><span class="line">months.splice(<span class="number">4</span>, <span class="number">1</span>, <span class="string">&#x27;May&#x27;</span>);</span><br><span class="line"><span class="comment">// replaces 1 element at index 4</span></span><br><span class="line"><span class="built_in">console</span>.log(months);</span><br><span class="line"><span class="comment">// expected output: Array [&#x27;Jan&#x27;, &#x27;Feb&#x27;, &#x27;March&#x27;, &#x27;April&#x27;, &#x27;May&#x27;]</span></span><br><span class="line"></span><br><span class="line">months.splice(<span class="number">1</span>, <span class="number">2</span>, <span class="string">&#x27;May&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(months);</span><br><span class="line"><span class="comment">// expected output: Array [&quot;Jan&quot;, &quot;May&quot;, &quot;April&quot;, &quot;May&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="32-Array-prototype-toLocaleString"><a href="#32-Array-prototype-toLocaleString" class="headerlink" title="32. Array.prototype.toLocaleString()"></a>32. Array.prototype.toLocaleString()</h2><p>toLocaleString() 메서드는 배열의 요소를 나타내는 문자열을 반환합니다.<br>요소는 toLocaleString 메서드를 사용하여 문자열로 변환되고 이 문자열은 locale 고유 문자열(가령 쉼표 “,”)에 의해 분리됩니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.toLocaleString()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array1 = [<span class="number">1</span>, <span class="string">&#x27;a&#x27;</span>, <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">&#x27;21 Dec 1997 14:12:00 UTC&#x27;</span>)];</span><br><span class="line"><span class="keyword">var</span> localeString = array1.toLocaleString(<span class="string">&#x27;en&#x27;</span>, &#123;<span class="attr">timeZone</span>: <span class="string">&quot;UTC&quot;</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(localeString);</span><br><span class="line"><span class="comment">// expected output: &quot;1,a,12/21/1997, 2:12:00 PM&quot;,</span></span><br><span class="line"><span class="comment">// This assumes &quot;en&quot; locale and UTC timezone - your results may vary</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="33-Array-prototype-toString"><a href="#33-Array-prototype-toString" class="headerlink" title="33. Array.prototype.toString()"></a>33. Array.prototype.toString()</h2><p>toString() 메서드는 지정된 배열 및 그 요소를 나타내는 문자열을 반환합니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.splice()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;1a&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(array1.toString());</span><br><span class="line"><span class="comment">// expected output: &quot;1,2,a,1a&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="34-Array-prototype-unshift"><a href="#34-Array-prototype-unshift" class="headerlink" title="34. Array.prototype.unshift()"></a>34. Array.prototype.unshift()</h2><p>unshift() 메서드는 새로운 요소를 배열의 맨 앞쪽에 추가하고, 새로운 길이를 반환합니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.unshift()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(array1.unshift(<span class="number">4</span>, <span class="number">5</span>));</span><br><span class="line"><span class="comment">// expected output: 5</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(array1);</span><br><span class="line"><span class="comment">// expected output: Array [4, 5, 1, 2, 3]</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">arr.unshift(<span class="number">0</span>); <span class="comment">// result of call is 3, the new array length</span></span><br><span class="line"><span class="comment">// arr is [0, 1, 2]</span></span><br><span class="line"></span><br><span class="line">arr.unshift(-<span class="number">2</span>, -<span class="number">1</span>); <span class="comment">// = 5</span></span><br><span class="line"><span class="comment">// arr is [-2, -1, 0, 1, 2]</span></span><br><span class="line"></span><br><span class="line">arr.unshift([-<span class="number">3</span>]);</span><br><span class="line"><span class="comment">// arr is [[-3], -2, -1, 0, 1, 2]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="35-Array-prototype-values"><a href="#35-Array-prototype-values" class="headerlink" title="35. Array.prototype.values()"></a>35. Array.prototype.values()</h2><p>values() 메서드는 배열의 각 인덱스에 대한 값을 가지는 새로운 Array Iterator 객체를 반환합니다.</p>
+<figure class="highlight javascript"><figcaption><span>Array.prototype.values()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> array1 = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"><span class="keyword">const</span> iterator = array1.values();</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> value <span class="keyword">of</span> iterator) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(value); <span class="comment">// expected output: &quot;a&quot; &quot;b&quot; &quot;c&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;w&#x27;</span>, <span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;p&#x27;</span>];</span><br><span class="line"><span class="keyword">var</span> eArr = arr.values();</span><br><span class="line"><span class="built_in">console</span>.log(eArr.next().value); <span class="comment">// w</span></span><br><span class="line"><span class="built_in">console</span>.log(eArr.next().value); <span class="comment">// y</span></span><br><span class="line"><span class="built_in">console</span>.log(eArr.next().value); <span class="comment">// k</span></span><br><span class="line"><span class="built_in">console</span>.log(eArr.next().value); <span class="comment">// o</span></span><br><span class="line"><span class="built_in">console</span>.log(eArr.next().value); <span class="comment">// p</span></span><br></pre></td></tr></table></figure>
+
+
+        </div>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://postlude.github.io/2019/07/16/javascript-array/" data-id="ckvoygrie004n5ovye08q9hxs" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/postlude" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2019/08/20/ngrok/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            ngrok 사용방법
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2019/07/02/mobaxterm/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">SSH 접속 프로그램 MobaXterm</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">JavaScript</a></p>
+                            <p class="item-title"><a href="/2021/11/07/javascript-execution-context/" class="title">JavaScript의 실행 컨텍스트(Execution Context)</a></p>
+                            <p class="item-date"><time datetime="2021-11-07T07:54:31.000Z" itemprop="datePublished">2021-11-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/k8s/">K8S</a></p>
+                            <p class="item-title"><a href="/2021/08/10/k8s-mysql/" class="title">Kubernetes에 MySQL Pod 띄우기</a></p>
+                            <p class="item-date"><time datetime="2021-08-10T07:56:03.000Z" itemprop="datePublished">2021-08-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/git/">Git</a></p>
+                            <p class="item-title"><a href="/2021/07/20/github-actions-container-registry/" class="title">GitHub Actions와 GitHub Container Registry를 이용한 도커 빌드</a></p>
+                            <p class="item-date"><time datetime="2021-07-20T13:05:56.000Z" itemprop="datePublished">2021-07-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/k8s/">K8S</a></p>
+                            <p class="item-title"><a href="/2021/07/07/kops-k8s-cert-manager/" class="title">kops 쿠버네티스 클러스터에 cert-manager 설치하기</a></p>
+                            <p class="item-date"><time datetime="2021-07-07T14:18:19.000Z" itemprop="datePublished">2021-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/k8s/">K8S</a></p>
+                            <p class="item-title"><a href="/2021/07/05/kops-k8s-ingress/" class="title">kops로 구축한 k8s 클러스터에 ingress 설정하기</a></p>
+                            <p class="item-date"><time datetime="2021-07-05T09:17:59.000Z" itemprop="datePublished">2021-07-05</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/db/">DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">Hexo</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">JAVA</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">JavaScript</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/k8s/">K8S</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a><span class="category-list-count">13</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/" rel="tag">db</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/job/" rel="tag">job</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kops/" rel="tag">kops</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2021 HSD</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_shortname = 'postlude';
+    
+    
+    var disqus_url = 'https://postlude.github.io/2019/07/16/javascript-array/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>
