@@ -79,7 +79,8 @@ theme: hueman
 ## Docs: https://hexo.io/docs/deployment.html
 deploy: 
   type: git
-  repo: https://postlude@github.com/postlude/postlude.github.io
+  # repo: https://postlude@github.com/postlude/postlude.github.io
+  repo: git@github.com:postlude/postlude.github.io.git
   branch: master
 
 sitemap:
