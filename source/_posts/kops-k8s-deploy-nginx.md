@@ -1,6 +1,6 @@
 ---
 categories:
-  - K8S
+  - Docker
 tags:
   - k8s
   - kops

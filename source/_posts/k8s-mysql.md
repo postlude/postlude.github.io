@@ -1,9 +1,10 @@
 ---
 categories:
-  - K8S
+  - Docker
 tags:
   - k8s
   - db
+  - mysql
 date: 2021-08-10 16:56:03
 title: Kubernetes에 MySQL Pod 띄우기
 updated:
