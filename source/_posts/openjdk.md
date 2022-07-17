@@ -1,6 +1,6 @@
 ---
 categories:
-  - JAVA
+  - 기타
 tags:
   - java
 date: 2019-08-26 23:03:22
