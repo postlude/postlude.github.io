@@ -4,6 +4,7 @@ categories:
 tags:
   - db
   - typeorm
+  - mysql
 date: 2022-07-07 22:41:14
 title: TypeORM에서 save를 사용할 때 update되는 기준은 뭘까?
 updated:
