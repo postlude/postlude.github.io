@@ -10,7 +10,7 @@ updated:
 
 Dockerfile을 작성해 빌드를 할 때 캐시와 관련된 내용을 정리해보도록 하겠습니다.
 
-## 1. 일반적인 상황
+# 1. 일반적인 상황
 
 예시로 아래와 같은 Dockerfile을 만들었습니다.
 
@@ -76,7 +76,7 @@ Dockerfile을 작성해 빌드를 할 때 캐시와 관련된 내용을 정리�
     Successfully tagged nginx:test
 {% endcodeblock %}
 
-## 2. 캐시 비활성화
+# 2. 캐시 비활성화
 
 위 상황에서 캐시를 사용하지 않으려면 어떻게 해야할까요?
 docker build 명령어에 `--no-cache` 옵션을 주면 됩니다.
@@ -87,7 +87,7 @@ docker build 명령어에 `--no-cache` 옵션을 주면 됩니다.
 
 이렇게 하면 처음 빌드를 할 때와 동일하게 모든 레이어를 다시 빌드하게 됩니다.
 
-## 3. 특정 레이어 이후로만 캐시 비활성화
+# 3. 특정 레이어 이후로만 캐시 비활성화
 
 이런 상황을 가정해보겠습니다.
 
@@ -157,6 +157,6 @@ docker build 명령어에 `--no-cache` 옵션을 주면 됩니다.
   즉, COPY 에는 적용되지 않기 때문에 ARG 선언부가 RUN 밑으로 오게 되면 'COPY ./test2.txt' 부분은 계속 캐시를 사용하게 됩니다.
   만약 COPY에도 적용하고 싶다면 ARG - RUN - COPY 순으로 Dockerfile을 작성하면 RUN 이후의 COPY까지도 캐시를 사용하지 않게 됩니다.
 
-## 4. 참고
+# 4. 참고
 
 - {% link Selectively disable caching for specific RUN commands in Dockerfile http://dev.im-bot.com/docker-select-caching/ %}

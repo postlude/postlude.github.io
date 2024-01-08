@@ -11,7 +11,7 @@ updated:
 제가 개인 프로젝트를 위해 신규 Node.js 프로젝트를 만들고 pm2를 이용해 환경을 세팅했는데
 pm2 watch가 제대로 동작하지 않은 적이 있습니다. 이에 대한 포스팅을 해보고자 합니다.
 
-## 1. 세팅
+# 1. 세팅
 
 일단 기본적으로 아주 간단한 node 서버를 만들었습니다.
 
@@ -61,7 +61,7 @@ ecosystem 파일에는 watch 설정만 했습니다.
     };
 {% endcodeblock %}
 
-## 2. 테스트
+# 2. 테스트
 
 위 상태에서 ecosystem 파일을 이용해 서버를 구동합니다.
 
@@ -102,7 +102,7 @@ ecosystem 파일에는 watch 설정만 했습니다.
     pm2 start ecosystem.config.js // 다시 시작
 {% endcodeblock %}
 
-## 3. 해결
+# 3. 해결
 
 좀 더 세련된 방법이 있을지는 모르겠으나 어쨌든 제가 찾아서 해결한 방법은 다음과 같습니다.
 
@@ -115,7 +115,7 @@ ecosystem 파일에는 watch 설정만 했습니다.
     pm2 start ecosystem.config.js // 다시 시작
 {% endcodeblock %}
 
-## ※ 참고
+# ※ 참고
 
 - https://pm2.keymetrics.io/docs/usage/application-declaration/
 - https://github.com/Unitech/pm2/issues/3578

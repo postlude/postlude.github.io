@@ -12,7 +12,7 @@ updated:
 {% post_link javascript-execution-context 지난 포스트 %}에서 JS의 실행 컨텍스트(Execution Context)에 대해 정리했습니다.
 이번에는 이벤트 루프와 Task, Micro Task에 대해 정리해보고자 합니다.
 
-## 1. 이벤트 루프(Event Loop)
+# 1. 이벤트 루프(Event Loop)
 
 이벤트 루프에 관해서 이 영상보다 더 좋은 설명은 보지 못한 것 같습니다.
 한글 자막도 잘되어 있으니 꼭 시청해보시는 걸 권장합니다.
@@ -26,7 +26,7 @@ updated:
 - 이벤트 루프는 call stack이 비어있으면 task queue에서 task를 하나 꺼내서 stack에 쌓아 실행될 수 있도록 한다.
 - JS가 single thread라는 말은 곧 **call stack이 하나다**라는 말과 같다.
 
-## 2. Task Queue vs. Microtask Queue
+# 2. Task Queue vs. Microtask Queue
 
 Task는 아래와 같은 작업을 말합니다. 흔히 우리가 알고 있는 JS 작업들입니다.
 
@@ -46,7 +46,7 @@ Task는 아래와 같은 작업을 말합니다. 흔히 우리가 알고 있는 
 
 그리고 microtask가 task보다 높은 우선 순위를 가지고 있습니다.
 
-## 3. 예시
+# 3. 예시
 
 아래의 코드를 예시로 들어보겠습니다.
 
@@ -83,7 +83,7 @@ Task는 아래와 같은 작업을 말합니다. 흔히 우리가 알고 있는 
 setTimeout과 Promise의 콜백으로 전달된 함수들은 각각 `task queue`와 `micro task queue`에 쌓이게 됩니다.
 start, end가 출력된 후 이벤트 루프는 비어있는 call stack에 올릴 task를 결정하게 되는데 micro task의 우선 순위가 더 높기 때문에 promise 1, 2가 먼저 출력되게 됩니다.
 
-## ※ 참고 링크
+# ※ 참고 링크
 
 - {% link [Javascript] 자바스크립트의 호출 스택과 이벤트 루프 https://iamsjy17.github.io/javascript/2019/07/20/how-to-works-js.html %}
 - {% link 비동기와 Promise #3 https://iamsjy17.github.io/javascript/2019/07/20/how-to-works-js.html %}

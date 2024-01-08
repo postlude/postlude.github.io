@@ -13,7 +13,7 @@ updated:
 이번에는 클러스터에 cert-manager addon을 설치하는 작업을 진행하도록 하겠습니다.
 이 작업을 마치면 ingress를 통해 접속시 https로 접속이 가능해집니다.
 
-## 1. addon 설치
+# 1. addon 설치
 
 기본적으로 {% link kops 문서 https://kops.sigs.k8s.io/addons/#cert-manager %} 참고하여 진행하겠습니다.
 
@@ -41,7 +41,7 @@ updated:
 
 {% asset_img 1.JPG %}
 
-## 2. issuer 생성
+# 2. issuer 생성
 
 https 통신을 위해서는 인증서가 필요합니다. 이 인증서를 무료로 발급해주는 Let's Encrypt를 사용하도록 하겠습니다.
 {% link cert manager 문서 https://cert-manager.io/docs/tutorials/acme/ingress/#step-6-configure-let-s-encrypt-issuer %}에 나와 있는 방법에 따라 진행하도록 하겠습니다.
@@ -79,7 +79,7 @@ Issuer는 네임스페이스에 포함된 리소스라 네임스페이스가 다
 
 {% asset_img 2.JPG %}
 
-## 3. ingress 생성
+# 3. ingress 생성
 
 이전에 test 네임스페이스에 만든 ingress는 삭제하도록 하겠습니다.
 
@@ -162,7 +162,7 @@ ELB에 연결한 도메인에 접속하면 아래와 같이 정상적으로 접�
 
 {% asset_img 3.jpg %}
 
-## 4. prod issuer 적용
+# 4. prod issuer 적용
 
 위의 과정까지 거치면 정상적으로 접속은 됩니다. 하지만 여전히 인증서가 유효하지 않는 것으로 나옵니다.
 이유는 Let's Encrypt 문서에서 확인할 수 있었습니다.
@@ -226,6 +226,6 @@ test 네임스페이스의 ingress를 수정합니다.
 
 이렇게 모든 설정을 마쳤습니다. 쿠버네티스에 배포되는 앱이 추가되면 ingress rule을 추가해 적용하면 됩니다.
 
-## ※ 참고 문서
+# ※ 참고 문서
 
 - {% link ingress annotaion 관련 https://cert-manager.io/docs/usage/ingress/ %}

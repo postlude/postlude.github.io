@@ -12,12 +12,12 @@ updated:
 {% post_link k8s-by-kops 지난 포스트 %}에서 kops로 kubernetes 클러스터를 구축했었습니다.
 이번에는 해당 클러스터에 간단한 nginx 를 띄워보도록 하겠습니다.
 
-## 1. 클러스터 세팅
+# 1. 클러스터 세팅
 
 먼저 클러스터에 몇 가지 세팅을 해주도록 하겠습니다.
 (이 부분들은 반드시 필요한 것은 아닙니다.)
 
-### 1.1. 보안 그룹 변경
+## 1.1. 보안 그룹 변경
 
 우선, 저와 동일하게 public 네트워크 형태로 클러스터를 구축하셨다면 쿠버네티스의 모든 master, worker node가 아래와 같이 모든 ip에 대해 ssh 접속이 가능하도록 되어있을겁니다.
 
@@ -27,7 +27,7 @@ updated:
 
 {% asset_img 2.jpg %}
 
-### 1.2. 백업 설정 변경
+## 1.2. 백업 설정 변경
 
 다음은 백업에 관한 설정입니다.
 {% link 문서 https://kops.sigs.k8s.io/operations/etcd_backup_restore_encryption/#taking-backups %}에 따르면 hourly backup은 1주일간 유지되며 daily backup은 1년간 유지된다고 합니다.
@@ -84,7 +84,7 @@ edit 명령어는 설정자체를 저장한 것이고 이것을 실제로 적용
     kops update cluster --yes
 {% endcodeblock %}
 
-## 2. 샘플 nginx pod 생성
+# 2. 샘플 nginx pod 생성
 
 이제 테스트 네임스페이스를 만들어서 nginx pod 를 띄워보도로 하겠습니다.
 
@@ -139,7 +139,7 @@ kubectl 명령어를 통해 deployment와 pod가 생성된 것을 확인할 수 
 
 {% asset_img 4.JPG %}
 
-## 3. 서비스 생성
+# 3. 서비스 생성
 
 이렇게 생성한 pod에 외부에서 접속하기 위해서는 서비스가 필요합니다.
 아래 명령어를 통해 서비스를 생성합니다. 외부에서 접속하기 위함이므로 NodePort 타입으로 생성하겠습니다.

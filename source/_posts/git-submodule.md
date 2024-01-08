@@ -12,11 +12,11 @@ updated:
 
 예시를 보도록 하자.
 
-## 0. 기본 상태
+# 0. 기본 상태
 
 {% asset_img git-submodule-1.JPG %}
 
-## 1. Submodule로 사용할 디렉토리 추가 및 push
+# 1. Submodule로 사용할 디렉토리 추가 및 push
 
 repository를 따로 사용할 수 도 있지만 같은 repository에서 브랜치만 달리해서 submodule을 추가하는 방식을 사용했다.
 이를 위해 submodule 디렉토리를 추가하고 파일을 추가했다.
@@ -41,7 +41,7 @@ repository를 따로 사용할 수 도 있지만 같은 repository에서 브랜�
 
 해당 프로젝트의 동일한 repo의 <code>submodule</code>이라는 브랜치에 해당 내용이 올라간 것을 확인할 수 있다.
 
-## 2. Submodule 연결
+# 2. Submodule 연결
 
 <code>git submodule add</code> 명령어를 통해 submodule을 추가할 수 있다.
 
@@ -62,7 +62,7 @@ repository를 따로 사용할 수 도 있지만 같은 repository에서 브랜�
 
 {% asset_img git-submodule-4.JPG %}
 
-## 3. Project commit
+# 3. Project commit
 
 이제 부모 프로젝트에서 해당 내용들을 반영해보자.
 
@@ -75,7 +75,7 @@ repository를 따로 사용할 수 도 있지만 같은 repository에서 브랜�
 
 단순히 repo 자체를 넣었을 때와는 다르게 자식 repo의 내용을 github에서 확인할 수 있다.
 
-## 4. Submodule 수정
+# 4. Submodule 수정
 
 submodule 디렉토리 하위에 test2.txt라는 파일을 만들었다.
 부모 repo에서 `git add .` 후에 다시 status를 봐도 색깔이 변하지 않았다.
@@ -99,7 +99,7 @@ submodule 디렉토리로 이동해 push하고 확인하면 정상적으로 내�
 
 {% asset_img git-submodule-12.JPG %}
 
-## 5. Submodule이 포함된 repo clone 하기
+# 5. Submodule이 포함된 repo clone 하기
 
 submodule이 포함된 디렉토리를 clone 받으면 submodule에는 아무런 내용도 들어있지 않다.
 
@@ -117,7 +117,7 @@ submodule이 포함된 디렉토리를 clone 받으면 submodule에는 아무런
 > git submodule update 를 하면 위와 같이 clone을 받는다.
 <br>
 
-### ※주의 사항※
+# ※주의 사항※
 
 git submodule update 한 후에 submodule 디렉토리에 들어가면 다음과 같이 되어 있다.
 

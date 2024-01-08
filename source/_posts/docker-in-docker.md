@@ -8,7 +8,7 @@ title: Jenkins를 docker 컨테이너로 구축하기(Docker in Docker)
 updated:
 ---
 
-## 0. 계기
+# 0. 계기
 
 올해 초에 회사 jenkins 서버를 docker로 재구축한 적이 있었습니다. 그 때의 경험을 블로그에 반드시 남겨야겠다고 생각했었는데, 이제서야 글을 쓰게 되었네요.
 
@@ -21,7 +21,7 @@ updated:
 이 과정에서 제가 겪은 내용들을 정리해보고자 합니다.
 **(잘못된 내용이 있다면 댓글로 지적해주시면 감사하겠습니다.)**
 
-## 1. 과정
+# 1. 과정
 
 jenkins 이미지를 만드는 것은 그다지 어렵지 않았습니다.
 
@@ -31,7 +31,7 @@ jenkins 이미지를 만드는 것은 그다지 어렵지 않았습니다.
     jenkins에서 docker build를 하려면 docker 명령어를 써야하는데 그러면 docker 안에 docker를 설치해야 하나?
 {% endblockquote %}
 
-## 2. Docker in Docker
+# 2. Docker in Docker
 
 구글링을 하던 도중 {% link 아주 좋은 글 https://aidanbae.github.io/code/docker/dinddood/ %}을 발견했습니다.
 
@@ -42,7 +42,7 @@ jenkins 이미지를 만드는 것은 그다지 어렵지 않았습니다.
     목적은 컨테이너 내부에서 docker 명령어를 사용하는 것이므로 호스트의 도커 명령어를 사용할 수 있도록 세팅한다.
 {% endblockquote %}
 
-## 3. 세팅
+# 3. 세팅
 
 처음에는 구글링해서 나오는 여러 글들처럼 docker run 명령어 사용시에 아래와 같은 세팅을 추가했습니다.
 
@@ -76,7 +76,7 @@ jenkins 이미지를 만드는 것은 그다지 어렵지 않았습니다.
 만약 위의 docker run -v 옵션 없이 docker-ce-cli만 설치 후 도커 명령어를 사용하면 도커 데몬에 연결할 수 없다는 메시지가 나오게 됩니다.
 (Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?)
 
-## 4. 권한 설정
+# 4. 권한 설정
 
 위의 세팅까지 적용하면 '젠킨스 컨테이너에서 플러그인으로 도커 빌드하기' + '컨테이너 내부에서 도커 명령어 사용하기' 까지는 가능합니다.
 
@@ -98,7 +98,7 @@ jenkins 이미지를 만드는 것은 그다지 어렵지 않았습니다.
 
 컨테이너 내부에 994 아이디로 docker 라는 그룹을 만들고 jenkins 유저를 docker 그룹에도 속하게 함으로써 젠킨스 job에서도 도커 명령어를 사용할 수 있게 되었습니다.
 
-## 5. 결론
+# 5. 결론
 
 당시에 이 문제를 해결할 때는 꽤 시간을 잡아먹었는데 그래도 얻은 것도 많은 좋은 경험이었습니다.
 

@@ -16,7 +16,7 @@ updated:
 
 그래서 이번 기회에 제대로 정리해보고자 한다.
 
-## 0. 기본 상태
+# 0. 기본 상태
 
 {% asset_img git-stash-1.JPG %}
 
@@ -28,7 +28,7 @@ updated:
 * 새 파일(file2, file3) 추가
 * 추가한 파일 중 하나만 add 해 stage 상태로 두었다.
 
-## 1. git stash
+# 1. git stash
 
 기본적으로는 <code>git stash</code> 명령어만으로도 작성중이던 내용을 저장할 수 있다.
 
@@ -46,7 +46,7 @@ updated:
 
 그러면 처음 상태로 파일을 되돌릴 수 있다.
 
-## 2. stash untracked file
+# 2. stash untracked file
 
 stash 명령어를 실행했을 때 왜 file3은 stash에 저장되지 않았을까?
 
@@ -72,7 +72,7 @@ untracked file인 file3까지 저장되었다.
 
 동일하게 `git stash apply`명령어로 복원 가능하다.
 
-## 3. git stash save
+# 3. git stash save
 
 위 상태에서 `git stash list`로 저장된 목록을 보면 다음과 같다.
 
@@ -98,7 +98,7 @@ untracked file인 file3까지 저장되었다.
 
 `save` 명령어도 마찬가지로 `-u` 옵션을 주어야 untracked file도 저장된다.
 
-## 4. stash push / pop
+# 4. stash push / pop
 
 `save / apply` 와 유사하게 `push / pop` 명령어도 존재한다.
 
@@ -111,7 +111,7 @@ untracked file인 file3까지 저장되었다.
 
 {% asset_img git-stash-8.JPG %}
 
-## 5. save vs. push
+# 5. save vs. push
 
 stash를 공부하던 도중 다음과 같은 자료를 발견했다.
 
@@ -138,7 +138,7 @@ stash를 공부하던 도중 다음과 같은 자료를 발견했다.
 {% asset_img git-stash-9.JPG %}
 {% asset_img git-stash-10.JPG %}
 
-## 6. 요약
+# 6. 요약
 
 {% blockquote %}
   * `git stash save` : stash 저장. 개별 파일들을 따로 저장은 불가
@@ -150,7 +150,7 @@ stash를 공부하던 도중 다음과 같은 자료를 발견했다.
   * `git stash drop` : 개별 stash 저장 내용을 삭제
 {% endblockquote %}
 
-## ※ 번외 테스트
+# ※ 번외 테스트
 
 이 글을 쓰던 도중 문득 궁금해졌다.
 

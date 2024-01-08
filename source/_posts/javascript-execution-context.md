@@ -8,7 +8,7 @@ title: JavaScript의 실행 컨텍스트(Execution Context)
 updated:
 ---
 
-## 0. 배경
+# 0. 배경
 
 이전 이야기를 조금 해보겠습니다.
 
@@ -29,7 +29,7 @@ updated:
     언제나 그렇듯 잘못된 정보가 있으면 알려주시면 감사하겠습니다.
 {% endblockquote %}
 
-## 1. 실행 컨텍스트(Execution Context)란?
+# 1. 실행 컨텍스트(Execution Context)란?
 
 ECMAScript 2015 문서에 따르면 Excution Context(이하 EC)의 정의는 아래와 같습니다.
 
@@ -62,7 +62,7 @@ ECMAScript 2015 문서에 따르면 Excution Context(이하 EC)의 정의는 아
 
 일단 `Global code`와 `Function code`에 집중해서 이해해보도록 하겠습니다.
 
-## 2. Execution Stack
+# 2. Execution Stack
 
 EC가 쌓이는 stack을 Execution Stack이라고 부릅니다. 사실 처음에 단어를 들었을 때는 이해가 가지 않았는데 좀 더 익숙한 단어로 바꾸면 **call stack**입니다.
 ({% link Is "Call stack" the same as "Execution context stack" in JavaScript? https://stackoverflow.com/questions/55140096/is-call-stack-the-same-as-execution-context-stack-in-javascript %})
@@ -93,7 +93,7 @@ ec가 만들어지는 순서를 보면 아래와 같습니다.
 
 {% asset_img 1.JPG %}
 
-## 3. EC의 구성 요소
+# 3. EC의 구성 요소
 
 EC는 아래와 같은 구조로 되어 있습니다.
 
@@ -104,7 +104,7 @@ EC는 아래와 같은 구조로 되어 있습니다.
     }
 {% endcodeblock %}
 
-### 3.1 Lexical Environment
+## 3.1 Lexical Environment
 
 LE의 정의는 다음과 같습니다.
 
@@ -125,7 +125,7 @@ EnvironmentRecord는 위에서 말한 LE의 식별자 바인딩 정보를 가지
 
 OuterLexicalEnvironment는 이름에서 상위 LE에 대한 정보를 가지고 있습니다. 함수 내에 존재하지 않지만 자신이 속한 상위 함수나 글로벌 영역에 있는 변수나 함수를 참조할 수 있는 것은 바로 OuterLexicalEnvironment가 있기 때문에 가능한 것입니다.
 
-### 3.2 Variable Environment
+## 3.2 Variable Environment
 
 ES6 에서 LexicalEnvironment와 VariableEnvironment의 차이점은 전자가 함수 선언과 변수(let, const)의 바인딩을 저장하고 후자는 변수(var) 만 저장하는 것이라고 합니다.
 
@@ -145,7 +145,7 @@ ES6 에서 LexicalEnvironment와 VariableEnvironment의 차이점은 전자가 �
     }
 {% endcodeblock %}
 
-## 4. 예시
+# 4. 예시
 
 아래의 코드를 예시로 이해해보도록 하겠습니다.
 
@@ -162,7 +162,7 @@ ES6 에서 LexicalEnvironment와 VariableEnvironment의 차이점은 전자가 �
     c = multiply(20, 30);
 {% endcodeblock %}
 
-### 4.1 Global EC 생성과 Hoisting
+## 4.1 Global EC 생성과 Hoisting
 
 가장 먼저 global EC가 아래와 같이 만들어집니다.
 
@@ -191,7 +191,7 @@ let, const로 선언된 a, b 변수는 **초기화 되지 않은 상태**이며 
 이런 차이로 인해 var로 선언된 변수는 코드 상에서 선언된 위치보다 위에서 접근할 수 있고, let과 const로 선언된 변수는 선언 위치보다 먼저 접근할 경우 reference error가 발생하게 됩니다.
 **Hoisting이라고 부르는 현상이 바로 이것입니다.**
 
-### 4.2 코드 실행
+## 4.2 코드 실행
 
 이제 코드가 첫 줄부터 실행되고 a, b 변수에 값이 할당됩니다.
 
@@ -256,7 +256,7 @@ multiply 함수가 실행되면 g 변수에 값을 할당하고 계산 값을 �
 
 그리고 계산된 값은 c에 할당되게 되고 모든 코드 실행이 완료되면 프로그램이 종료됩니다.
 
-## 5. 참고 사항
+# 5. 참고 사항
 
 제가 참고한 글을 포함해 많은 글들이 EC가 생성되는 과정을 **Creation Phase와 Execution Phase**라는 단어를 이용해 설명하고 있습니다.
 그런데 spec에서 아무리 검색을 해도 해당 단어들이 나오지 않았습니다. 이상하게 여기던 와중 stackoverflow의 글을 찾을 수 있었습니다.
@@ -267,7 +267,7 @@ multiply 함수가 실행되면 g 변수에 값을 할당하고 계산 값을 �
 
 한 마디로, phase라는 단어를 이용하진 않았지만 개념적으로 존재한다는 의미였습니다. {% link MDN의 Hoisting 페이지 https://developer.mozilla.org/en-US/docs/Glossary/Hoisting %}에서도 creation and execution phases라는 단어를 쓴 것을 보면 이 단어들을 써서 설명을 해도 오류가 없을 듯 합니다.
 
-## ※ 참고 링크
+# ※ 참고 링크
 
 - {% link ECMAScript® 2015 Language Specification https://262.ecma-international.org/6.0 %}
 - {% link Understanding Execution Context and Execution Stack in Javascript https://blog.bitsrc.io/understanding-execution-context-and-execution-stack-in-javascript-1c9ea8642dd0 %}

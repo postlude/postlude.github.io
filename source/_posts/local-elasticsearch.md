@@ -13,7 +13,7 @@ updated:
 저는 로컬에서 사용하는 환경들은 가능한한 docker로 사용하는 것을 선호합니다.
 아무래도 이것 저것 설정을 바꾸었다가 새로 띄우고 하는 것들이 좀 용이하다고 생각되기 때문이죠.
 
-## 1. Elasticsearch 설치
+# 1. Elasticsearch 설치
 
 {% link docker hub https://hub.docker.com/_/elasticsearch %}에 검색해보니 역시나 Elasticsearch 이미지가 존재합니다.
 
@@ -92,7 +92,7 @@ updated:
 	}
 {% endcodeblock %}
 
-## 2. Kibana 띄우기
+# 2. Kibana 띄우기
 
 {% link 이 글 https://levelup.gitconnected.com/how-to-run-elasticsearch-8-on-docker-for-local-development-401fd3fff829 %}에 나와있는대로 Kibana까지 docker로 실행해보도록 하겠습니다.
 포인트는 **ES 컨테이너를 띄울 때 사용한 network와 같은 network를 명시**하는 것과 가능한한 ES와 같은 버전을 사용하는 것입니다.
@@ -138,7 +138,7 @@ linux에서 `ip a` 명령어를 입력하고 나온 ip 중 **docker0**의 ip를 
 
 그러면 Kibana까지 모두 정상적으로 세팅을 마칠 수 있게 됩니다.
 
-## * Reference
+# * Reference
 
 - {% link Install Elasticsearch with Docker https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html %}
 - {% link How to Run Elasticsearch 8 on Docker for Local Development https://levelup.gitconnected.com/how-to-run-elasticsearch-8-on-docker-for-local-development-401fd3fff829 %}

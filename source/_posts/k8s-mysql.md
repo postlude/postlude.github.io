@@ -12,7 +12,7 @@ updated:
 
 이번 포스트에서는 kubernetes 위에 mysql pod를 띄우는 일을 정리해보도록 하겠습니다.
 
-## 1. 기본 Deployment 작성
+# 1. 기본 Deployment 작성
 
 처음에는 가장 기본적인 deployment를 작성해보도록 하겠습니다. 아래와 같이 작성하면 됩니다.
 
@@ -52,7 +52,7 @@ mysql을 실행시킬 때 `MYSQL_ROOT_PASSWORD`을 세팅하지 않으면 pod가
 
 이렇게 하면 dockerhub로 부터 mysql 이미지를 pull 받아 pod를 띄우게 됩니다. 
 
-## 2. Secret 사용
+# 2. Secret 사용
 
 루트 패스워드를 세팅한 것은 좋은데 이렇게 되면 deployment.yaml에 패스워드를 그대로 노출하게 됩니다.
 이것보다는 kubernetes의 secret을 이용하는 것이 보안적으로 더 좋은 방법이므로 사용해보도록 하겠습니다.
@@ -111,7 +111,7 @@ secret과 deployment 모두 정상적으로 생성이 되지만 mysql pod가 뜨
 실제로 제가 이런 실수를 해서 원인을 한참을 찾았었습니다.
 다행히 {% link 이 글 https://stackoverflow.com/questions/62985541/mysql-unknown-option-in-kubernetes %}을 보고 원인을 찾아 해결할 수 있었는데요, 저와 같은 실수를 하지 않으시길 바라겠습니다.
 
-## 3. Volume 사용하기
+# 3. Volume 사용하기
 
 지금까지 작업을 통해 띄운 mysql pod는 volume을 사용하지 않고 있기 때문에 만약 pod 종료되었다가 다시 시작되면 그 동안 DB에 저장된 모든 내용은 날아가게 됩니다.
 따라서 PV, PVC를 이용해 volume을 연결해주도록 하겠습니다.
@@ -194,11 +194,11 @@ secret과 deployment 모두 정상적으로 생성이 되지만 mysql pod가 뜨
 
 pod가 재시작된 후 node의 `/volume/pv1` 디렉토리에 데이터들이 쌓이면 정상적으로 연결된 것입니다.
 
-## ※ 참고 사항
+# ※ 참고 사항
 
 application 서버에서 mysql pod에 접속하기 위해서는 mysql pod와 동일한 네임스페이스에 pod를 띄운 후 mysql 서비스 이름과 port로 접속이 가능합니다.
 
-## ※ 참고 링크
+# ※ 참고 링크
 
 - {% link kubernetes docs https://kubernetes.io/docs/concepts/storage/volumes/#local %}
 - {% link Kubernetes에서 Local Persistent Volume을 사용하여 local disk 사용 https://lapee79.github.io/article/use-a-local-disk-by-local-volume-static-provisioner-in-kubernetes/ %}

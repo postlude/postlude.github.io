@@ -13,7 +13,7 @@ updated:
 
 오늘은 그 과정에서 겪었던 Trouble Shooting을 적어보려고 합니다.
 
-## 1. 컨테이너 구동 시 아래와 같은 에러가 발생할 경우
+# 1. 컨테이너 구동 시 아래와 같은 에러가 발생할 경우
 
 {% blockquote %}
     docker: Error response from daemon: OCI runtime create failed: container_linux.go:345: starting container process caused "process_linux.go:430: container init caused \"write /proc/self/attr/keycreate: permission denied\"": unknown.
@@ -34,7 +34,7 @@ updated:
 참고1 : {% link 특정 버전으로 설치 https://stackoverflow.com/questions/56870478/cannot-start-docker-container-in-docker-ce-on-oracle-linux %}
 참고2 : {% link containerd를 1.2.5로 downgrade https://gitmemory.com/issue/containerd/containerd/3862/560205832 %} (해당 방법으로는 직접해보지는 않아서 확실하진 않습니다.)
 
-## 2. docker images 에는 이미지 목록이 나오는데 docker rmi 명령어로 이미지를 지울 경우 'No such image' 메시지가 나올 경우
+# 2. docker images 에는 이미지 목록이 나오는데 docker rmi 명령어로 이미지를 지울 경우 'No such image' 메시지가 나올 경우
 
 버전 업을 하면서 어딘가 꼬여서 이렇게 나오는 것으로 보입니다.
 

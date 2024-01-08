@@ -38,11 +38,11 @@ themes 디렉토리 하위에 hueman 이라는 디렉토리가 생기면서 해�
 어떻게 해야 이 문제를 해결할 수 있을까?
 <br>
 
-## 1. 원인
+# 1. 원인
 
 간단하다. 하나의 git 저장소 안에 또다른 git 저장소가 들어있을 경우 한꺼번에 관리되지 않는다.
 
-## 2. 상태 및 목표
+# 2. 상태 및 목표
 
 현재 나는 블로그에 관련된 코드는 하나의 repo에서 브랜치만 달리해서 관리하고 있다.
 
@@ -56,18 +56,18 @@ themes 디렉토리 하위에 hueman 이라는 디렉토리가 생기면서 해�
 
 이 상태에서 <code>themes/hueman</code> 과 같이 테마용 브랜치를 추가해 관리하는 것을 목표로 삼았다.
 
-## 2. 해결 방법 (1)
+# 2. 해결 방법 (1)
 
 어차피 cli로 themes/hueman 로 들어가면 **일반적인 git repo**와 동일하게 인식하므로 따로 따로 관리해주면 된다.
 
-#### 2.1. 로컬에서 변경 사항을 커밋 후 remote repo를 설정해준다.
+## 2.1. 로컬에서 변경 사항을 커밋 후 remote repo를 설정해준다.
 
 {% codeblock %}
   git remote remove origin
   git remote add origin [github repo 주소]
 {% endcodeblock %}
 
-#### 2.2. 원격 저장소에 push
+## 2.2. 원격 저장소에 push
 
 {% codeblock %}
   git push -u origin themes/hueman
@@ -75,7 +75,7 @@ themes 디렉토리 하위에 hueman 이라는 디렉토리가 생기면서 해�
 
 이렇게 하면 동일 repo의 themes/hueman 브랜치로 <code>themes/hueman</code> 에 있는 내용이 올라가게 된다.
 
-#### 2.3. clone
+## 2.3. clone
 
 새로운 곳에서 clone을 받을 때는 부모 repo와 자식 repo를 각각 clone 받아야 한다.
 
@@ -101,7 +101,7 @@ themes 디렉토리 하위에 hueman 이라는 디렉토리가 생기면서 해�
 
 {% asset_img hexo-themes-and-git-submodule-5.JPG %}
 
-## 3. 해결 방법 (2) - git submodule 이용
+# 3. 해결 방법 (2) - git submodule 이용
 
 해결 방법을 찾던 도중 git에 submodule이라는 것이 있다는 것을 알게 되었다.
 
@@ -113,7 +113,7 @@ submodule을 사용하면 부모 repo와 자식 repo가 연결된다는 장점�
 
 단점은 자식 repo 내용을 수정하고자 할 때 단순 clone과 달리 <code>git checkout</code> 으로 브랜치를 만들어줘야 한다.
 
-## 4. 결론
+# 4. 결론
 
 블로그 repo에서 테마 repo를 사용하는 것이므로 의미적으로는 submodule을 사용하는게 맞을 것 같다.
 

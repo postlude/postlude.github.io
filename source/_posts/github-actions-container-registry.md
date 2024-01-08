@@ -12,7 +12,7 @@ updated:
 
 이번 포스트에서는 GitHub Actions와 GitHub Container Registry를 이용해서 CI를 구축해보도록 하겠습니다.
 
-## 1. 선택의 이유
+# 1. 선택의 이유
 
 회사에서는 CI를 젠킨스를 이용해 구축해서 사용중입니다. 그래서 개인적으로 사용할 때도 젠킨스를 이용한 방법을 사용하려고 했습니다.
 그러던 중 몇 가지 이유로 GitHub Actions와 GitHub Container Registry를 선택하게 되었습니다.
@@ -37,7 +37,7 @@ ECR 또한 고려했었습니다. 많진 않겠지만 추가 비용이 발생하
 2. 쿠버네티스에 추가적으로 젠킨스와 같은 빌드용 pod를 띄울 필요가 없음
 3. 제일 큰 이유는 바로 비용에 관한 것입니다. 저는 이미 github을 pro로 사용중이기 때문에 추가 비용이 없습니다.
 
-## 2. 기본 세팅
+# 2. 기본 세팅
 
 우선 빌드에 사용할 아주 간단한 node 서버를 만들어보도록 하겠습니다.
 
@@ -80,7 +80,7 @@ ECR 또한 고려했었습니다. 많진 않겠지만 추가 비용이 발생하
     };
 {% endcodeblock %}
 
-## 3. Personal Access Token 생성
+# 3. Personal Access Token 생성
 
 github container regitstry에 이미지를 push 하는 등의 작업을 위해서는 PAT가 필요합니다.
 
@@ -110,7 +110,7 @@ github container regitstry에 이미지를 push 하는 등의 작업을 위해�
     docker push ghcr.io/[계정명]/node-sample:latest
 {% endcodeblock %}
 
-## 4. Dockerfile 작성
+# 4. Dockerfile 작성
 
 이제 샘플 코드의 app.js와 동일한 위치에 Dockerfile을 작성하도록 하겠습니다.
 
@@ -132,7 +132,7 @@ github container regitstry에 이미지를 push 하는 등의 작업을 위해�
     CMD ["npx", "pm2-runtime", "start", "ecosystem.config.js"]
 {% endcodeblock %}
 
-## 5. GitHub Actions workflow 작성
+# 5. GitHub Actions workflow 작성
 
 workflow에서 container registry에 push 하기 위해서는 위에서 만든 PAT가 필요합니다.
 이걸 workflow에 직접 넣는 것이 아니라 repository에서 사용 가능한 secret을 만들어 사용하도록 하겠습니다.
@@ -199,7 +199,7 @@ workflow가 도는 것은 repository의 Actions 탭에서 확인할 수 있습�
 
 {% asset_img 7.JPG %}
 
-## ※ 참고 문서
+# ※ 참고 문서
 
 - {% link GitHub 문서 https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions %}
 - {% link GitHub Container Registry 사용하기 https://blog.outsider.ne.kr/1530 %}

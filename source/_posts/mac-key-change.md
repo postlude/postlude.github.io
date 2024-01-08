@@ -20,13 +20,13 @@ updated:
 	그냥 이런 방식으로 세팅하는 방법이 있다 정도로만 이해해주시면 될 것 같습니다.
 {% endblockquote %}
 
-## 0. 키 입력 확인
+# 0. 키 입력 확인
 
 세팅을 하면서 키 입력을 확인하고 싶으시면 아래 사이트에서 확인이 가능합니다.
 
 {% link Keyboard Checker https://keyboardchecker.com/ %}
 
-## 1. Control / Command 변경
+# 1. Control / Command 변경
 
 제일 처음에 한 작업은 Control 키와 Command 키를 변경한 것입니다.
 기본 키 배열로 쓰시는 분들도 있을 수 있겠지만 저는 윈도우의 복사, 붙여넣기의 ctrl c, v가 너무 익숙해져서 변경했습니다.
@@ -40,7 +40,7 @@ Control과 Command키를 서로 바꿔줍니다.
 
 {% asset_img 2.png %}
 
-## 2. 한/영 키 변경
+# 2. 한/영 키 변경
 
 맥에서 한/영 키는 caps lock과 같은 키를 씁니다. 저는 윈도우에 맞춰진 외부 키보드를 사용하기 때문에
 이걸 윈도우에서 쓰던 한/영 키로 변경하도록 하겠습니다.
@@ -63,7 +63,7 @@ Control과 Command키를 서로 바꿔줍니다.
 
 {% asset_img 5.png %}
 
-## 3. 추가 키 맵핑
+# 3. 추가 키 맵핑
 
 위에서 설치한 Karabiner를 통해 추가적으로 다른 키 맵핑들을 세팅할 수 있습니다.
 
@@ -82,7 +82,7 @@ rule에 관한 내용은 {% link 여기 https://ke-complex-modifications.pqrs.or
 다만, 적용하실 때는 하나씩 직접 해보고 원하는 작동 여부를 확인하시기 바랍니다.
 제가 했을때는 rule이 추가되어도 동작하지 않는 것들도 많았습니다.
 
-## 4. 크롬 새로고침
+# 4. 크롬 새로고침
 
 크롬에서 새로고침을 할 때 윈도우처럼 F5키로 할 수 있도록 세팅하는 방법입니다.
 
@@ -93,18 +93,18 @@ rule에 관한 내용은 {% link 여기 https://ke-complex-modifications.pqrs.or
 이런 방식이면 다른 단축키도 세팅할 수 있을 것 같은데 더 찾지는 못했습니다. 아시는 분들은 댓글 부탁드리겠습니다.
 (탭 이동을 ctrl + page up/down으로 변경하고 싶은데 말이죠..)
 
-## 5. 터미널 세팅
+# 5. 터미널 세팅
 
 저 같은 경우는 터미널에서 사용하는 단축키가 리눅스 단축키에 익숙해져 있습니다.
 그래서 맥 기본 터미널인 `zsh`의 단축키를 변경하고 싶었는데 방법을 찾지 못했습니다.
 
 제가 찾은 방법은 `iTerm2`를 설치해서 키 세팅을 변경하는 방법입니다.
 
-### 5.1. iTerm2 설치
+## 5.1. iTerm2 설치
 
 {% link 공식 홈페이지 https://iterm2.com/index.html %}에서 다운받아 설치합니다.
 
-### 5.2. 키 맵핑
+## 5.2. 키 맵핑
 
 iTerm2를 실행한 후 `ctrl(command) + ,`를 이용해 설정을 엽니다.
 (대부분의 맥 프로그램들은 `command + ,`가 설정을 여는 단축키라고 합니다.)
@@ -129,7 +129,7 @@ Keys에 있는 항목들을 통해 원하는 형태로 키 맵핑을 할 수 있
 - {% link 5 must-have key mappings on iTerm2 to be more productive https://medium.com/macoclock/5-must-have-key-mappings-on-iterm2-to-be-more-productive-21c4daf56348 %}
 - {% link iTerm key bindings https://gist.github.com/ezekg/ed57b777b859975084b4 %}
 
-## 6. 마치며
+# 6. 마치며
 
 사실 아직 좀 아쉬운 점이 몇 가지 있습니다.
 크롬 탭 이동이라던가 finder에서 delete로 삭제하기, 터미널에서 ctrl + l로 커서 올리기 등등.

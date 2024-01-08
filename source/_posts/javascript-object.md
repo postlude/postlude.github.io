@@ -92,5 +92,3 @@ document를 통해 문서(html)를 조작할 수 있음.
 {% blockquote www.zerocho.com https://www.zerocho.com/category/JavaScript/post/573b321aa54b5e8427432946 Window 객체와 BOM %}
     history.pushState(객체, 제목, 주소)와 history.replaceState(객체, 제목, 주소)는 HTML5에서 추가되었는데요. 페이지를 이동하지 않고 단순히 주소만 바꿔줍니다. 대신 객체 부분에 페이지에 대한 정보를 추가할 수 있습니다.
 {% endblockquote %}
-
-

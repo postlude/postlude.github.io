@@ -16,7 +16,7 @@ NodePort로 접속하는 방법은 worker node의 특정 포트로 직접 접속
 ingress는 간단히 설명하자면 kubernetes의 모든 요청을 설정한 룰에 따라 한 곳에서 처리하도록 하는 것입니다.
 자세한 설명은 {% link 쿠버네티스 문서 https://kubernetes.io/docs/concepts/services-networking/ingress/ %}를 참고하시면 됩니다.
 
-## 1. ingress addon 설치
+# 1. ingress addon 설치
 
 {% link kops github https://github.com/kubernetes/kops/tree/97869057129b30ea284c3ed1bdf1db36e752701d/addons/ingress-nginx %}을 보면 ingress-nginx를 설치할 수 있는 addon이 있는 것을 알 수 있습니다.
 저는 AWS를 사용중이므로 github에 나와 있는 것과 동일하게 아래 명령어를 사용해 설치해보도록 하겠습니다.
@@ -72,7 +72,7 @@ ingress는 간단히 설명하자면 kubernetes의 모든 요청을 설정한 �
 AWS 콘솔의 EC2에서 로드밸런서에서 확인할 수 있으며 ELB는 과금 요소이기 때문에 사용량이 많으면 비용을 소모하게 됩니다.
 (물론 개인이 사용할 경우 그렇게 큰 비용이 청구되지는 않는 것 같습니다. 저의 경우 ELB 과금을 포함해도 한 달에 100달러 정도 청구되었습니다.)
 
-## 2. ingress 생성
+# 2. ingress 생성
 
 위 과정으로 통해 ingress controller가 생성되었으니 이제 ingress를 생성해보도록 하겠습니다.
 {% post_link kops-k8s-deploy-nginx 이전 포스트 %}에서 만든 test 네임스페이스에 ingress를 생성하고 NodePort가 아닌 ingress를 통해서 접속하도록 세팅하겠습니다.
@@ -140,7 +140,7 @@ test-ingress.yaml에서 path를 /test로 설정했으므로 위 URL/test 로 접
 
 ingress로 접속이 되니 이전에 worker node ec2에 NodePort 접속을 위해 포트 오픈한 인바운드 규칙은 제거합니다.
 
-## 3. 도메인에 ELB 연결하기
+# 3. 도메인에 ELB 연결하기
 
 모든 설정을 완료하긴 했는데 뭔가 찜찜합니다. 접속하는 URL이 너무 지저분합니다.
 그래서 이 URL을 처음 k8s를 구축할 때 구매했던 도메인의 서브 도메인에 등록하도록 하겠습니다.
