@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>kops를 이용해 쿠버네티스 클러스터 구축하기 | Postlude&#39;s IT Blog</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="k8s,kops" />
+    
+    <meta name="description" content="0. 안내이 글은 부정확한 정보를 담고 있을 수 있습니다.글 내용 중 잘못된 정보나 더 좋은 방법을 알고 계신 분들은 댓글로 알려주시면 감사하겠습니다. 1. 배경kubernetes를 공부하고 싶은 생각은 전부터 있었습니다. 다만, 항상 방법이 문제였습니다.일단 minikube가 있었기 때문에 기본적인 부분에 대한 공부는 가능했습니다.minikube는 기초적">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kops를 이용해 쿠버네티스 클러스터 구축하기">
+<meta property="og:url" content="https://postlude.github.io/2021/06/22/k8s-by-kops/index.html">
+<meta property="og:site_name" content="Postlude&#39;s IT Blog">
+<meta property="og:description" content="0. 안내이 글은 부정확한 정보를 담고 있을 수 있습니다.글 내용 중 잘못된 정보나 더 좋은 방법을 알고 계신 분들은 댓글로 알려주시면 감사하겠습니다. 1. 배경kubernetes를 공부하고 싶은 생각은 전부터 있었습니다. 다만, 항상 방법이 문제였습니다.일단 minikube가 있었기 때문에 기본적인 부분에 대한 공부는 가능했습니다.minikube는 기초적">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://postlude.github.io/2021/06/22/k8s-by-kops/1.JPG">
+<meta property="article:published_time" content="2021-06-22T14:22:42.000Z">
+<meta property="article:modified_time" content="2024-01-08T13:01:24.044Z">
+<meta property="article:author" content="HSD">
+<meta property="article:tag" content="k8s">
+<meta property="article:tag" content="kops">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://postlude.github.io/2021/06/22/k8s-by-kops/1.JPG">
+    
+    <link rel="canonical" href="https://postlude.github.io/2021/06/22/k8s-by-kops/"/>
+
+    
+
+    
+        <link rel="icon" href="/assets/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+    
+<script src="/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-131293106-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/font-nanum/1.0/nanumbarungothic/nanumbarungothic.css">
+
+<meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/rss2.xml" title="Postlude's IT Blog" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/db/">DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/hexo/">Hexo</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/javascript/">JavaScript</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/docker/">Docker</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                            <article id="post-k8s-by-kops" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        kops를 이용해 쿠버네티스 클러스터 구축하기
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2021/06/22/k8s-by-kops/" class="article-date">
+            <time datetime="2021-06-22T14:22:42.000Z" itemprop="datePublished">2021-06-22</time>
+        </a>
+    </div>
+
+		
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/k8s/" rel="tag">k8s</a>, <a class="tag-link-link" href="/tags/kops/" rel="tag">kops</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="0-안내"><a href="#0-안내" class="headerlink" title="0. 안내"></a>0. 안내</h1><p>이 글은 부정확한 정보를 담고 있을 수 있습니다.<br>글 내용 중 잘못된 정보나 더 좋은 방법을 알고 계신 분들은 댓글로 알려주시면 감사하겠습니다.</p>
+<h1 id="1-배경"><a href="#1-배경" class="headerlink" title="1. 배경"></a>1. 배경</h1><p>kubernetes를 공부하고 싶은 생각은 전부터 있었습니다. 다만, 항상 방법이 문제였습니다.<br>일단 <a href="https://minikube.sigs.k8s.io/docs/start/" title="" target="">minikube</a>가 있었기 때문에 기본적인 부분에 대한 공부는 가능했습니다.<br>minikube는 기초적인 기능을 공부하는데는 좋으나<br>구축 자체를 연습하거나 worker node를 다룰수는 없기 때문에 해당 부분을 연습하지 못한다는 것은 단점으로 느껴졌습니다.</p>
+<p>그 다음으로 선택한 것은 AWS에서 제공하는 EKS였습니다.<br>일단 무작정 EKS를 구축해보고 여러 설정을 변경해가며 연습해보기 위해 문서를 보며 무작정 구축을 시도했습니다.<br>시행착오 끝에 EKS를 구축하는데는 성공했었습니다. 다만 문제가 있었는데요, 바로..</p>
+<img src="/2021/06/22/k8s-by-kops/1.JPG" class="">
+
+<p><strong>요금이었습니다..</strong></p>
+<p>어떤 형태든 kubernetes를 구축하면 비용이 나갈 것은 각오하고 있었고, 제가 허용 가능한 범위는 달에 10만원 ~ 최대 15만원 정도 였습니다.<br>EKS를 구축할 때도 대략적인 금액 계산은 하고 비용을 최소화하기 위한 조치(worker node를 1개로 하는 등)를 하고 구축을 하긴 했었는데요,<br>예상치 못한 부분이 위 이미지에서도 볼 수 있는 NAT Gateway 금액이었습니다.<br>EKS를 구축하면 VPC를 설정하게 되고 이 과정에서 자동으로 NAT Gateway 쓰게 되면서 과금이 되는 것 같습니다.<br>(vpc 세팅 중 public과 private를 모두 사용하는 것으로 사용하면 일단 저처럼 NAT Gateway를 사용하게 됩니다. public만 사용하게 설정한다면 어떻게 될지는 모르겠네요.)</p>
+<p>일단 요금이 제 예상을 훨씬 웃돌게 되면서 일단 바로 EKS는 삭제했습니다.(…)<br>그리고 다른 방법을 찾기 시작했습니다. 그러던 중 찾은게 <code>kubeadm</code>과 <code>kops</code>입니다.<br>그 중에 저는 kops로 k8s를 구축하기로 했습니다. 이유는 2가지였습니다.</p>
+<p>첫 번째로 공식 문서에 ‘AWS가 공식적으로 지원된다’고 나와 있으며,<br>두 번째로 요금을 계산해보니 월에 10만원 초반대로 이용이 가능할 것 같았기 때문입니다.</p>
+<h1 id="2-기본-세팅"><a href="#2-기본-세팅" class="headerlink" title="2. 기본 세팅"></a>2. 기본 세팅</h1><p>일단 저는 단순히 kubernetes를 ‘구축하는 것’을 목표로 두었습니다.<br>여러 세팅의 상세한 의미나 방법은 구축 후에 공부하고, 일단 제가 원하는 정도까지만 구축하는 것으로 방향을 잡았습니다.</p>
+<p>기본적으로 <a href="https://kops.sigs.k8s.io/getting_started/install/" title="" target="">공식 문서</a>를 보고 진행했습니다.</p>
+<h2 id="2-1-IAM-계정-생성"><a href="#2-1-IAM-계정-생성" class="headerlink" title="2.1. IAM 계정 생성"></a>2.1. IAM 계정 생성</h2><p>제일 처음 작업은 AWS 작업시 필요한 IAM 계정 생성입니다.</p>
+<a href="https://kops.sigs.k8s.io/getting_started/aws/#setup-iam-user" title="" target="">문서</a>에 따르면 아래와 같은 권한이 필요하다고 합니다.
+
+<blockquote><p>AmazonEC2FullAccess<br>AmazonRoute53FullAccess<br>AmazonS3FullAccess<br>IAMFullAccess<br>AmazonVPCFullAccess</p>
+</blockquote>
+
+<p>AWS Console에서 IAM으로 들어가 kops라는 이름의 유저 그룹을 만들고 위 권한을 부여한 후 kops라는 이름의 사용자를 만들었습니다.</p>
+<img src="/2021/06/22/k8s-by-kops/2.JPG" class="">
+
+<p>사용자를 생성하면 <strong>kops.csv</strong> 라는 파일을 다운받을 수 있는데요, 이 파일을 잘 가지고 계셔야 합니다.<br>(아마 최초 1회 밖에 다운이 되지 않을겁니다.)</p>
+<p>또한 EC2에 접근하기 위해 kops라는 이름의 키 페어도 만들었습니다.</p>
+<img src="/2021/06/22/k8s-by-kops/5.JPG" class="">
+
+<h2 id="2-2-Bastion-서버-생성"><a href="#2-2-Bastion-서버-생성" class="headerlink" title="2.2. Bastion 서버 생성"></a>2.2. Bastion 서버 생성</h2><p>처음에 저는 로컬 PC(Windows)에 kops와 kubectl 명령어를 설치하고 진행을 했습니다.<br>그런데 윈도우라 그런지 뭔가 진행이 매끄럽게 되지 않는 부분이 있었습니다.<br>(제 설정이 이상했을 수 있습니다.)<br>어쨌든 별 수 없이 명령어를 실행하고 접속하기 위한 Linux EC2 서버를 하나 생성해서 진행하니 매끄럽게 진행이 되었습니다.</p>
+<blockquote><p>사실 엄밀한 의미의 Bastion 서버는 아닙니다. 비용을 위해 네트워크를 public으로 세팅할 것이기 때문입니다.</p>
+</blockquote>
+
+<p>대신 요금 절감을 위해 프리티어 사용이 가능한 EC2 인스턴스를 생성해서 사용하도록 하겠습니다.</p>
+<img src="/2021/06/22/k8s-by-kops/3.JPG" class="">
+
+<img src="/2021/06/22/k8s-by-kops/4.JPG" class="">
+
+<p>키 페어는 위에서 만든 kops 키 페어를 선택해 생성합니다.</p>
+<p>Amazon Linux EC2의 기본 유저는 <code>ec2-user</code>입니다. 생성 후 키 파일을 이용해 접속할 수 있습니다.</p>
+<h2 id="2-3-aws-cli-kops-kubectl-설치"><a href="#2-3-aws-cli-kops-kubectl-설치" class="headerlink" title="2.3. aws-cli, kops, kubectl 설치"></a>2.3. aws-cli, kops, kubectl 설치</h2><p>먼저 kubectl 부터 설치하도록 하겠습니다.<br>과정은 <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/" title="" target="">문서</a>에 나와 있는 내용과 동일합니다.</p>
+<p>아래 명령어를 순차적으로 실행합니다.</p>
+<figure class="highlight bash"><figcaption><span>install kubectl</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -LO <span class="string">&quot;https://dl.k8s.io/release/<span class="subst">$(curl -L -s https://dl.k8s.io/release/stable.txt)</span>/bin/linux/amd64/kubectl&quot;</span></span><br><span class="line">sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl</span><br><span class="line">kubectl version --client</span><br></pre></td></tr></table></figure>
+
+<p>kubectl 사용시 편리함을 위해 자동완성을 위한 작업도 진행하겠습니다.(<a href="https://kubernetes.io/ko/docs/reference/kubectl/cheatsheet/" title="" target="">문서</a>)</p>
+<figure class="highlight bash"><figcaption><span>set kubectl</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -LO <span class="string">&quot;https://dl.k8s.io/release/<span class="subst">$(curl -L -s https://dl.k8s.io/release/stable.txt)</span>/bin/linux/amd64/kubectl&quot;</span></span><br><span class="line">sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl</span><br><span class="line">kubectl version --client</span><br></pre></td></tr></table></figure>
+
+<p>다음은 aws-cli입니다. <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/" title="" target="">문서</a>를 참고했습니다.</p>
+<figure class="highlight bash"><figcaption><span>install aws-cli</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl <span class="string">&quot;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&quot;</span> -o <span class="string">&quot;awscliv2.zip&quot;</span></span><br><span class="line">unzip awscliv2.zip</span><br><span class="line">sudo ./aws/install</span><br></pre></td></tr></table></figure>
+
+<p>aws-cli 설치 후 iam 계정을 연결하는 설정을 해야 합니다.<br>위에서 kops 계정을 만든 후 다운받은 <strong>kops.csv</strong>의 파일에서 내용을 확인해 아래 명령어를 실행합니다.</p>
+<figure class="highlight bash"><figcaption><span>configure aws-cli</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">aws configure</span><br><span class="line">AWS Access Key ID [None]: [csv파일에서 확인]</span><br><span class="line">AWS Secret Access Key [None]: [csv파일에서 확인]</span><br><span class="line">Default region name [None]: ap-northeast-2</span><br><span class="line">Default output format [None]: json</span><br></pre></td></tr></table></figure>
+
+<p>kops 설치입니다.(<a href="https://kops.sigs.k8s.io/getting_started/install/#linux" title="" target="">문서</a>)</p>
+<figure class="highlight bash"><figcaption><span>install kops</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -Lo kops https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | <span class="built_in">cut</span> -d <span class="string">&#x27;&quot;&#x27;</span> -f 4)/kops-linux-amd64</span><br><span class="line"><span class="built_in">chmod</span> +x kops</span><br><span class="line">sudo <span class="built_in">mv</span> kops /usr/local/bin/kops</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-DNS-세팅"><a href="#3-DNS-세팅" class="headerlink" title="3. DNS 세팅"></a>3. DNS 세팅</h1><a href="https://kops.sigs.k8s.io/getting_started/aws/#configure-dns" title="" target="">문서</a>에 따르면 kops를 이용해 쿠버네티스 클러스터를 구축하기 위해서는 도메인이 필요하다고 합니다.
+<p>route53에서 검색해보니 제가 사용할만한 적당한 도메인이 그렇게 비싸진 않아서(연 $12) 구매를 했습니다.</p>
+<a href="https://kops.sigs.k8s.io/gossip/" title="" target="">실제 도메인을 구매하지 않고 진행하는 방법</a>이 있다고 하는데 일단 저는 도메인 가격이 엄청 비싸다는 생각은 들지 않아서 구매 후 진행했습니다.
+
+<h1 id="4-S3-bucket-생성"><a href="#4-S3-bucket-생성" class="headerlink" title="4. S3 bucket 생성"></a>4. S3 bucket 생성</h1><p>kops로 쿠버네티스를 사용하기 위해서는 S3 버킷이 필요합니다.</p>
+<a href="https://kops.sigs.k8s.io/getting_started/aws/#cluster-state-storage" title="" target="">문서</a>에는 명령어로 버킷을 만드는 방법이 설명되어 있지만 저는 콘솔에서 만들도록 하겠습니다.
+
+<p>아래와 같이 세팅합니다.</p>
+<ul>
+<li>리전 : 서울</li>
+<li>퍼블릭 엑세스 차단</li>
+<li>버전 관리 : 활성화</li>
+<li>서버측 암호화 : 활성화 - Amazon S3 키(SSE-S3)</li>
+</ul>
+<p>여기서 언급해야할 부분은 2가지입니다.</p>
+<p>버전 관리는 문서에서 강하게 권장한다고 하니 설정했습니다.<br>서버측 암호화는 설정하지 않으면 SSE-S3와 함께 서버 측 AES256 버킷 암호화를 사용한다고 되어 있어서 설정했습니다.</p>
+<h1 id="5-Cluster-생성"><a href="#5-Cluster-생성" class="headerlink" title="5. Cluster 생성"></a>5. Cluster 생성</h1><h2 id="5-1-환경변수-세팅"><a href="#5-1-환경변수-세팅" class="headerlink" title="5.1. 환경변수 세팅"></a>5.1. 환경변수 세팅</h2><p>Bastion 서버에 접속합니다.</p>
+<p>명령어 사용시 자주 사용하기 때문에 아래처럼 &#x2F;home&#x2F;ec2-user&#x2F;.bash_profile에 내용을 추가합니다.</p>
+<figure class="highlight bash"><figcaption><span>환경변수 추가</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$HOME</span>/.local/bin:<span class="variable">$HOME</span>/bin</span><br><span class="line">KOPS_CLUSTER_NAME=[구매한 도메인]</span><br><span class="line">KOPS_STATE_STORE=s3://[S3 버킷 이름]</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> PATH KOPS_CLUSTER_NAME KOPS_STATE_STORE</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-2-availability-zone-확인"><a href="#5-2-availability-zone-확인" class="headerlink" title="5.2. availability zone 확인"></a>5.2. availability zone 확인</h2><p>kops 명령어를 통해서 클러스터를 생성하기 위해서는 aws의 availability zone을 알아야 합니다. 서울 리전이라면 아래 명령어로 확인합니다.</p>
+<figure class="highlight bash"><figcaption><span>availability zone 확인</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aws ec2 describe-availability-zones --region ap-northeast-2</span><br></pre></td></tr></table></figure>
+
+<p>명령어를 실행해서 나온 결과 중 State가 available인 경우 해당 존이 사용가능한 것 같습니다.<br>(저의 경우 전부 사용 가능한 것으로 나왔습니다.)</p>
+<h2 id="5-3-public-key-세팅"><a href="#5-3-public-key-세팅" class="headerlink" title="5.3. public key 세팅"></a>5.3. public key 세팅</h2><p>저는 비용을 위해 네트워크를 모두 public 네트워크를 사용할 예정입니다.<br>(private 네트워크를 사용하면 NAT gateway를 사용하게 될 것이고, 제가 처음 EKS를 구축했을 때처럼 비용이 나가게 될겁니다.)</p>
+<p>맨 처음 생성한 kops 키 페어를 &#x2F;home&#x2F;ec2-user&#x2F;.ssh 하위에 두고 권한을 600으로 줍니다.<br>그리고 아래 명령어를 실행합니다.</p>
+<figure class="highlight bash"><figcaption><span>create public key</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -f ./kops.pem -y &gt; kops.pub</span><br></pre></td></tr></table></figure>
+
+<p>그리고 생성된 public key도 600 권한으로 변경합니다.</p>
+<img src="/2021/06/22/k8s-by-kops/7.JPG" class="">
+
+<h2 id="5-4-클러스터-생성"><a href="#5-4-클러스터-생성" class="headerlink" title="5.4. 클러스터 생성"></a>5.4. 클러스터 생성</h2><p>아래 명령어를 실행해 실제 쿠버네티스 클러스터를 생성합니다.<br>단, 디폴트 옵션으로 실행하면 제가 원하는 환경과 다른 경우가 생겨서 아래와 같이 실행했습니다.<br>옵션 종류와 디폴트 값에 대한 내용은 <a href="https://kops.sigs.k8s.io/cli/kops_create_cluster/#options" title="" target="">여기</a>에서 확인할 수 있습니다.</p>
+<figure class="highlight bash"><figcaption><span>set cluster</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">kops create cluster \</span><br><span class="line">--name <span class="variable">$KOPS_CLUSTER_NAME</span> \</span><br><span class="line">--state <span class="variable">$KOPS_STATE_STORE</span> \</span><br><span class="line">--cloud aws \</span><br><span class="line">--zones ap-northeast-2a \</span><br><span class="line">--image ami-086a3601cd7a83590 \</span><br><span class="line">--master-zones ap-northeast-2a \</span><br><span class="line">--master-size t3a.medium \</span><br><span class="line">--master-volume-size 40 \</span><br><span class="line">--node-size t3a.medium \</span><br><span class="line">--node-volume-size 40 \</span><br><span class="line">--container-runtime docker \</span><br><span class="line">--ssh-public-key ./.ssh/kops.pub</span><br></pre></td></tr></table></figure>
+
+<p>옵션 중 이미지 아이디는 (더 좋은 방법이 있을 것 같지만) 단순하게 EC2 생성화면에서 찾아서 사용했습니다.</p>
+<img src="/2021/06/22/k8s-by-kops/6.JPG" class="">
+
+<p>위 명령어는 단순히 클러스터를 어떤 환경으로 만들지에 대한 세팅을 하는 것입니다.<br>실제로 클러스터를 생성하기 위해서 아래 명령어를 추가적으로 실행합니다.</p>
+<figure class="highlight bash"><figcaption><span>create cluster</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kops update cluster --name <span class="variable">$KOPS_CLUSTER_NAME</span> --<span class="built_in">yes</span> --admin</span><br></pre></td></tr></table></figure>
+
+<p>AWS console에 접속해 확인해보면 t3a.medium 으로 ec2 인스턴스가 2개 생성된 것을 확인할 수 있습니다.</p>
+<p>또한 처음에 만든 key 파일을 이용해 생성된 ec2 인스턴스(master, worker node)에도 접속할 수 있습니다.</p>
+<a href="/2021/07/03/kops-k8s-deploy-nginx/" title="다음 포스트">다음 포스트</a>에서는 추가적인 세팅 및 테스트를 해보도록 하겠습니다.
+
+<h1 id="※-비용"><a href="#※-비용" class="headerlink" title="※ 비용"></a>※ 비용</h1><p>저와 같은 방식으로 쿠버네티스 클러스터를 생성하셨다면 한 달에 청구되는 비용은 아래와 같습니다.<br>(30일 기준)</p>
+<ul>
+<li>도메인 : 연 $12</li>
+<li>Bastion 서버(t2.micro) : $10.368</li>
+<li>master(t3a.medium) : $33.696</li>
+<li>worker node(t3a.medium) : $33.696</li>
+<li><del>+Load Balancer, EBS, S3 등에서 청구되는 비용</del></li>
+<li><del>총합 : 월 $77.76 + a</del></li>
+<li>EBS 볼륨(gp3 * 120GB + gp2 * 10GB) : $12.08</li>
+<li>Load Balancer : $16</li>
+<li>+S3, Route53, 세금 등</li>
+</ul>
+<p><del>경험상 한 달에 약 $100 정도 청구되었습니다.</del></p>
+<p>제가 간과한 것이 EBS 볼륨으로 청구되는 금액이었습니다.<br>아무런 세팅을 하지 않은 저의 경우 master에 etcd용으로 gp3 20GB씩 2개가 생성되었습니다.<br>거기에 더해 master와 node의 볼륨으로 쓰는 것도 gp3로 생성되었으며 Bastion에서 쓰는 볼륨은 gp2로 생성되었습니다.</p>
+<p>여기에 LB 요금과 세금까지 더하면 한 달에 $120 내외로 비용이 청구됩니다.</p>
+
+        </div>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://postlude.github.io/2021/06/22/k8s-by-kops/" data-id="clr4z02ns001gkevqc4zgdvgf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/postlude" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2021/07/03/kops-k8s-deploy-nginx/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            쿠버네티스 클러스터에 nginx pod 띄우기
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2021/04/27/mongoose-alias/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Mongoose alias 사용해보기</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2024/01/08/mac-keyboard-setting/" class="title">Mac에서 키보드 세팅 변경하기 2</a></p>
+                            <p class="item-date"><time datetime="2024-01-08T13:13:07.000Z" itemprop="datePublished">2024-01-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/07/17/local-elasticsearch/" class="title">Docker로 local Elasticsearch 띄우기</a></p>
+                            <p class="item-date"><time datetime="2022-07-17T14:14:02.000Z" itemprop="datePublished">2022-07-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/07/07/typeorm-save/" class="title">TypeORM에서 save를 사용할 때 update되는 기준은 뭘까?</a></p>
+                            <p class="item-date"><time datetime="2022-07-07T13:41:14.000Z" itemprop="datePublished">2022-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/02/06/mac-key-change/" class="title">Mac에서 키보드 세팅 변경하기</a></p>
+                            <p class="item-date"><time datetime="2022-02-06T08:59:51.000Z" itemprop="datePublished">2022-02-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">JavaScript</a></p>
+                            <p class="item-title"><a href="/2021/11/16/js-eventloop-microtask/" class="title">JS의 이벤트 루프, Task, Microtask</a></p>
+                            <p class="item-date"><time datetime="2021-11-16T08:06:37.000Z" itemprop="datePublished">2021-11-16</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/db/">DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">Docker</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">Hexo</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">JavaScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a><span class="category-list-count">18</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/" rel="tag">db</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etc/" rel="tag">etc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/job/" rel="tag">job</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kops/" rel="tag">kops</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typeorm/" rel="tag">typeorm</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2024 HSD</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_shortname = 'postlude';
+    
+    
+    var disqus_url = 'https://postlude.github.io/2021/06/22/k8s-by-kops/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

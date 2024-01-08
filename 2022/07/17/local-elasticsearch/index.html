@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>Docker로 local Elasticsearch 띄우기 | Postlude&#39;s IT Blog</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="docker,elasticsearch" />
+    
+    <meta name="description" content="회사에서 Elasticsearch를 사용하고 있어서 공부의 필요성을 느끼던 차에 로컬에 공부용 es를 띄워보기로 했습니다.저는 로컬에서 사용하는 환경들은 가능한한 docker로 사용하는 것을 선호합니다.아무래도 이것 저것 설정을 바꾸었다가 새로 띄우고 하는 것들이 좀 용이하다고 생각되기 때문이죠. 1. Elasticsearch 설치docker hub에 검색">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker로 local Elasticsearch 띄우기">
+<meta property="og:url" content="https://postlude.github.io/2022/07/17/local-elasticsearch/index.html">
+<meta property="og:site_name" content="Postlude&#39;s IT Blog">
+<meta property="og:description" content="회사에서 Elasticsearch를 사용하고 있어서 공부의 필요성을 느끼던 차에 로컬에 공부용 es를 띄워보기로 했습니다.저는 로컬에서 사용하는 환경들은 가능한한 docker로 사용하는 것을 선호합니다.아무래도 이것 저것 설정을 바꾸었다가 새로 띄우고 하는 것들이 좀 용이하다고 생각되기 때문이죠. 1. Elasticsearch 설치docker hub에 검색">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://postlude.github.io/2022/07/17/local-elasticsearch/1.png">
+<meta property="article:published_time" content="2022-07-17T14:14:02.000Z">
+<meta property="article:modified_time" content="2024-01-08T13:01:24.044Z">
+<meta property="article:author" content="HSD">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="elasticsearch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://postlude.github.io/2022/07/17/local-elasticsearch/1.png">
+    
+    <link rel="canonical" href="https://postlude.github.io/2022/07/17/local-elasticsearch/"/>
+
+    
+
+    
+        <link rel="icon" href="/assets/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+    
+<script src="/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-131293106-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/font-nanum/1.0/nanumbarungothic/nanumbarungothic.css">
+
+<meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/rss2.xml" title="Postlude's IT Blog" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/db/">DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/hexo/">Hexo</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/javascript/">JavaScript</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                            <article id="post-local-elasticsearch" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Docker로 local Elasticsearch 띄우기
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2022/07/17/local-elasticsearch/" class="article-date">
+            <time datetime="2022-07-17T14:14:02.000Z" itemprop="datePublished">2022-07-17</time>
+        </a>
+    </div>
+
+		
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/docker/" rel="tag">docker</a>, <a class="tag-link-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p>회사에서 Elasticsearch를 사용하고 있어서 공부의 필요성을 느끼던 차에 로컬에 공부용 es를 띄워보기로 했습니다.<br>저는 로컬에서 사용하는 환경들은 가능한한 docker로 사용하는 것을 선호합니다.<br>아무래도 이것 저것 설정을 바꾸었다가 새로 띄우고 하는 것들이 좀 용이하다고 생각되기 때문이죠.</p>
+<h1 id="1-Elasticsearch-설치"><a href="#1-Elasticsearch-설치" class="headerlink" title="1. Elasticsearch 설치"></a>1. Elasticsearch 설치</h1><a href="https://hub.docker.com/_/elasticsearch" title="" target="">docker hub</a>에 검색해보니 역시나 Elasticsearch 이미지가 존재합니다.
+
+<p>그런데 pull을 받을 때부터 문제가 생겼습니다. <code>docker pull elasticsearch</code>를 실행하자 아래와 같은 메시지가 나옵니다.</p>
+<blockquote><p>Error response from daemon: manifest for elasticsearch:latest not found: manifest unknown: manifest unknown</p>
+</blockquote>
+
+<p>찾아보니 <code>latest</code> 태그가 정상동작하지 않는 것 같습니다. <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html" title="" target="">es 문서</a>를 보니 버전을 명시하도록 되어 있더군요.<br>아래와 같이 pull을 받도록 하겠습니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull docker.elastic.co/elasticsearch/elasticsearch:8.3.2</span><br></pre></td></tr></table></figure>
+
+<p>이미지를 다 받았으면 문서에 나온대로 network를 생성합니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network create elastic</span><br></pre></td></tr></table></figure>
+
+<p>이제 es를 실행하겠습니다.<br>사실 여기서 조금 헤맸었는데요, 블로그 글을 쓰려고 보니 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html" title="" target="">es 문서</a>와 <a href="https://hub.docker.com/_/elasticsearch" title="" target="">docker hub</a>에 나온 명령어가 조금 다르네요;;</p>
+<figure class="highlight bash"><figcaption><span>ES문서의 실행문</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.3.2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><figcaption><span>Docker Hub의 실행문</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -p 9300:9300 -e <span class="string">&quot;discovery.type=single-node&quot;</span> elasticsearch:tag</span><br></pre></td></tr></table></figure>
+
+<p>세세한 부분들은 넘어가고 제일 다른 점은 <code>-e &quot;discovery.type=single-node&quot;</code>부분입니다.<br>저는 가상머신의 linux위에서 docker로 es를 띄웠는데 이때 메모리를 3기가로 세팅해뒀습니다. 해당 환경변수가 없으면 메모리를 늘리라는 식의 에러가 나게 됩니다.</p>
+<p>구글링을 하던 도중 제가 하고자하는 것과 <a href="https://levelup.gitconnected.com/how-to-run-elasticsearch-8-on-docker-for-local-development-401fd3fff829" title="" target="">딱 맞는 글</a>을 하나 찾았습니다.<br>해당 글을 보고 여러 가지 옵션 세팅을 더할 수 있었는데요, 최종적인 실행문은 다음과 같습니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">--name [CONTAINER_NAME] \</span><br><span class="line">-d \</span><br><span class="line">-p 9200:9200 \</span><br><span class="line">-p 9300:9300 \</span><br><span class="line">-e discovery.type=single-node \</span><br><span class="line">-e ES_JAVA_OPTS=<span class="string">&quot;-Xms1g -Xmx1g&quot;</span> \</span><br><span class="line">-e xpack.security.enabled=<span class="literal">false</span> \</span><br><span class="line">--net elastic \</span><br><span class="line">docker.elastic.co/elasticsearch/elasticsearch:8.3.2</span><br></pre></td></tr></table></figure>
+
+<p>각 환경 변수의 의미는 다음과 같습니다.</p>
+<ul>
+<li>discovery.type&#x3D;single-node : 싱글 노드로 실행</li>
+<li>ES_JAVA_OPTS&#x3D;”-Xms1g -Xmx1g” : 최대, 최소 JVM heap 사이즈를 1GB로</li>
+<li>xpack.security.enabled&#x3D;false : 인증 비활성화</li>
+</ul>
+<p>위와 같이 실행 후 <code>localhost:9200</code>으로 요청을 날렸을 때 아래와 유사한 형태로 응답이 오면 성공입니다.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">	<span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;75cb76c33fe5&quot;</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;cluster_name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;docker-cluster&quot;</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;cluster_uuid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;MU_ir5s6SWWXmvwjj6CpkQ&quot;</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">		<span class="attr">&quot;number&quot;</span><span class="punctuation">:</span> <span class="string">&quot;8.3.2&quot;</span><span class="punctuation">,</span></span><br><span class="line">		<span class="attr">&quot;build_type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;docker&quot;</span><span class="punctuation">,</span></span><br><span class="line">		<span class="attr">&quot;build_hash&quot;</span><span class="punctuation">:</span> <span class="string">&quot;8b0b1f23fbebecc3c88e4464319dea8989f374fd&quot;</span><span class="punctuation">,</span></span><br><span class="line">		<span class="attr">&quot;build_date&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-07-06T15:15:15.901688194Z&quot;</span><span class="punctuation">,</span></span><br><span class="line">		<span class="attr">&quot;build_snapshot&quot;</span><span class="punctuation">:</span> <span class="keyword">false</span><span class="punctuation">,</span></span><br><span class="line">		<span class="attr">&quot;lucene_version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;9.2.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">		<span class="attr">&quot;minimum_wire_compatibility_version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;7.17.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">		<span class="attr">&quot;minimum_index_compatibility_version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;7.0.0&quot;</span></span><br><span class="line">	<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;tagline&quot;</span><span class="punctuation">:</span> <span class="string">&quot;You Know, for Search&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="2-Kibana-띄우기"><a href="#2-Kibana-띄우기" class="headerlink" title="2. Kibana 띄우기"></a>2. Kibana 띄우기</h1><a href="https://levelup.gitconnected.com/how-to-run-elasticsearch-8-on-docker-for-local-development-401fd3fff829" title="" target="">이 글</a>에 나와있는대로 Kibana까지 docker로 실행해보도록 하겠습니다.
+<p>포인트는 <strong>ES 컨테이너를 띄울 때 사용한 network와 같은 network를 명시</strong>하는 것과 가능한한 ES와 같은 버전을 사용하는 것입니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">--name [CONTAINER_NAME] \</span><br><span class="line">--net elastic \</span><br><span class="line">-p 5601:5601 \</span><br><span class="line">docker.elastic.co/kibana/kibana:8.3.2</span><br></pre></td></tr></table></figure>
+
+<p>어라? 그런데 뭔가 이상합니다. 로그를 보니 아래와 같은 메시지가 나옵니다.</p>
+<blockquote><p>i Kibana has not been configured.</p>
+<p>Go to <a target="_blank" rel="noopener" href="http://0.0.0.0:5601/?code=617541">http://0.0.0.0:5601/?code=617541</a> to get started.</p>
+</blockquote>
+
+<p>브라우저로 해당 주소를 들어가보니 아래와 같이 Enrollment Token을 입력하라는 페이지가 나옵니다.</p>
+<img src="/2022/07/17/local-elasticsearch/1.png" class="">
+
+<p>분명 ES에서 인증을 껐으니까 이 페이지가 나오지 않아야 할 것 같은데 나옵니다.<br>마찬가지로 구글링을 하다가 우연히 방법을 찾았는데요, 아래와 같이 실행하시면 됩니다.</p>
+<p>아래의 <code>Configure manually</code>를 클릭하면 아래와 같은 창이 나옵니다.</p>
+<img src="/2022/07/17/local-elasticsearch/2.png" class="">
+
+<p>제 경우는 docker가 docker desktop을 이용해 mac에 깔려있는게 아니라 VirtualBox를 이용해 띄운 linux 위에 docker가 떠있어서 그런지 localhost:9200으로 실행해도 정상적으로 작동하지 않았습니다.</p>
+<p>대신 저 ip를 localhost가 아닌 docker가 사용하는 네트워크 ip를 사용하면 됩니다.<br>linux에서 <code>ip a</code> 명령어를 입력하고 나온 ip 중 <strong>docker0</strong>의 ip를 http로 입력합니다.</p>
+<img src="/2022/07/17/local-elasticsearch/3.png" class="">
+
+<p>이렇게 하면 secure하지 않다는 경고 메시지가 나오는데요, 어차피 로컬에서 연습용으로만 사용할테니 크게 상관없습니다.<br><code>Configure Elastic</code>을 클릭합니다.</p>
+<img src="/2022/07/17/local-elasticsearch/4.png" class="">
+
+<p>그러면 Kibana까지 모두 정상적으로 세팅을 마칠 수 있게 됩니다.</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="* Reference"></a>* Reference</h1><ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html" title="" target="">Install Elasticsearch with Docker</a></li>
+<li><a href="https://levelup.gitconnected.com/how-to-run-elasticsearch-8-on-docker-for-local-development-401fd3fff829" title="" target="">How to Run Elasticsearch 8 on Docker for Local Development</a></li>
+</ul>
+
+        </div>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://postlude.github.io/2022/07/17/local-elasticsearch/" data-id="clr4z02nx001ykevq375a1r2n" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/postlude" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2024/01/08/mac-keyboard-setting/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            Mac에서 키보드 세팅 변경하기 2
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2022/07/07/typeorm-save/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">TypeORM에서 save를 사용할 때 update되는 기준은 뭘까?</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2024/01/08/mac-keyboard-setting/" class="title">Mac에서 키보드 세팅 변경하기 2</a></p>
+                            <p class="item-date"><time datetime="2024-01-08T13:13:07.000Z" itemprop="datePublished">2024-01-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/07/17/local-elasticsearch/" class="title">Docker로 local Elasticsearch 띄우기</a></p>
+                            <p class="item-date"><time datetime="2022-07-17T14:14:02.000Z" itemprop="datePublished">2022-07-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/07/07/typeorm-save/" class="title">TypeORM에서 save를 사용할 때 update되는 기준은 뭘까?</a></p>
+                            <p class="item-date"><time datetime="2022-07-07T13:41:14.000Z" itemprop="datePublished">2022-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/02/06/mac-key-change/" class="title">Mac에서 키보드 세팅 변경하기</a></p>
+                            <p class="item-date"><time datetime="2022-02-06T08:59:51.000Z" itemprop="datePublished">2022-02-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">JavaScript</a></p>
+                            <p class="item-title"><a href="/2021/11/16/js-eventloop-microtask/" class="title">JS의 이벤트 루프, Task, Microtask</a></p>
+                            <p class="item-date"><time datetime="2021-11-16T08:06:37.000Z" itemprop="datePublished">2021-11-16</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/db/">DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">Docker</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">Hexo</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">JavaScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a><span class="category-list-count">18</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/" rel="tag">db</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etc/" rel="tag">etc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/job/" rel="tag">job</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kops/" rel="tag">kops</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typeorm/" rel="tag">typeorm</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2024 HSD</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_shortname = 'postlude';
+    
+    
+    var disqus_url = 'https://postlude.github.io/2022/07/17/local-elasticsearch/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

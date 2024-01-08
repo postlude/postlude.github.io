@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>Hexo 테마 적용과 git submodule | Postlude&#39;s IT Blog</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="git,hexo" />
+    
+    <meta name="description" content="hexo로 블로그를 작성하면서 테마를 적용하기 위해선 다음과 같은 식의 명령어로 테마를 적용하게 된다. 1git clone https:&#x2F;&#x2F;github.com&#x2F;ppoffice&#x2F;hexo-theme-hueman.git themes&#x2F;hueman  themes 디렉토리 하위에 hueman 이라는 디렉토리가 생기면서 해당 저장소의 내용을 clone 받게 된다. 즉,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo 테마 적용과 git submodule">
+<meta property="og:url" content="https://postlude.github.io/2019/01/01/hexo-themes-and-git-submodule/index.html">
+<meta property="og:site_name" content="Postlude&#39;s IT Blog">
+<meta property="og:description" content="hexo로 블로그를 작성하면서 테마를 적용하기 위해선 다음과 같은 식의 명령어로 테마를 적용하게 된다. 1git clone https:&#x2F;&#x2F;github.com&#x2F;ppoffice&#x2F;hexo-theme-hueman.git themes&#x2F;hueman  themes 디렉토리 하위에 hueman 이라는 디렉토리가 생기면서 해당 저장소의 내용을 clone 받게 된다. 즉,">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://postlude.github.io/2019/01/01/hexo-themes-and-git-submodule/hexo-themes-and-git-submodule-1.JPG">
+<meta property="article:published_time" content="2019-01-01T14:22:43.000Z">
+<meta property="article:modified_time" content="2024-01-08T13:01:24.044Z">
+<meta property="article:author" content="HSD">
+<meta property="article:tag" content="git">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://postlude.github.io/2019/01/01/hexo-themes-and-git-submodule/hexo-themes-and-git-submodule-1.JPG">
+    
+    <link rel="canonical" href="https://postlude.github.io/2019/01/01/hexo-themes-and-git-submodule/"/>
+
+    
+
+    
+        <link rel="icon" href="/assets/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+    
+<script src="/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-131293106-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/font-nanum/1.0/nanumbarungothic/nanumbarungothic.css">
+
+<meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/rss2.xml" title="Postlude's IT Blog" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/db/">DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/hexo/">Hexo</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/javascript/">JavaScript</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/hexo/">Hexo</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                            <article id="post-hexo-themes-and-git-submodule" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Hexo 테마 적용과 git submodule
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2019/01/01/hexo-themes-and-git-submodule/" class="article-date">
+            <time datetime="2019-01-01T14:22:43.000Z" itemprop="datePublished">2019-01-01</time>
+        </a>
+    </div>
+
+		
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/git/" rel="tag">git</a>, <a class="tag-link-link" href="/tags/hexo/" rel="tag">hexo</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p>hexo로 블로그를 작성하면서 테마를 적용하기 위해선 다음과 같은 식의 명령어로 테마를 적용하게 된다.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/ppoffice/hexo-theme-hueman.git themes/hueman</span><br></pre></td></tr></table></figure>
+
+<p>themes 디렉토리 하위에 hueman 이라는 디렉토리가 생기면서 해당 저장소의 내용을 clone 받게 된다.</p>
+<p>즉, 아래와 같이 기본적인 설정과 포스트를 작성하는 전체 git repo 안에 다른 repo가 들어간 모양새가 된다.</p>
+<img src="/2019/01/01/hexo-themes-and-git-submodule/hexo-themes-and-git-submodule-1.JPG" class="">
+
+<p>상위 git repo만 github에 올려 관리를 하던 도중 평소 작업을 하던 곳이 아닌 다른 pc에서 작업을 하기 위해 이 블로그 repo를 clone 받았다.</p>
+<p>그런데 이게 왠걸 themes&#x2F;hueman 디렉토리에 있는 내용은 전혀 받아지지 않았다.</p>
+<img src="/2019/01/01/hexo-themes-and-git-submodule/hexo-themes-and-git-submodule-2.JPG" class="">
+
+<blockquote>
+<p>이 상태에선 <code>npm i</code> 후에 <code>hexo server</code>를 실행해도 <strong>WARN  No layout: index.html</strong> 과 같은 메시지가 나오면서 아무 페이지도 뜨지 않습니다.</p>
+</blockquote>
+<p>혹시나 싶어 github에 들어가보니 다음과 같이 아예 선택이 불가능한 상태로 되어 있었다.</p>
+<img src="/2019/01/01/hexo-themes-and-git-submodule/hexo-themes-and-git-submodule-3.JPG" class="">
+
+<p>그제야 커밋을 하고 푸쉬를 할 때 뭔가 평소와 달랐던 것이 생각났다.</p>
+<p>어떻게 해야 이 문제를 해결할 수 있을까?<br><br></p>
+<h1 id="1-원인"><a href="#1-원인" class="headerlink" title="1. 원인"></a>1. 원인</h1><p>간단하다. 하나의 git 저장소 안에 또다른 git 저장소가 들어있을 경우 한꺼번에 관리되지 않는다.</p>
+<h1 id="2-상태-및-목표"><a href="#2-상태-및-목표" class="headerlink" title="2. 상태 및 목표"></a>2. 상태 및 목표</h1><p>현재 나는 블로그에 관련된 코드는 하나의 repo에서 브랜치만 달리해서 관리하고 있다.</p>
+<p>(처음 시작할 때 repo를 따로 두는 것을 고민하긴 했는데 아무래도 한 곳에 있는게 관리하기 편할 것 같아 그렇게 결정했다.)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">master 브랜치 : 실제 배포되는 코드가 올라가는 브랜치</span><br><span class="line">포스트용 브랜치 : 포스트를 작성하는 브랜치</span><br><span class="line">설정 변경용 브랜치 : 여러 설정들을 테스트하거나 변경하기 전에 적용해보기 위한 브랜치</span><br></pre></td></tr></table></figure>
+
+<p>이 상태에서 <code>themes/hueman</code> 과 같이 테마용 브랜치를 추가해 관리하는 것을 목표로 삼았다.</p>
+<h1 id="2-해결-방법-1"><a href="#2-해결-방법-1" class="headerlink" title="2. 해결 방법 (1)"></a>2. 해결 방법 (1)</h1><p>어차피 cli로 themes&#x2F;hueman 로 들어가면 <strong>일반적인 git repo</strong>와 동일하게 인식하므로 따로 따로 관리해주면 된다.</p>
+<h2 id="2-1-로컬에서-변경-사항을-커밋-후-remote-repo를-설정해준다"><a href="#2-1-로컬에서-변경-사항을-커밋-후-remote-repo를-설정해준다" class="headerlink" title="2.1. 로컬에서 변경 사항을 커밋 후 remote repo를 설정해준다."></a>2.1. 로컬에서 변경 사항을 커밋 후 remote repo를 설정해준다.</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git remote remove origin</span><br><span class="line">git remote add origin [github repo 주소]</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-원격-저장소에-push"><a href="#2-2-원격-저장소에-push" class="headerlink" title="2.2. 원격 저장소에 push"></a>2.2. 원격 저장소에 push</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -u origin themes/hueman</span><br></pre></td></tr></table></figure>
+
+<p>이렇게 하면 동일 repo의 themes&#x2F;hueman 브랜치로 <code>themes/hueman</code> 에 있는 내용이 올라가게 된다.</p>
+<h2 id="2-3-clone"><a href="#2-3-clone" class="headerlink" title="2.3. clone"></a>2.3. clone</h2><p>새로운 곳에서 clone을 받을 때는 부모 repo와 자식 repo를 각각 clone 받아야 한다.</p>
+<p>나같은 경우에는 자식 repo가 주소는 같고 브랜치만 다르므로 다음과 같이 옵션을 주어서 clone 받아야 한다.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone -b [브랜치 명] [github repo 주소] [디렉토리 명]</span><br></pre></td></tr></table></figure>
+
+<p>여기서 한가지 더 필요한 것이 맨 마지막에 써준 디렉토리 명이다.</p>
+<p>그냥 clone을 받게 되면 github repo 명으로 clone을 받게 된다.</p>
+<img src="/2019/01/01/hexo-themes-and-git-submodule/hexo-themes-and-git-submodule-4.JPG" class="">
+
+<p>내가 원하는 것은 hueman 디렉토리 하위에 바로 clone 받는 것이므로 다음과 같이 명령어를 실행했다.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone -b themes/hueman https://github.com/postlude/postlude.github.io.git themes/hueman</span><br></pre></td></tr></table></figure>
+
+<p>이렇게 하면 다음과 같이 깔끔하게 clone 받을 수 있게 된다.</p>
+<img src="/2019/01/01/hexo-themes-and-git-submodule/hexo-themes-and-git-submodule-5.JPG" class="">
+
+<h1 id="3-해결-방법-2-git-submodule-이용"><a href="#3-해결-방법-2-git-submodule-이용" class="headerlink" title="3. 해결 방법 (2) - git submodule 이용"></a>3. 해결 방법 (2) - git submodule 이용</h1><p>해결 방법을 찾던 도중 git에 submodule이라는 것이 있다는 것을 알게 되었다.</p>
+<blockquote>
+<a href="/2019/01/06/git-submodule/" title="Git Submodule 사용하기">Git Submodule 사용하기</a>
+</blockquote>
+<p>submodule을 사용하면 부모 repo와 자식 repo가 연결된다는 장점이 있다.</p>
+<p>또한 github에서 부모 repo에서 바로 자식 repo의 내용을 확인할 수 있다.</p>
+<p>단점은 자식 repo 내용을 수정하고자 할 때 단순 clone과 달리 <code>git checkout</code> 으로 브랜치를 만들어줘야 한다.</p>
+<h1 id="4-결론"><a href="#4-결론" class="headerlink" title="4. 결론"></a>4. 결론</h1><p>블로그 repo에서 테마 repo를 사용하는 것이므로 의미적으로는 submodule을 사용하는게 맞을 것 같다.</p>
+<p>근데 생각보다 불편하다.. 명령어를 사용하는 것도 오히려 더 많이 써야 하고.</p>
+<p>다른 경우라면 모르겠지만 블로그 코드를 관리하는데 있어서는 조금 더 고민을 해봐야 할 것 같다.</p>
+
+        </div>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://postlude.github.io/2019/01/01/hexo-themes-and-git-submodule/" data-id="clr4z02nk000wkevqgwgw3ppy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/postlude" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2019/01/06/git-submodule/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            Git Submodule 사용하기
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2018/12/24/hexo-image-upload/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">hexo 블로그에서 이미지 업로드하기</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2024/01/08/mac-keyboard-setting/" class="title">Mac에서 키보드 세팅 변경하기 2</a></p>
+                            <p class="item-date"><time datetime="2024-01-08T13:13:07.000Z" itemprop="datePublished">2024-01-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/07/17/local-elasticsearch/" class="title">Docker로 local Elasticsearch 띄우기</a></p>
+                            <p class="item-date"><time datetime="2022-07-17T14:14:02.000Z" itemprop="datePublished">2022-07-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/07/07/typeorm-save/" class="title">TypeORM에서 save를 사용할 때 update되는 기준은 뭘까?</a></p>
+                            <p class="item-date"><time datetime="2022-07-07T13:41:14.000Z" itemprop="datePublished">2022-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/02/06/mac-key-change/" class="title">Mac에서 키보드 세팅 변경하기</a></p>
+                            <p class="item-date"><time datetime="2022-02-06T08:59:51.000Z" itemprop="datePublished">2022-02-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">JavaScript</a></p>
+                            <p class="item-title"><a href="/2021/11/16/js-eventloop-microtask/" class="title">JS의 이벤트 루프, Task, Microtask</a></p>
+                            <p class="item-date"><time datetime="2021-11-16T08:06:37.000Z" itemprop="datePublished">2021-11-16</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/db/">DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">Docker</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">Hexo</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">JavaScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a><span class="category-list-count">18</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/" rel="tag">db</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etc/" rel="tag">etc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/job/" rel="tag">job</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kops/" rel="tag">kops</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typeorm/" rel="tag">typeorm</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2024 HSD</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_shortname = 'postlude';
+    
+    
+    var disqus_url = 'https://postlude.github.io/2019/01/01/hexo-themes-and-git-submodule/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

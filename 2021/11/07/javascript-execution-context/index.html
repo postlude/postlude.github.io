@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>JavaScript의 실행 컨텍스트(Execution Context) | Postlude&#39;s IT Blog</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="javascript" />
+    
+    <meta name="description" content="0. 배경이전 이야기를 조금 해보겠습니다. 회사에 들어오고 얼마 지나지 않았을 때 js에 대해 공부를 해야겠다고 생각했었습니다.업무를 하면서 뭔가 언어의 근본적인 부분에 대해 모르고 쓰고 있다는 생각이 들었기 때문입니다. 그래서 js관련 오프라인 강의를 들었습니다. 그 때 실행 컨텍스트라는 단어도 처음 들었습니다. 강의를 들을 때도 100% 이해가 된 건">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript의 실행 컨텍스트(Execution Context)">
+<meta property="og:url" content="https://postlude.github.io/2021/11/07/javascript-execution-context/index.html">
+<meta property="og:site_name" content="Postlude&#39;s IT Blog">
+<meta property="og:description" content="0. 배경이전 이야기를 조금 해보겠습니다. 회사에 들어오고 얼마 지나지 않았을 때 js에 대해 공부를 해야겠다고 생각했었습니다.업무를 하면서 뭔가 언어의 근본적인 부분에 대해 모르고 쓰고 있다는 생각이 들었기 때문입니다. 그래서 js관련 오프라인 강의를 들었습니다. 그 때 실행 컨텍스트라는 단어도 처음 들었습니다. 강의를 들을 때도 100% 이해가 된 건">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://postlude.github.io/2021/11/07/javascript-execution-context/1.JPG">
+<meta property="article:published_time" content="2021-11-07T07:54:31.000Z">
+<meta property="article:modified_time" content="2024-01-08T13:01:23.905Z">
+<meta property="article:author" content="HSD">
+<meta property="article:tag" content="javascript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://postlude.github.io/2021/11/07/javascript-execution-context/1.JPG">
+    
+    <link rel="canonical" href="https://postlude.github.io/2021/11/07/javascript-execution-context/"/>
+
+    
+
+    
+        <link rel="icon" href="/assets/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+    
+<script src="/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-131293106-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/font-nanum/1.0/nanumbarungothic/nanumbarungothic.css">
+
+<meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/rss2.xml" title="Postlude's IT Blog" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/db/">DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/hexo/">Hexo</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/javascript/">JavaScript</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/javascript/">JavaScript</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                            <article id="post-javascript-execution-context" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        JavaScript의 실행 컨텍스트(Execution Context)
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2021/11/07/javascript-execution-context/" class="article-date">
+            <time datetime="2021-11-07T07:54:31.000Z" itemprop="datePublished">2021-11-07</time>
+        </a>
+    </div>
+
+		
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/javascript/" rel="tag">javascript</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="0-배경"><a href="#0-배경" class="headerlink" title="0. 배경"></a>0. 배경</h1><p>이전 이야기를 조금 해보겠습니다.</p>
+<p>회사에 들어오고 얼마 지나지 않았을 때 js에 대해 공부를 해야겠다고 생각했었습니다.<br>업무를 하면서 뭔가 언어의 근본적인 부분에 대해 모르고 쓰고 있다는 생각이 들었기 때문입니다.</p>
+<p>그래서 js관련 오프라인 강의를 들었습니다. 그 때 실행 컨텍스트라는 단어도 처음 들었습니다.</p>
+<p>강의를 들을 때도 100% 이해가 된 건 아니었습니다. 강의가 끝난 후에 공부를 해야지라는 생각을 하고 시도를 했었는데 잘 이해가 안되더군요(…)</p>
+<p>그래서 그 당시에 정리를 위한 draft를 만들었었는데 그걸 이때까지 publish를 하지 못하고 있다가 최근에 다시 공부하면서 조금씩 이해가 되어서 이렇게 정리를 해보려고 합니다.</p>
+<blockquote><p>완벽하게 이해하지 못한 부분도 있습니다.</p>
+</blockquote>
+
+<blockquote><p>언제나 그렇듯 잘못된 정보가 있으면 알려주시면 감사하겠습니다.</p>
+</blockquote>
+
+<h1 id="1-실행-컨텍스트-Execution-Context-란"><a href="#1-실행-컨텍스트-Execution-Context-란" class="headerlink" title="1. 실행 컨텍스트(Execution Context)란?"></a>1. 실행 컨텍스트(Execution Context)란?</h1><p>ECMAScript 2015 문서에 따르면 Excution Context(이하 EC)의 정의는 아래와 같습니다.</p>
+<blockquote><p>An execution context is a specification device that is used to track the runtime evaluation of code by an ECMAScript implementation. At any point in time, there is at most one execution context that is actually executing code. This is known as the running execution context. A stack is used to track execution contexts. The running execution context is always the top element of this stack. A new execution context is created whenever control is transferred from the executable code associated with the currently running execution context to executable code that is not associated with that execution context. The newly created execution context is pushed onto the stack and becomes the running execution context.</p>
+<footer><strong>ECMAScript® 2015 Language Specification</strong><cite><a target="_blank" rel="noopener" href="http://www.ecma-international.org/ecma-262/6.0/#sec-execution-contexts">Execution Contexts</a></cite></footer></blockquote>
+
+<p>첫 문장부터 의문이 생겼습니다. <strong>runtime evaluation</strong>은 뭘까요? 구글링을 통해 찾은 의미는 다음과 같았습니다.</p>
+<blockquote><p>Demonstrate a language’s ability for programs to execute code written in the language provided at runtime.</p>
+<footer><strong>rosettacode.org</strong><cite><a target="_blank" rel="noopener" href="https://rosettacode.org/wiki/Runtime_evaluation">Runtime evaluation</a></cite></footer></blockquote>
+
+<p>즉, 실행 평가(runtime evaluation)란 어떤 코드가 런타임에 어떤 기능을 하는지 판단하는 것입니다.</p>
+<p>다시 EC로 돌아오면, EC의 역할은 이 실행 평가를 추적하는 것입니다.<br>마지막 두 문장을 보면 컨트롤이 실행 가능한 코드(executable code)로 옮겨가면 새로운 EC가 생성되고 stack에 push된다고 나와있습니다. 그리고 실행 중인 EC는 새로 생성된 EC가 된다고 합니다.</p>
+<p>문서에 나와있는 소스 코드의 종류는 다음과 같습니다.</p>
+<blockquote><p>Global code is source text that is treated as an ECMAScript Script. The global code of a particular Script does not include any source text that is parsed as part of a FunctionDeclaration, FunctionExpression, GeneratorDeclaration, GeneratorExpression, MethodDefinition, ArrowFunction, ClassDeclaration, or ClassExpression.</p>
+<p>Eval code is the source text supplied to the built-in eval function. More precisely, if the parameter to the built-in eval function is a String, it is treated as an ECMAScript Script. The eval code for a particular invocation of eval is the global code portion of that Script.</p>
+<p>Function code is source text that is parsed to supply the value of the [[ECMAScriptCode]] and [[FormalParameters]] internal slots (see 9.2) of an ECMAScript function object. The function code of a particular ECMAScript function does not include any source text that is parsed as the function code of a nested FunctionDeclaration, FunctionExpression, GeneratorDeclaration, GeneratorExpression, MethodDefinition, ArrowFunction, ClassDeclaration, or ClassExpression.</p>
+<p>Module code is source text that is code that is provided as a ModuleBody. It is the code that is directly evaluated when a module is initialized. The module code of a particular module does not include any source text that is parsed as part of a nested FunctionDeclaration, FunctionExpression, GeneratorDeclaration, GeneratorExpression, MethodDefinition, ArrowFunction, ClassDeclaration, or ClassExpression.</p>
+<footer><strong>ECMAScript® 2015 Language Specification</strong><cite><a target="_blank" rel="noopener" href="http://www.ecma-international.org/ecma-262/6.0/#sec-types-of-source-code">Types of Source Code</a></cite></footer></blockquote>
+
+<p>일단 <code>Global code</code>와 <code>Function code</code>에 집중해서 이해해보도록 하겠습니다.</p>
+<h1 id="2-Execution-Stack"><a href="#2-Execution-Stack" class="headerlink" title="2. Execution Stack"></a>2. Execution Stack</h1><p>EC가 쌓이는 stack을 Execution Stack이라고 부릅니다. 사실 처음에 단어를 들었을 때는 이해가 가지 않았는데 좀 더 익숙한 단어로 바꾸면 <strong>call stack</strong>입니다.<br>(<a href="https://stackoverflow.com/questions/55140096/is-call-stack-the-same-as-execution-context-stack-in-javascript" title="" target="">Is Call stack the same as Execution context stack in JavaScript?</a>)</p>
+<p>아래와 같은 코드가 있다고 가정해보겠습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> gb = <span class="string">&#x27;global variable&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">func1</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;start func1&#x27;</span>);</span><br><span class="line">    <span class="title function_">func2</span>();</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;end func1&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">func2</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;func2&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">func1</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;global execution context&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>맨 처음 글로벌 ec가 만들어지고 func1이 호출될 때 해당 함수의 ec가 만들어 집니다. func1 내부에서 func2를 호출할 때도 마찬가지로 func2의 ec가 만들어 집니다.</p>
+<p>ec가 만들어지는 순서를 보면 아래와 같습니다.</p>
+<img src="/2021/11/07/javascript-execution-context/1.JPG" class="">
+
+<h1 id="3-EC의-구성-요소"><a href="#3-EC의-구성-요소" class="headerlink" title="3. EC의 구성 요소"></a>3. EC의 구성 요소</h1><p>EC는 아래와 같은 구조로 되어 있습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">ExecutionContext</span>: &#123;</span><br><span class="line">    <span class="title class_">LexicalEnvironment</span>,</span><br><span class="line">    <span class="title class_">VariableEnvironment</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-1-Lexical-Environment"><a href="#3-1-Lexical-Environment" class="headerlink" title="3.1 Lexical Environment"></a>3.1 Lexical Environment</h2><p>LE의 정의는 다음과 같습니다.</p>
+<blockquote><p>A Lexical Environment is a specification type used to define the association of Identifiers to specific variables and functions based upon the lexical nesting structure of ECMAScript code.</p>
+<footer><strong>ECMAScript® 2015 Language Specification</strong><cite><a target="_blank" rel="noopener" href="https://262.ecma-international.org/6.0/#sec-lexical-environments">Lexical Environments</a></cite></footer></blockquote>
+
+<p>다시 말해 변수, 함수에 대한 식별자 바인딩 정보를 담고 있는 곳입니다. LE는 다시 EnvironmentRecord와 OuterLexicalEnvironment로 구성되어 있습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">LexicalEnvironment</span>: &#123;</span><br><span class="line">    <span class="title class_">EnvironmentRecord</span>,</span><br><span class="line">    <span class="title class_">OuterLexicalEnvironment</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>EnvironmentRecord는 위에서 말한 LE의 식별자 바인딩 정보를 가지고 있습니다.</p>
+<p>OuterLexicalEnvironment는 이름에서 상위 LE에 대한 정보를 가지고 있습니다. 함수 내에 존재하지 않지만 자신이 속한 상위 함수나 글로벌 영역에 있는 변수나 함수를 참조할 수 있는 것은 바로 OuterLexicalEnvironment가 있기 때문에 가능한 것입니다.</p>
+<h2 id="3-2-Variable-Environment"><a href="#3-2-Variable-Environment" class="headerlink" title="3.2 Variable Environment"></a>3.2 Variable Environment</h2><p>ES6 에서 LexicalEnvironment와 VariableEnvironment의 차이점은 전자가 함수 선언과 변수(let, const)의 바인딩을 저장하고 후자는 변수(var) 만 저장하는 것이라고 합니다.</p>
+<p>전체 구조로 보면 EC는 아래와 같은 모습입니다.<br>(사실 이것 외에도 다른 부분들이 더 있으나 제가 이해한 영역만 작성했습니다.)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">ExecutionContext</span>: &#123;</span><br><span class="line">    <span class="title class_">LexicalEnvironment</span>: &#123;</span><br><span class="line">        <span class="title class_">EnvironmentRecord</span>,</span><br><span class="line">        <span class="title class_">OuterLexicalEnvironment</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title class_">VariableEnvironment</span>: &#123;</span><br><span class="line">        <span class="title class_">EnvironmentRecord</span>,</span><br><span class="line">        <span class="title class_">OuterLexicalEnvironment</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-예시"><a href="#4-예시" class="headerlink" title="4. 예시"></a>4. 예시</h1><p>아래의 코드를 예시로 이해해보도록 하겠습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="number">20</span>;</span><br><span class="line"><span class="keyword">const</span> b = <span class="number">30</span>;</span><br><span class="line"><span class="keyword">var</span> c;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">multiply</span>(<span class="params">e, f</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> g = <span class="number">20</span>;</span><br><span class="line">    <span class="keyword">return</span> e * f * g;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">c = <span class="title function_">multiply</span>(<span class="number">20</span>, <span class="number">30</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-1-Global-EC-생성과-Hoisting"><a href="#4-1-Global-EC-생성과-Hoisting" class="headerlink" title="4.1 Global EC 생성과 Hoisting"></a>4.1 Global EC 생성과 Hoisting</h2><p>가장 먼저 global EC가 아래와 같이 만들어집니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">GlobalExectionContext</span> = &#123;</span><br><span class="line">    <span class="title class_">LexicalEnvironment</span>: &#123;</span><br><span class="line">        <span class="title class_">EnvironmentRecord</span>: &#123;</span><br><span class="line">            <span class="attr">a</span>: &lt; uninitialized &gt;,</span><br><span class="line">            <span class="attr">b</span>: &lt; uninitialized &gt;,</span><br><span class="line">            <span class="attr">multiply</span>: &lt; func &gt;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">OuterLexicalEnvironment</span>: <span class="literal">null</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title class_">VariableEnvironment</span>: &#123;</span><br><span class="line">        <span class="title class_">EnvironmentRecord</span>: &#123;</span><br><span class="line">            <span class="attr">c</span>: <span class="literal">undefined</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">OuterLexicalEnvironment</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>여기서 중요한 점은 a, b, c 변수의 차이점입니다.<br>let, const로 선언된 a, b 변수는 <strong>초기화 되지 않은 상태</strong>이며 var로 선언된 c는 <strong>undefined</strong>가 할당되어 있습니다.</p>
+<p>이런 차이로 인해 var로 선언된 변수는 코드 상에서 선언된 위치보다 위에서 접근할 수 있고, let과 const로 선언된 변수는 선언 위치보다 먼저 접근할 경우 reference error가 발생하게 됩니다.<br><strong>Hoisting이라고 부르는 현상이 바로 이것입니다.</strong></p>
+<h2 id="4-2-코드-실행"><a href="#4-2-코드-실행" class="headerlink" title="4.2 코드 실행"></a>4.2 코드 실행</h2><p>이제 코드가 첫 줄부터 실행되고 a, b 변수에 값이 할당됩니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">GlobalExecutionContext</span> = &#123;</span><br><span class="line">    <span class="title class_">LexicalEnvironment</span>: &#123;</span><br><span class="line">        <span class="title class_">EnvironmentRecord</span>: &#123;</span><br><span class="line">            <span class="attr">a</span>: <span class="number">20</span>,</span><br><span class="line">            <span class="attr">b</span>: <span class="number">30</span>,</span><br><span class="line">            <span class="attr">multiply</span>: &lt; func &gt;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">OuterLexicalEnvironment</span>: <span class="literal">null</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title class_">VariableEnvironment</span>: &#123;</span><br><span class="line">        <span class="title class_">EnvironmentRecord</span>: &#123;</span><br><span class="line">            <span class="attr">c</span>: <span class="literal">undefined</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">OuterLexicalEnvironment</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>그리고 <code>multiply(20, 30)</code> 코드를 만난 순간 multiply 함수의 EC가 만들어지게 됩니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">FunctionExecutionContext</span> = &#123;</span><br><span class="line">    <span class="title class_">LexicalEnvironment</span>: &#123;</span><br><span class="line">        <span class="title class_">EnvironmentRecord</span>: &#123;</span><br><span class="line">            <span class="attr">e</span>: <span class="number">20</span>,</span><br><span class="line">            <span class="attr">f</span>: <span class="number">30</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">OuterLexicalEnvironment</span>: <span class="title class_">GlobalLexicalEnvironment</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title class_">VariableEnvironment</span>: &#123;</span><br><span class="line">        <span class="title class_">EnvironmentRecord</span>: &#123;</span><br><span class="line">            <span class="attr">g</span>: <span class="literal">undefined</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">OuterLexicalEnvironment</span>: <span class="title class_">GlobalLexicalEnvironment</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>multiply 함수가 실행되면 g 변수에 값을 할당하고 계산 값을 리턴하게 됩니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">FunctionExecutionContext</span> = &#123;</span><br><span class="line">    <span class="title class_">LexicalEnvironment</span>: &#123;</span><br><span class="line">        <span class="title class_">EnvironmentRecord</span>: &#123;</span><br><span class="line">            <span class="attr">e</span>: <span class="number">20</span>,</span><br><span class="line">            <span class="attr">f</span>: <span class="number">30</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">OuterLexicalEnvironment</span>: <span class="title class_">GlobalLexicalEnvironment</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title class_">VariableEnvironment</span>: &#123;</span><br><span class="line">        <span class="title class_">EnvironmentRecord</span>: &#123;</span><br><span class="line">            <span class="attr">g</span>: <span class="number">20</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">OuterLexicalEnvironment</span>: <span class="title class_">GlobalLexicalEnvironment</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>그리고 계산된 값은 c에 할당되게 되고 모든 코드 실행이 완료되면 프로그램이 종료됩니다.</p>
+<h1 id="5-참고-사항"><a href="#5-참고-사항" class="headerlink" title="5. 참고 사항"></a>5. 참고 사항</h1><p>제가 참고한 글을 포함해 많은 글들이 EC가 생성되는 과정을 <strong>Creation Phase와 Execution Phase</strong>라는 단어를 이용해 설명하고 있습니다.<br>그런데 spec에서 아무리 검색을 해도 해당 단어들이 나오지 않았습니다. 이상하게 여기던 와중 stackoverflow의 글을 찾을 수 있었습니다.</p>
+<blockquote><p>There are no “phases” in the spec and they’re not called like that, but the concept still exists.</p>
+<footer><strong>stackoverflow</strong><cite><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/62935334/creation-and-execution-phase-in-ecmascript-specification">Creation and execution phase in ECMAScript Specification [closed]</a></cite></footer></blockquote>
+
+<p>한 마디로, phase라는 단어를 이용하진 않았지만 개념적으로 존재한다는 의미였습니다. <a href="https://developer.mozilla.org/en-US/docs/Glossary/Hoisting" title="" target="">MDN의 Hoisting 페이지</a>에서도 creation and execution phases라는 단어를 쓴 것을 보면 이 단어들을 써서 설명을 해도 오류가 없을 듯 합니다.</p>
+<h1 id="※-참고-링크"><a href="#※-참고-링크" class="headerlink" title="※ 참고 링크"></a>※ 참고 링크</h1><ul>
+<li><a href="https://262.ecma-international.org/6.0" title="" target="">ECMAScript® 2015 Language Specification</a></li>
+<li><a href="https://blog.bitsrc.io/understanding-execution-context-and-execution-stack-in-javascript-1c9ea8642dd0" title="" target="">Understanding Execution Context and Execution Stack in Javascript</a></li>
+<li><a href="https://velog.io/@imacoolgirlyo/JS-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%9D%98-Hoisting-The-Execution-Context-%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85-%EC%8B%A4%ED%96%89-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-6bjsmmlmgy" title="" target="">[JS] 자바스크립트의 The Execution Context (실행 컨텍스트) 와 Hoisting (호이스팅)</a></li>
+<li><a href="https://medium.com/@snaag.dev/execution-context-d53a258c7415" title="" target="">Execution Context</a></li>
+<li><a href="https://baeharam.netlify.app/posts/javascript/execution-context" title="" target="">[JS] Execution Context(실행 컨텍스트)</a></li>
+</ul>
+
+        </div>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://postlude.github.io/2021/11/07/javascript-execution-context/" data-id="clr4z02nn0015kevq4h2sax54" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/postlude" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2021/11/16/js-eventloop-microtask/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            JS의 이벤트 루프, Task, Microtask
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2021/08/10/k8s-mysql/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Kubernetes에 MySQL Pod 띄우기</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2024/01/08/mac-keyboard-setting/" class="title">Mac에서 키보드 세팅 변경하기 2</a></p>
+                            <p class="item-date"><time datetime="2024-01-08T13:13:07.000Z" itemprop="datePublished">2024-01-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/07/17/local-elasticsearch/" class="title">Docker로 local Elasticsearch 띄우기</a></p>
+                            <p class="item-date"><time datetime="2022-07-17T14:14:02.000Z" itemprop="datePublished">2022-07-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/07/07/typeorm-save/" class="title">TypeORM에서 save를 사용할 때 update되는 기준은 뭘까?</a></p>
+                            <p class="item-date"><time datetime="2022-07-07T13:41:14.000Z" itemprop="datePublished">2022-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/02/06/mac-key-change/" class="title">Mac에서 키보드 세팅 변경하기</a></p>
+                            <p class="item-date"><time datetime="2022-02-06T08:59:51.000Z" itemprop="datePublished">2022-02-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">JavaScript</a></p>
+                            <p class="item-title"><a href="/2021/11/16/js-eventloop-microtask/" class="title">JS의 이벤트 루프, Task, Microtask</a></p>
+                            <p class="item-date"><time datetime="2021-11-16T08:06:37.000Z" itemprop="datePublished">2021-11-16</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/db/">DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">Docker</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">Hexo</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">JavaScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a><span class="category-list-count">18</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/" rel="tag">db</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etc/" rel="tag">etc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/job/" rel="tag">job</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kops/" rel="tag">kops</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typeorm/" rel="tag">typeorm</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2024 HSD</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_shortname = 'postlude';
+    
+    
+    var disqus_url = 'https://postlude.github.io/2021/11/07/javascript-execution-context/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>
