@@ -55,7 +55,7 @@ updated:
 {% endcodeblock %}
 
 - 다른 함수의 시그니처를 참조하려면 `typeof fn` 을 사용하면 됨
-{% codeblock lang:TypeScript %}
+{% codeblock typeof function lang:TypeScript %}
 	const checkedFetch: typeof fetch = async (input, init) => { ... }
 {% endcodeblock %}
 
@@ -130,3 +130,34 @@ updated:
 		- 단위 정보는 포함해도 됨(ex. timeMs)
 	- 유니온 타입의 속성을 여러 개 가지는 인터페이스에서는 속성 간의 관계가 분명하지 않기 때문에 실수가 발생할 수 있음 - 주의
 	- `string` 타입보다는 가능한한 구체적인 타입을 사용(ex. `type A = 'a' | 'b'`)
+
+# 5장 any 다루기
+
+- any의 사용 범위는 최소화해야 된다.
+{% codeblock any lang:TypeScript %}
+	// bad
+	function f1() {
+		const x: any = returningFoo();
+		processBar(x);
+	}
+
+	// good
+	function f2() {
+		const x = returningFoo();
+		processBar(x as any);
+	}
+{% endcodeblock %}
+- 함수 반환 타입이 any인 경우 타입 안정성이 나빠짐(any 리턴하지 말 것)
+- any를 사용할 때는 정말로 모든 값이 허용되어야 하는지 검토
+- 타입 단언문 : 불가피하게 사용해야 한다면, 정확한 정의를 가지는 함수 안에서
+- any의 진화 - but 명시적 타입 구문을 사용하는게 좋음
+{% codeblock any evolve lang:TypeScript %}
+	function range(start: number, limit: number) {
+		const out = []; // any[]
+		for (let i = start; i < limit; i++) {
+			out.push(i); // any[]
+		}
+		return out; // number[]
+	}
+{% endcodeblock %}
+- 
