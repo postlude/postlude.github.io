@@ -160,4 +160,24 @@ updated:
 		return out; // number[]
 	}
 {% endcodeblock %}
-- 
+- 어떠한 타입이든 any에 할당 가능
+- any 타입은 어떤 타입으로도 할당 가능
+- 어떤 타입이든 unknown에 할당 가능
+- unknown은 오직 unknown과 any에만 할당 가능
+- unknown은 any 대신 사용할 수 있는 안전한 타입
+	- 어떠한 값이 있지만 그 타입을 알지 못하는 경우에 사용
+- npm `type-coverage` : any 타입 추적
+{% codeblock type-coverage lang:Bash %}
+	npx type-coverage --detail # any 위치 출력
+{% endcodeblock %}
+
+# 6장 타입 선언과 @types
+
+- ts : 타입 정보는 런타임에 존재하지 않기 때문에 devDependencies
+- ts 시스템 레벨 설치는 권장하지 않음
+	- 팀원 모두가 항상 동일한 버전을 설치한다는 보장이 없고
+	- 프로젝트 셋업시 별도 단계가 추가되므로
+- 런타임에 필요한 라이브러리가 dependencies에 있어도 `@types`는 devDependencies에 있어야 함(런타임에 필요한 경우 별도 작업 필요)
+- 라이브러리를 업데이트 하는 경우 해당 `@types`도 업데이트 해야 함
+- ts 라이브러리 : 타입 선언을 자체적으로 포함
+- js 라이브러리 : 타입 선언을 DefinitelyTyped에 공개
