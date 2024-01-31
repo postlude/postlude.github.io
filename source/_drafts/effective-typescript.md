@@ -181,3 +181,35 @@ updated:
 - 라이브러리를 업데이트 하는 경우 해당 `@types`도 업데이트 해야 함
 - ts 라이브러리 : 타입 선언을 자체적으로 포함
 - js 라이브러리 : 타입 선언을 DefinitelyTyped에 공개
+- TSDoc 형태의 주석을 달때는 타입 정보가 코드에 있기 때문에 타입 정보를 명시하면 안됨
+{% codeblock tsdoc lang:TypeScript %}
+	@param {string} name // bad
+{% endcodeblock %}
+- 오버로딩 타입보다는 조건부 타입이 좋음
+{% codeblock overloading lang:TypeScript %}
+	// bad : x가 숫자든 문자든 리턴 타입이 number | string
+	function double(x: number|string): number|string
+	function double(x: any) { return x + x; }
+
+	// bad
+	function double<T extends number|string>(x: T): T
+	function double(x: any) { return x + x; }
+
+	const num = double(12); // 타입이 12
+	const str = double('x'); // 타입이 'x'
+
+	// bad
+	function double(x: number): number
+	function double(x: string): string
+	function double(x: any) { return x + x; }
+
+	const num = double(12); // 타입이 number
+	const str = double('x'); // 타입이 string
+	function f(x: number|string) {
+		return double(x); // error
+	}
+
+	// good
+	function double<T extends number|string>(x: T): T extends string ? string : number
+	function double(x: any) { return x + x; }
+{% endcodeblock %}
