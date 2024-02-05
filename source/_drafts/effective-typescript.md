@@ -213,3 +213,47 @@ updated:
 	function double<T extends number|string>(x: T): T extends string ? string : number
 	function double(x: any) { return x + x; }
 {% endcodeblock %}
+
+# 7장 코드를 작성하고 실행하기
+
+- const enum의 경우 런타임에 완전히 제거됨
+{% codeblock const enum lang:TypeScript %}
+	const enum Flavor {
+		VANILLA = 0,
+		CHOCOLATE = 1,
+		STRAWBERRY = 2
+	}
+
+	// Flavor.CHOCOLATE -> 0 으로 바뀜
+{% endcodeblock %}
+- preserveConstEnums 플래그를 설정한 상태의 상수 열거형은 보통의 열거형처럼 런타임 코드에 상수 열거형 정보를 유지
+- 문자열 열거형 : 구조적 타이핑이 아니라 명목적 타이핑
+	- 구조가 같으면 할당이 되는게 아니라 타입 이름이 같아야 함
+{% codeblock enum lang:TypeScript %}
+	const enum Flavor {
+		VANILLA = 'vanilla',
+		CHOCOLATE = 'chocolate',
+		STRAWBERRY = 'strawberry'
+	}
+
+	let flavor = Flavor.CHOCOLATE;
+	flavor = 'chocolate'; // error
+{% endcodeblock %}
+- js와 ts 동작이 다르기 때문에 문자열 열거형 대신 리터럴 타입의 유니온 사용
+{% codeblock enum lang:TypeScript %}
+	scoop('vanilla'); // js에서 정상, ts에서 error
+
+	type Flavor = 'vanilla' | 'chocolate' | 'strawberry';
+{% endcodeblock %}
+- 매개변수 속성 : 사용에 따른 찬반 논란이 있으니 일반 속성과 섞어서 쓰지만 말 것
+{% codeblock 매개변수 속성 lang:TypeScript %}
+	class Person {
+		name: string;
+		constructor(name: string) { this.name = name; }
+	}
+
+	class Person {
+		constructor(public name: string) {}
+	}
+{% endcodeblock %}
+
