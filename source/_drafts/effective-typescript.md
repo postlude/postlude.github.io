@@ -256,4 +256,42 @@ updated:
 		constructor(public name: string) {}
 	}
 {% endcodeblock %}
+- public, private, protected 접근 제어자는 타입 시스템에서만 강제
+	- 런타임에는 소용이 없고 단언문을 통해 우회 가능
+	- 데이터를 감추기 위한 목적이라면 클로저나 `#`을 사용
+{% codeblock 접근 제어자 lang:TypeScript %}
+	class Diary {
+		private secret = '~~';
+	}
 
+	const diary = new Diary();
+	(diary as any).secret // 정상
+
+	// closure
+	declare function hash(text: string): number;
+
+	class PasswordChecker {
+		checkPassword: (password: string) => boolean;
+		constructor(passwordHash: number) {
+			this.checkPassword = (password: string) => hash(passsword) === passwordHash;
+		}
+	}
+
+	// #접두사
+	class PasswordChecker {
+		#passwordHash: number;
+
+		constructor(passwordHash: number) {
+			this.#passwordHash = passwordHash;
+		}
+
+		checkPassword(password: string) {
+			return hash(password) === this.#passwordHash;
+		}
+	}
+{% endcodeblock %}
+- tsconfig.json에서 `"sourceMap": true`를 세팅하면 .js 파일과 함께 .js.map 파일이 생성됨
+	- 컴파일된 js파일과 ts파일을 매핑시켜주는 역할
+	- 이 소스맵 파일을 디버깅에 사용 가능
+
+# 8장 타입스크립트로 마이그레이션하기
