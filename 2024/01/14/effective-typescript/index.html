@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>이펙티브 타입스크립트 | Postlude&#39;s IT Blog</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="typescript" />
+    
+    <meta name="description" content="1장 타입스크립트 알아보기   타입스크립트는 자바스크립트의 상위집합&#x3D; 모든 js 프로그램은 ts 프로그램(ts는 일반적으로는 유효한 js 프로그램이 아님) 타입 오류가 있어도 컴파일은 가능  2장 타입스크립트의 타입 시스템 타입 : 값의 집합  A는 B를 상속&#x3D; A는 B에 할당 가능&#x3D; A는 B의 서브타입&#x3D; A는 B의 부분">
+<meta property="og:type" content="article">
+<meta property="og:title" content="이펙티브 타입스크립트">
+<meta property="og:url" content="https://postlude.github.io/2024/01/14/effective-typescript/index.html">
+<meta property="og:site_name" content="Postlude&#39;s IT Blog">
+<meta property="og:description" content="1장 타입스크립트 알아보기   타입스크립트는 자바스크립트의 상위집합&#x3D; 모든 js 프로그램은 ts 프로그램(ts는 일반적으로는 유효한 js 프로그램이 아님) 타입 오류가 있어도 컴파일은 가능  2장 타입스크립트의 타입 시스템 타입 : 값의 집합  A는 B를 상속&#x3D; A는 B에 할당 가능&#x3D; A는 B의 서브타입&#x3D; A는 B의 부분">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://postlude.github.io/2024/01/14/effective-typescript/1.png">
+<meta property="article:published_time" content="2024-01-14T13:42:31.000Z">
+<meta property="article:modified_time" content="2024-02-13T14:43:11.164Z">
+<meta property="article:author" content="HSD">
+<meta property="article:tag" content="typescript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://postlude.github.io/2024/01/14/effective-typescript/1.png">
+    
+    <link rel="canonical" href="https://postlude.github.io/2024/01/14/effective-typescript/"/>
+
+    
+
+    
+        <link rel="icon" href="/assets/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+    
+<script src="/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-131293106-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/font-nanum/1.0/nanumbarungothic/nanumbarungothic.css">
+
+<meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/rss2.xml" title="Postlude's IT Blog" type="application/rss+xml">
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/db/">DB</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/docker/">Docker</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/git/">Git</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/hexo/">Hexo</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/javascript/">JavaScript</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                            <article id="post-effective-typescript" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        이펙티브 타입스크립트
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2024/01/14/effective-typescript/" class="article-date">
+            <time datetime="2024-01-14T13:42:31.000Z" itemprop="datePublished">2024-01-14</time>
+        </a>
+    </div>
+
+		
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/typescript/" rel="tag">typescript</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="1장-타입스크립트-알아보기"><a href="#1장-타입스크립트-알아보기" class="headerlink" title="1장 타입스크립트 알아보기"></a>1장 타입스크립트 알아보기</h1><img src="/2024/01/14/effective-typescript/1.png" class="">
+
+<ul>
+<li>타입스크립트는 자바스크립트의 상위집합<br>&#x3D; 모든 js 프로그램은 ts 프로그램<br>(ts는 일반적으로는 유효한 js 프로그램이 아님)</li>
+<li>타입 오류가 있어도 컴파일은 가능</li>
+</ul>
+<h1 id="2장-타입스크립트의-타입-시스템"><a href="#2장-타입스크립트의-타입-시스템" class="headerlink" title="2장 타입스크립트의 타입 시스템"></a>2장 타입스크립트의 타입 시스템</h1><ul>
+<li><p>타입 : 값의 집합</p>
+</li>
+<li><p>A는 B를 상속<br>&#x3D; A는 B에 할당 가능<br>&#x3D; A는 B의 서브타입<br>&#x3D; A는 B의 부분 집합</p>
+</li>
+<li><p>모든 값은 타입을 가지지만, 타입은 값을 가지지 않는다.</p>
+</li>
+<li><p>unknown</p>
+<figure class="highlight typescript"><figcaption><span>unknown</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123; <span class="attr">name</span>: <span class="built_in">string</span>; &#125;</span><br><span class="line">   <span class="keyword">const</span> body = <span class="variable language_">document</span>.<span class="property">body</span>;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// HTMLElement -&gt; Person 형식이 다른 형식과 충분히 겹치치 않기 때문에 오류</span></span><br><span class="line">   <span class="keyword">const</span> el = body <span class="keyword">as</span> <span class="title class_">Person</span>;</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// 정상 but unknown은 항상 위험을 내포하고 있음</span></span><br><span class="line">   <span class="keyword">const</span> el = body <span class="keyword">as</span> unknown <span class="keyword">as</span> <span class="title class_">Person</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>매개변수나 반환 값에 타입을 명시하기보다 함수 표현식 전체에 타입 구문을 적용시키는게 좋음</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">a: <span class="built_in">number</span>, b: <span class="built_in">number</span></span>) &#123; <span class="keyword">return</span> a + b; &#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sub</span>(<span class="params">a: <span class="built_in">number</span>, b: <span class="built_in">number</span></span>) &#123; <span class="keyword">return</span> a - b; &#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">mul</span>(<span class="params">a: <span class="built_in">number</span>, b: <span class="built_in">number</span></span>) &#123; <span class="keyword">return</span> a * b; &#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">div</span>(<span class="params">a: <span class="built_in">number</span>, b: <span class="built_in">number</span></span>) &#123; <span class="keyword">return</span> a / b; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">BinaryFn</span> = <span class="function">(<span class="params">a: <span class="built_in">number</span>, b: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">add</span>: <span class="title class_">BinaryFn</span> = <span class="function">(<span class="params">a, b</span>) =&gt;</span> a + b;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">sub</span>: <span class="title class_">BinaryFn</span> = <span class="function">(<span class="params">a, b</span>) =&gt;</span> a - b;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">mul</span>: <span class="title class_">BinaryFn</span> = <span class="function">(<span class="params">a, b</span>) =&gt;</span> a * b;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">div</span>: <span class="title class_">BinaryFn</span> = <span class="function">(<span class="params">a, b</span>) =&gt;</span> a / b;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>다른 함수의 시그니처를 참조하려면 <code>typeof fn</code> 을 사용하면 됨</p>
+<figure class="highlight typescript"><figcaption><span>typeof function</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">checkedFetch</span>: <span class="keyword">typeof</span> fetch = <span class="keyword">async</span> (input, init) =&gt; &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>DRY(Don’t Repeat Yourself) 원칙을 타입에도 최대한 적용할 것</p>
+</li>
+<li><p>readonly</p>
+<ul>
+<li><code>readonly number[]</code><ul>
+<li>element 읽기만 가능</li>
+<li>length 변경 불가(읽기 가능)</li>
+<li>pop, shift 등의 함수 호출 불가</li>
+</ul>
+</li>
+<li>함수 내에서 매개변수를 변경하지 않으면 매개변수에 readonly를 붙이자<ul>
+<li>오류 발견이 쉬워짐</li>
+<li>파라미터의 경우 배열과 같은 형태에서만 붙일 수 있음  <img src="/2024/01/14/effective-typescript/2.png" class=""></li>
+</ul>
+</li>
+<li>얕게(shallow) 동작함<ul>
+<li>배열 element가 객체면 객체의 프로퍼티는 변경 가능</li>
+</ul>
+</li>
+<li>index signature 에도 적용 가능  <figure class="highlight typescript"><figcaption><span>index signature</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">	<span class="keyword">readonly</span> [<span class="attr">key</span>: <span class="built_in">string</span>]: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 가능</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">a</span>: A &#123;</span><br><span class="line">	<span class="attr">aa</span>: <span class="number">1</span>,</span><br><span class="line">	<span class="attr">bb</span>: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 불가능</span></span><br><span class="line">a[<span class="string">&#x27;aa&#x27;</span>] = <span class="number">1</span>;</span><br><span class="line">a.<span class="property">bb</span> = <span class="number">2</span>;</span><br><span class="line">	</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h1 id="3장-타입-추론"><a href="#3장-타입-추론" class="headerlink" title="3장 타입 추론"></a>3장 타입 추론</h1><ul>
+<li>타입 추론이 가능한 경우 명시적 타입 구문은 불필요</li>
+<li>추론될 수 있는 경우라도 객체 리터럴과 함수 반환에는 타입 명시를 고려<ul>
+<li>내부 구현의 오류가 사용자 코드 위치(함수 호출 부분 등)에 나타나는 것을 방지</li>
+</ul>
+</li>
+<li>상수를 이용해 변수 초기화시 타입을 명시하지 않으면 타입 체크는 타입을 결정해야 함<ul>
+<li>지정된 단일 값을 가지고 할당 가능한 값들의 집합을 유추해야 한다</li>
+<li>타입 넓히기(widening)</li>
+</ul>
+</li>
+<li>const 단언문<ul>
+<li>변수 선언에 쓰이는 let, const와 다름</li>
+<li>값 뒤에 <code>as const</code> 를 사용하면 ts는 최대한 좁은 타입으로 추론  <figure class="highlight typescript"><figcaption><span>as const</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> v1 = &#123; <span class="attr">x</span>: <span class="number">1</span>, <span class="attr">y</span>: <span class="number">2</span> &#125;; <span class="comment">// 타입 : &#123; x: number; y: number; &#125;</span></span><br><span class="line"><span class="keyword">const</span> v2 = &#123; <span class="attr">x</span>: <span class="number">1</span> <span class="keyword">as</span> <span class="keyword">const</span>, <span class="attr">y</span>: <span class="number">2</span> &#125;; <span class="comment">// 타입 : &#123; x: 1; y: number; &#125;</span></span><br><span class="line"><span class="keyword">const</span> v3 = &#123; <span class="attr">x</span>: <span class="number">1</span>, <span class="attr">y</span>: <span class="number">2</span> &#125; <span class="keyword">as</span> <span class="keyword">const</span>; <span class="comment">// 타입 : &#123; readonly x: 1; readonly y: 2; &#125;</span></span><br><span class="line">	</span><br></pre></td></tr></table></figure></li>
+<li>type narrowing -&gt; destructuring 을 사용하는게 좋음</li>
+</ul>
+</li>
+</ul>
+<h1 id="4장-타입-설계"><a href="#4장-타입-설계" class="headerlink" title="4장 타입 설계"></a>4장 타입 설계</h1><ul>
+<li>유효한 상태와 무효한 상태를 둘 다 표현하는 타입은 오류를 유발하게 된다.<ul>
+<li>유효한 상태만 표현하는 타입을 지향해야 함  <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">State</span> &#123;</span><br><span class="line"><span class="attr">pageText</span>: <span class="built_in">string</span>;</span><br><span class="line"><span class="attr">isLoading</span>: <span class="built_in">boolean</span>;</span><br><span class="line">error?: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">RequestPending</span> &#123; <span class="attr">state</span>: <span class="string">&#x27;pending&#x27;</span>; &#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">RequestError</span> &#123; <span class="attr">state</span>: <span class="string">&#x27;error&#x27;</span>; <span class="attr">error</span>: <span class="built_in">string</span>; &#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">RequestSuccess</span> &#123; <span class="attr">state</span>:: <span class="string">&#x27;ok&#x27;</span>; <span class="attr">pageText</span>: <span class="built_in">string</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">RequestState</span> = <span class="title class_">RequestPending</span> | <span class="title class_">RequestError</span> | <span class="title class_">RequestSuccess</span>;</span><br><span class="line">	</span><br></pre></td></tr></table></figure></li>
+<li>함수 매개변수 타입의 범위는 넓어도 되지만, 리턴 타입은 좁은게 좋음</li>
+<li>주석과 변수명에 타입 정보를 적지 말 것<ul>
+<li>단위 정보는 포함해도 됨(ex. timeMs)</li>
+</ul>
+</li>
+<li>유니온 타입의 속성을 여러 개 가지는 인터페이스에서는 속성 간의 관계가 분명하지 않기 때문에 실수가 발생할 수 있음 - 주의</li>
+<li><code>string</code> 타입보다는 가능한한 구체적인 타입을 사용(ex. <code>type A = &#39;a&#39; | &#39;b&#39;</code>)</li>
+</ul>
+</li>
+</ul>
+<h1 id="5장-any-다루기"><a href="#5장-any-다루기" class="headerlink" title="5장 any 다루기"></a>5장 any 다루기</h1><ul>
+<li>any의 사용 범위는 최소화해야 된다.<figure class="highlight typescript"><figcaption><span>any</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">f1</span>(<span class="params"></span>) &#123;</span><br><span class="line">	<span class="keyword">const</span> <span class="attr">x</span>: <span class="built_in">any</span> = <span class="title function_">returningFoo</span>();</span><br><span class="line">	<span class="title function_">processBar</span>(x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">f2</span>(<span class="params"></span>) &#123;</span><br><span class="line">	<span class="keyword">const</span> x = <span class="title function_">returningFoo</span>();</span><br><span class="line">	<span class="title function_">processBar</span>(x <span class="keyword">as</span> <span class="built_in">any</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>함수 반환 타입이 any인 경우 타입 안정성이 나빠짐(any 리턴하지 말 것)</li>
+<li>any를 사용할 때는 정말로 모든 값이 허용되어야 하는지 검토</li>
+<li>타입 단언문 : 불가피하게 사용해야 한다면, 정확한 정의를 가지는 함수 안에서</li>
+<li>any의 진화 - but 명시적 타입 구문을 사용하는게 좋음<figure class="highlight typescript"><figcaption><span>any evolve</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">range</span>(<span class="params">start: <span class="built_in">number</span>, limit: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">	<span class="keyword">const</span> out = []; <span class="comment">// any[]</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">let</span> i = start; i &lt; limit; i++) &#123;</span><br><span class="line">		out.<span class="title function_">push</span>(i); <span class="comment">// any[]</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> out; <span class="comment">// number[]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>어떠한 타입이든 any에 할당 가능</li>
+<li>any 타입은 어떤 타입으로도 할당 가능</li>
+<li>어떤 타입이든 unknown에 할당 가능</li>
+<li>unknown은 오직 unknown과 any에만 할당 가능</li>
+<li>unknown은 any 대신 사용할 수 있는 안전한 타입<ul>
+<li>어떠한 값이 있지만 그 타입을 알지 못하는 경우에 사용</li>
+</ul>
+</li>
+<li>npm <code>type-coverage</code> : any 타입 추적<figure class="highlight bash"><figcaption><span>type-coverage</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx type-coverage --detail <span class="comment"># any 위치 출력</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="6장-타입-선언과-types"><a href="#6장-타입-선언과-types" class="headerlink" title="6장 타입 선언과 @types"></a>6장 타입 선언과 @types</h1><ul>
+<li>ts : 타입 정보는 런타임에 존재하지 않기 때문에 devDependencies</li>
+<li>ts 시스템 레벨 설치는 권장하지 않음<ul>
+<li>팀원 모두가 항상 동일한 버전을 설치한다는 보장이 없고</li>
+<li>프로젝트 셋업시 별도 단계가 추가되므로</li>
+</ul>
+</li>
+<li>런타임에 필요한 라이브러리가 dependencies에 있어도 <code>@types</code>는 devDependencies에 있어야 함(런타임에 필요한 경우 별도 작업 필요)</li>
+<li>라이브러리를 업데이트 하는 경우 해당 <code>@types</code>도 업데이트 해야 함</li>
+<li>ts 라이브러리 : 타입 선언을 자체적으로 포함</li>
+<li>js 라이브러리 : 타입 선언을 DefinitelyTyped에 공개</li>
+<li>TSDoc 형태의 주석을 달때는 타입 정보가 코드에 있기 때문에 타입 정보를 명시하면 안됨<figure class="highlight typescript"><figcaption><span>tsdoc</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@param</span> &#123;<span class="built_in">string</span>&#125; name <span class="comment">// bad</span></span><br></pre></td></tr></table></figure></li>
+<li>오버로딩 타입보다는 조건부 타입이 좋음<figure class="highlight typescript"><figcaption><span>overloading</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad : x가 숫자든 문자든 리턴 타입이 number | string</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">double</span>(<span class="params">x: <span class="built_in">number</span>|<span class="built_in">string</span></span>): <span class="built_in">number</span>|<span class="built_in">string</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">double</span>(<span class="params">x: <span class="built_in">any</span></span>) &#123; <span class="keyword">return</span> x + x; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="keyword">function</span> double&lt;T <span class="keyword">extends</span> <span class="built_in">number</span>|<span class="built_in">string</span>&gt;(<span class="attr">x</span>: T): T</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">double</span>(<span class="params">x: <span class="built_in">any</span></span>) &#123; <span class="keyword">return</span> x + x; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> num = <span class="title function_">double</span>(<span class="number">12</span>); <span class="comment">// 타입이 12</span></span><br><span class="line"><span class="keyword">const</span> str = <span class="title function_">double</span>(<span class="string">&#x27;x&#x27;</span>); <span class="comment">// 타입이 &#x27;x&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">double</span>(<span class="params">x: <span class="built_in">number</span></span>): <span class="built_in">number</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">double</span>(<span class="params">x: <span class="built_in">string</span></span>): <span class="built_in">string</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">double</span>(<span class="params">x: <span class="built_in">any</span></span>) &#123; <span class="keyword">return</span> x + x; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> num = <span class="title function_">double</span>(<span class="number">12</span>); <span class="comment">// 타입이 number</span></span><br><span class="line"><span class="keyword">const</span> str = <span class="title function_">double</span>(<span class="string">&#x27;x&#x27;</span>); <span class="comment">// 타입이 string</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params">x: <span class="built_in">number</span>|<span class="built_in">string</span></span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="title function_">double</span>(x); <span class="comment">// error</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="keyword">function</span> double&lt;T <span class="keyword">extends</span> <span class="built_in">number</span>|<span class="built_in">string</span>&gt;(<span class="attr">x</span>: T): T <span class="keyword">extends</span> <span class="built_in">string</span> ? <span class="built_in">string</span> : <span class="built_in">number</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">double</span>(<span class="params">x: <span class="built_in">any</span></span>) &#123; <span class="keyword">return</span> x + x; &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="7장-코드를-작성하고-실행하기"><a href="#7장-코드를-작성하고-실행하기" class="headerlink" title="7장 코드를 작성하고 실행하기"></a>7장 코드를 작성하고 실행하기</h1><ul>
+<li>const enum의 경우 런타임에 완전히 제거됨<figure class="highlight typescript"><figcaption><span>const enum</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">enum</span> <span class="title class_">Flavor</span> &#123;</span><br><span class="line">	<span class="variable constant_">VANILLA</span> = <span class="number">0</span>,</span><br><span class="line">	<span class="variable constant_">CHOCOLATE</span> = <span class="number">1</span>,</span><br><span class="line">	<span class="variable constant_">STRAWBERRY</span> = <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Flavor.CHOCOLATE -&gt; 0 으로 바뀜</span></span><br></pre></td></tr></table></figure></li>
+<li>preserveConstEnums 플래그를 설정한 상태의 상수 열거형은 보통의 열거형처럼 런타임 코드에 상수 열거형 정보를 유지</li>
+<li>문자열 열거형 : 구조적 타이핑이 아니라 명목적 타이핑<ul>
+<li>구조가 같으면 할당이 되는게 아니라 타입 이름이 같아야 함<figure class="highlight typescript"><figcaption><span>enum</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">enum</span> <span class="title class_">Flavor</span> &#123;</span><br><span class="line">	<span class="variable constant_">VANILLA</span> = <span class="string">&#x27;vanilla&#x27;</span>,</span><br><span class="line">	<span class="variable constant_">CHOCOLATE</span> = <span class="string">&#x27;chocolate&#x27;</span>,</span><br><span class="line">	<span class="variable constant_">STRAWBERRY</span> = <span class="string">&#x27;strawberry&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> flavor = <span class="title class_">Flavor</span>.<span class="property">CHOCOLATE</span>;</span><br><span class="line">flavor = <span class="string">&#x27;chocolate&#x27;</span>; <span class="comment">// error</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>js와 ts 동작이 다르기 때문에 문자열 열거형 대신 리터럴 타입의 유니온 사용<figure class="highlight typescript"><figcaption><span>enum</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">scoop</span>(<span class="string">&#x27;vanilla&#x27;</span>); <span class="comment">// js에서 정상, ts에서 error</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Flavor</span> = <span class="string">&#x27;vanilla&#x27;</span> | <span class="string">&#x27;chocolate&#x27;</span> | <span class="string">&#x27;strawberry&#x27;</span>;</span><br></pre></td></tr></table></figure></li>
+<li>매개변수 속성 : 사용에 따른 찬반 논란이 있으니 일반 속성과 섞어서 쓰지만 말 것<figure class="highlight typescript"><figcaption><span>매개변수 속성</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">	<span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">	<span class="title function_">constructor</span>(<span class="params">name: <span class="built_in">string</span></span>) &#123; <span class="variable language_">this</span>.<span class="property">name</span> = name; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">	<span class="title function_">constructor</span>(<span class="params"><span class="keyword">public</span> name: <span class="built_in">string</span></span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>public, private, protected 접근 제어자는 타입 시스템에서만 강제<ul>
+<li>런타임에는 소용이 없고 단언문을 통해 우회 가능</li>
+<li>데이터를 감추기 위한 목적이라면 클로저나 <code>#</code>을 사용<figure class="highlight typescript"><figcaption><span>접근 제어자</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Diary</span> &#123;</span><br><span class="line">	<span class="keyword">private</span> secret = <span class="string">&#x27;~~&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> diary = <span class="keyword">new</span> <span class="title class_">Diary</span>();</span><br><span class="line">(diary <span class="keyword">as</span> <span class="built_in">any</span>).<span class="property">secret</span> <span class="comment">// 정상</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// closure</span></span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">function</span> <span class="title function_">hash</span>(<span class="params">text: <span class="built_in">string</span></span>): <span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PasswordChecker</span> &#123;</span><br><span class="line">	<span class="attr">checkPassword</span>: <span class="function">(<span class="params">password: <span class="built_in">string</span></span>) =&gt;</span> <span class="built_in">boolean</span>;</span><br><span class="line">	<span class="title function_">constructor</span>(<span class="params">passwordHash: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">		<span class="variable language_">this</span>.<span class="property">checkPassword</span> = <span class="function">(<span class="params">password: <span class="built_in">string</span></span>) =&gt;</span> <span class="title function_">hash</span>(passsword) === passwordHash;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// #접두사</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PasswordChecker</span> &#123;</span><br><span class="line">	#<span class="attr">passwordHash</span>: <span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">constructor</span>(<span class="params">passwordHash: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">		<span class="variable language_">this</span>.#passwordHash = passwordHash;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">checkPassword</span>(<span class="params">password: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="title function_">hash</span>(password) === <span class="variable language_">this</span>.#passwordHash;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>tsconfig.json에서 <code>&quot;sourceMap&quot;: true</code>를 세팅하면 .js 파일과 함께 .js.map 파일이 생성됨<ul>
+<li>컴파일된 js파일과 ts파일을 매핑시켜주는 역할</li>
+<li>이 소스맵 파일을 디버깅에 사용 가능</li>
+</ul>
+</li>
+</ul>
+<h1 id="8장-타입스크립트로-마이그레이션하기"><a href="#8장-타입스크립트로-마이그레이션하기" class="headerlink" title="8장 타입스크립트로 마이그레이션하기"></a>8장 타입스크립트로 마이그레이션하기</h1><ul>
+<li>ts 컴파일러 수준에서 <code>use strict</code>가 사용되므로 코드에서는 제거</li>
+<li>파일 상단에 <code>// @ts-check</code>를 추가하면 js에서도 타입 체크를 할 수 있음<ul>
+<li>단, 장기간 사용할 게 아니라 js -&gt; ts 마이그레이션 도중에 쓰는 용도로 쓸 것</li>
+</ul>
+</li>
+<li>점진적으로 js -&gt; ts 마이그레이션하기 위해서는 allowJs 컴파일러 옵션을 사용</li>
+<li>마이그레이션할 때는 타입 정보만 추가하고, refactoring 해서는 안됨</li>
+<li>점진적 마이그레이션시 모듈 단위로 마이그레이션하는 것이 좋음<ul>
+<li>이때 다른 모듈에 의존(import)하지 않는 최하단 모듈부터 작업하는 것이 좋다(보통 유틸리티 모듈)</li>
+<li>이 논리에 따라 테스트 코드가 마이그레이션의 마지막 단계가 됨</li>
+</ul>
+</li>
+<li>모든 파일을 ts로 전환했다면 마지막으로 noImplicitAny 설정을 활성화<ul>
+<li>전면적으로 적용하기 전에 로컬에서부터 점진적으로 수정</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://postlude.github.io/2024/01/14/effective-typescript/" data-id="clskh4ecu0000v1vqdmu13gv6" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/postlude" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2024/01/08/mac-keyboard-setting/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">Mac에서 키보드 세팅 변경하기 2</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2024/01/14/effective-typescript/" class="title">이펙티브 타입스크립트</a></p>
+                            <p class="item-date"><time datetime="2024-01-14T13:42:31.000Z" itemprop="datePublished">2024-01-14</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2024/01/08/mac-keyboard-setting/" class="title">Mac에서 키보드 세팅 변경하기 2</a></p>
+                            <p class="item-date"><time datetime="2024-01-08T13:13:07.000Z" itemprop="datePublished">2024-01-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/07/17/local-elasticsearch/" class="title">Docker로 local Elasticsearch 띄우기</a></p>
+                            <p class="item-date"><time datetime="2022-07-17T14:14:02.000Z" itemprop="datePublished">2022-07-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/07/07/typeorm-save/" class="title">TypeORM에서 save를 사용할 때 update되는 기준은 뭘까?</a></p>
+                            <p class="item-date"><time datetime="2022-07-07T13:41:14.000Z" itemprop="datePublished">2022-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a></p>
+                            <p class="item-title"><a href="/2022/02/06/mac-key-change/" class="title">Mac에서 키보드 세팅 변경하기</a></p>
+                            <p class="item-date"><time datetime="2022-02-06T08:59:51.000Z" itemprop="datePublished">2022-02-06</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/db/">DB</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">Docker</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">Hexo</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">JavaScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%EA%B8%B0%ED%83%80/">기타</a><span class="category-list-count">19</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/db/" rel="tag">db</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etc/" rel="tag">etc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/job/" rel="tag">job</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kops/" rel="tag">kops</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typeorm/" rel="tag">typeorm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 텍스트 및 디스플레이 광고 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6204287015774137"
+     data-ad-slot="1744249755"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2024 HSD</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_shortname = 'postlude';
+    
+    
+    var disqus_url = 'https://postlude.github.io/2024/01/14/effective-typescript/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

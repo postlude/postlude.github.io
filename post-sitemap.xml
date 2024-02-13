@@ -9,6 +9,14 @@
 
 
     <url>
+        <loc>https://postlude.github.io/2024/01/14/effective-typescript/</loc>
+        <lastmod>2024-02-13T14:43:11.164Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://postlude.github.io/2024/01/08/mac-keyboard-setting/</loc>
         <lastmod>2024-01-08T13:40:05.455Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -97,7 +105,7 @@
     </url>
 
     <url>
-        <loc>https://postlude.github.io/2019/01/01/hexo-themes-and-git-submodule/</loc>
+        <loc>https://postlude.github.io/2019/07/16/javascript-array/</loc>
         <lastmod>2024-01-08T13:01:24.044Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -105,7 +113,7 @@
     </url>
 
     <url>
-        <loc>https://postlude.github.io/2019/07/16/javascript-array/</loc>
+        <loc>https://postlude.github.io/2019/01/01/hexo-themes-and-git-submodule/</loc>
         <lastmod>2024-01-08T13:01:24.044Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -153,7 +161,7 @@
     </url>
 
     <url>
-        <loc>https://postlude.github.io/2022/07/07/typeorm-save/</loc>
+        <loc>https://postlude.github.io/2019/06/16/startup-6month-review/</loc>
         <lastmod>2024-01-08T13:01:24.044Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -161,7 +169,7 @@
     </url>
 
     <url>
-        <loc>https://postlude.github.io/2019/06/16/startup-6month-review/</loc>
+        <loc>https://postlude.github.io/2022/07/07/typeorm-save/</loc>
         <lastmod>2024-01-08T13:01:24.044Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
