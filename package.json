@@ -1,26 +1,32 @@
 {
-  "name": "postlude.github.io",
-  "version": "2.0.0",
-  "private": true,
-  "hexo": {
-    "version": "6.2.0"
-  },
-  "dependencies": {
-    "hexo": "^6.2.0",
-    "hexo-auto-canonical": "^0.1.1",
-    "hexo-cli": "^4.3.0",
-    "hexo-deployer-git": "^3.0.0",
-    "hexo-generator-archive": "^1.0.0",
-    "hexo-generator-category": "^1.0.0",
-    "hexo-generator-feed": "^3.0.0",
-    "hexo-generator-index": "^2.0.0",
-    "hexo-generator-json-content": "^4.2.3",
-    "hexo-generator-robotstxt": "^0.2.0",
-    "hexo-generator-seo-friendly-sitemap": "0.2.1",
-    "hexo-generator-tag": "^1.0.0",
-    "hexo-renderer-ejs": "^2.0.0",
-    "hexo-renderer-marked": "^5.0.0",
-    "hexo-renderer-stylus": "^2.1.0",
-    "hexo-server": "^3.0.0"
-  }
+	"name": "postlude.github.io",
+	"version": "2.0.0",
+	"private": true,
+	"scripts": {
+		"new": "npx hexo new draft",
+		"server": "npx hexo server --draft",
+		"publish": "npx hexo publish",
+		"deploy": "npx hexo g -d"
+	},
+	"hexo": {
+		"version": "7.3.0"
+	},
+	"dependencies": {
+		"hexo": "^7.3.0",
+		"hexo-auto-canonical": "^0.1.1",
+		"hexo-cli": "^4.3.2",
+		"hexo-deployer-git": "^4.0.0",
+		"hexo-generator-archive": "^2.0.0",
+		"hexo-generator-category": "^2.0.0",
+		"hexo-generator-feed": "^3.0.0",
+		"hexo-generator-index": "^4.0.0",
+		"hexo-generator-json-content": "^4.2.3",
+		"hexo-generator-robotstxt": "^0.2.0",
+		"hexo-generator-seo-friendly-sitemap": "0.2.1",
+		"hexo-generator-tag": "^2.0.0",
+		"hexo-renderer-ejs": "^2.0.0",
+		"hexo-renderer-marked": "^6.3.0",
+		"hexo-renderer-stylus": "^3.0.1",
+		"hexo-server": "^3.0.0"
+	}
 }
